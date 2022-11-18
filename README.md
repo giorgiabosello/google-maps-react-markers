@@ -1,6 +1,6 @@
 # google-maps-react-markers
 
-> Google Maps library with markers as react components
+> Google Maps library with markers as react components working with React 18+
 
 [![NPM](https://img.shields.io/npm/v/google-maps-react-markers.svg)](https://www.npmjs.com/package/google-maps-react-markers) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
