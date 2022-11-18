@@ -1,0 +1,34 @@
+{
+	"root": true,
+	"extends": [
+		"eslint:recommended",
+		"plugin:prettier/recommended",
+		"plugin:react/recommended",
+		"plugin:import/recommended",
+		"prettier"
+	],
+	"rules": {
+		"import/no-unresolved": 0,
+		"import/first": "error",
+		"import/newline-after-import": "error",
+		"import/no-duplicates": "error",
+		"react/react-in-jsx-scope": "off"
+	},
+	"env": {
+		"es6": true,
+		"node": true
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 2020
+	},
+	"ignorePatterns": ["**/dist/**/*"],
+	"globals": {
+		"globalThis": "readonly"
+	}
+}
