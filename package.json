@@ -1,10 +1,13 @@
 {
 	"name": "google-maps-react-markers",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Google Maps library with markers as react components",
 	"author": "Giorgia Bosello",
 	"license": "MIT",
-	"repository": "giorgiabosello/google-maps-react-markers",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/giorgiabosello/google-maps-react-markers.git"
+	},
 	"homepage": "https://github.com/giorgiabosello/google-maps-react-markers",
 	"main": "dist/index.js",
 	"module": "dist/index.modern.js",
