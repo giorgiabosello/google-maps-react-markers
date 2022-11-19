@@ -40,7 +40,8 @@
 	},
 	"peerDependencies": {
 		"react": "^18.0.0",
-		"react-dom": "^18.0.0"
+		"react-dom": "^18.0.0",
+		"react-scripts": "^5.0.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.2",
@@ -48,7 +49,7 @@
 		"@babel/preset-react": "^7.18.6",
 		"babel-eslint": "^10.0.3",
 		"cross-env": "^7.0.2",
-		"eslint": "^8.27.0",
+		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-config-standard": "^17.0.0",
 		"eslint-config-standard-react": "^12.0.0",
@@ -56,7 +57,7 @@
 		"eslint-plugin-node": "^11.0.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-promise": "^6.1.1",
-		"eslint-plugin-react": "^7.17.0",
+		"eslint-plugin-react": "^7.31.11",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-standard": "^5.0.0",
 		"gh-pages": "^4.0.0",
@@ -71,6 +72,10 @@
 		"dist"
 	],
 	"dependencies": {
-		"prop-types": "^15.8.1"
+		"@babel/plugin-syntax-flow": "^7.18.6",
+		"@babel/plugin-transform-react-jsx": "^7.19.0",
+		"eslint-plugin-n": "^15.5.1",
+		"prop-types": "^15.8.1",
+		"typescript": "^4.9.3"
 	}
 }

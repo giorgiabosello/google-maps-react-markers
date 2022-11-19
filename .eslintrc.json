@@ -4,32 +4,35 @@
 		"eslint:recommended",
 		"plugin:prettier/recommended",
 		"plugin:react/recommended",
+		"plugin:react-hooks/recommended",
 		"plugin:import/recommended",
-		"prettier",
-		"react-hooks"
+		"prettier"
 	],
-	"plugins": ["react", "react-hooks", "prettier"],
+	"plugins": ["react", "react-hooks", "prettier", "typescript"],
 	"rules": {
 		"import/no-unresolved": 0,
 		"import/first": "error",
 		"import/newline-after-import": "error",
 		"import/no-duplicates": "error",
 		"react/react-in-jsx-scope": "off",
-		"react-hooks/exhaustive-deps": "warn"
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "warn",
+		"react/no-unknown-property": ["warn", { "ignore": ["jsx"] }]
 	},
 	"env": {
 		"es6": true,
 		"node": true
 	},
-	"parser": "@babel/eslint-parser",
 	"settings": {
 		"react": {
 			"version": "detect"
 		}
 	},
+	"parser": "@babel/eslint-parser",
 	"parserOptions": {
 		"sourceType": "module",
-		"ecmaVersion": 2020
+		"ecmaVersion": 2022,
+		"requireConfigFile": false
 	},
 	"ignorePatterns": ["**/dist/**/*"],
 	"globals": {
