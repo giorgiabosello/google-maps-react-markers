@@ -1,6 +1,6 @@
 {
 	"name": "google-maps-react-markers",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Google Maps library with markers as react components",
 	"author": "Giorgia Bosello",
 	"license": "MIT",
@@ -40,7 +40,8 @@
 		"react-dom": "^18.0.0"
 	},
 	"devDependencies": {
-		"@babel/plugin-transform-react-jsx": "^7.19.0",
+		"@babel/core": "^7.20.2",
+		"@babel/preset-env": "^7.20.2",
 		"@babel/preset-react": "^7.18.6",
 		"babel-eslint": "^10.0.3",
 		"cross-env": "^7.0.2",
@@ -53,6 +54,7 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-promise": "^6.1.1",
 		"eslint-plugin-react": "^7.17.0",
+		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-standard": "^5.0.0",
 		"gh-pages": "^4.0.0",
 		"microbundle-crl": "^0.13.10",

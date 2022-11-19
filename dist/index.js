@@ -47,7 +47,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 var useScript = function useScript(script) {
   if (script === void 0) {
     script = {
-      src: "",
+      src: '',
       attributes: {},
       callbacks: {
         onLoadCallback: null,
@@ -56,21 +56,21 @@ var useScript = function useScript(script) {
       elementIdToAppend: null
     };
   }
-  var _useState = React.useState(script.src ? "loading" : "idle"),
+  var _useState = React.useState(script.src ? 'loading' : 'idle'),
     status = _useState[0],
     setStatus = _useState[1];
   React.useEffect(function () {
     var _script$callbacks, _script$callbacks2;
     if (!script.src) {
-      setStatus("idle");
+      setStatus('idle');
       return;
     }
     var scriptToAdd = document.querySelector("script[src=\"" + script.src + "\"]");
     if (!scriptToAdd) {
-      scriptToAdd = document.createElement("script");
+      scriptToAdd = document.createElement('script');
       scriptToAdd.src = script.src;
       scriptToAdd.async = true;
-      scriptToAdd.setAttribute("data-status", "loading");
+      scriptToAdd.setAttribute('data-status', 'loading');
       script.attributes && Object.entries(script.attributes).length > 0 ? Object.entries(script.attributes).map(function (_ref) {
         var key = _ref[0],
           value = _ref[1];
@@ -82,18 +82,18 @@ var useScript = function useScript(script) {
         document.body.appendChild(scriptToAdd);
       }
       var setAttributeFromEvent = function setAttributeFromEvent(event) {
-        scriptToAdd.setAttribute("data-status", event.type === "load" ? "ready" : "error");
+        scriptToAdd.setAttribute('data-status', event.type === 'load' ? 'ready' : 'error');
       };
-      scriptToAdd.addEventListener("load", setAttributeFromEvent);
-      scriptToAdd.addEventListener("error", setAttributeFromEvent);
+      scriptToAdd.addEventListener('load', setAttributeFromEvent);
+      scriptToAdd.addEventListener('error', setAttributeFromEvent);
     } else {
-      var currentScriptStatus = scriptToAdd.getAttribute("data-status");
+      var currentScriptStatus = scriptToAdd.getAttribute('data-status');
       switch (currentScriptStatus) {
-        case "load":
-        case "ready":
+        case 'load':
+        case 'ready':
           (_script$callbacks = script.callbacks) !== null && _script$callbacks !== void 0 && _script$callbacks.onLoadCallback ? script.callbacks.onLoadCallback() : null;
           break;
-        case "error":
+        case 'error':
           (_script$callbacks2 = script.callbacks) !== null && _script$callbacks2 !== void 0 && _script$callbacks2.onErrorCallback ? script.callbacks.onErrorCallback() : null;
           break;
       }
@@ -101,15 +101,15 @@ var useScript = function useScript(script) {
     }
     var setStateFromEvent = function setStateFromEvent(event) {
       var _script$callbacks3, _script$callbacks4;
-      event.type === "load" ? (_script$callbacks3 = script.callbacks) !== null && _script$callbacks3 !== void 0 && _script$callbacks3.onLoadCallback ? script.callbacks.onLoadCallback() : null : (_script$callbacks4 = script.callbacks) !== null && _script$callbacks4 !== void 0 && _script$callbacks4.onErrorCallback ? script.callbacks.onErrorCallback() : null;
-      setStatus(event.type === "load" ? "ready" : "error");
+      event.type === 'load' ? (_script$callbacks3 = script.callbacks) !== null && _script$callbacks3 !== void 0 && _script$callbacks3.onLoadCallback ? script.callbacks.onLoadCallback() : null : (_script$callbacks4 = script.callbacks) !== null && _script$callbacks4 !== void 0 && _script$callbacks4.onErrorCallback ? script.callbacks.onErrorCallback() : null;
+      setStatus(event.type === 'load' ? 'ready' : 'error');
     };
-    scriptToAdd.addEventListener("load", setStateFromEvent);
-    scriptToAdd.addEventListener("error", setStateFromEvent);
+    scriptToAdd.addEventListener('load', setStateFromEvent);
+    scriptToAdd.addEventListener('error', setStateFromEvent);
     return function () {
       if (scriptToAdd) {
-        scriptToAdd.removeEventListener("load", setStateFromEvent);
-        scriptToAdd.removeEventListener("error", setStateFromEvent);
+        scriptToAdd.removeEventListener('load', setStateFromEvent);
+        scriptToAdd.removeEventListener('error', setStateFromEvent);
       }
     };
   },
@@ -226,7 +226,7 @@ var OverlayView = function OverlayView(_ref) {
   React.useEffect(function () {
     container.style.zIndex = "" + zIndex;
   }, [zIndex, container]);
-  return reactDom.createPortal(children, container);
+  return /*#__PURE__*/reactDom.createPortal(children, container);
 };
 
 var MapMarkers = function MapMarkers(_ref) {
@@ -236,7 +236,7 @@ var MapMarkers = function MapMarkers(_ref) {
   var markers = React.useMemo(function () {
     if (!map || !maps) return [];
     return React.Children.map(children, function (child) {
-      if (React.isValidElement(child)) {
+      if ( /*#__PURE__*/React.isValidElement(child)) {
         var latLng = {
           lat: child.props.lat,
           lng: child.props.lng
@@ -250,6 +250,11 @@ var MapMarkers = function MapMarkers(_ref) {
     });
   }, [children, map, maps]);
   return /*#__PURE__*/React__default.createElement("div", null, markers);
+};
+MapMarkers.propTypes = {
+  children: propTypes.node.isRequired,
+  map: propTypes.object,
+  maps: propTypes.object.isRequired
 };
 
 var _excluded = ["children", "style", "defaultCenter", "defaultZoom", "onGoogleApiLoaded", "onChange"];
@@ -340,18 +345,20 @@ MapComponent.defaultProps = {
     padding: 0,
     position: 'absolute'
   },
-  onGoogleApiLoaded: function onGoogleApiLoaded() {}
+  onGoogleApiLoaded: function onGoogleApiLoaded() {},
+  onChange: function onChange() {}
 };
 MapComponent.propTypes = {
   children: propTypes.oneOfType([propTypes.arrayOf(propTypes.node), propTypes.node]),
   style: propTypes.object,
   defaultCenter: propTypes.object.isRequired,
   defaultZoom: propTypes.number.isRequired,
-  onGoogleApiLoaded: propTypes.func
+  onGoogleApiLoaded: propTypes.func,
+  onChange: propTypes.func
 };
 
 var _excluded$1 = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps"];
-var GoogleMap = React.forwardRef(function GoogleMap(_ref, ref) {
+var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
   var apiKey = _ref.apiKey,
     libraries = _ref.libraries,
     children = _ref.children,
@@ -377,9 +384,9 @@ var GoogleMap = React.forwardRef(function GoogleMap(_ref, ref) {
   }, containerProps), status === 'ready' ? /*#__PURE__*/React__default.createElement(MapComponent, props, children) : status === 'loading' ? loadingContent : status === 'idle' ? idleContent : status === 'error' ? errorContent : null);
 });
 GoogleMap.defaultProps = _extends({}, MapComponent.defaultProps, {
-  loadingContent: 'google_maps_loading',
-  idleContent: 'google_maps_idle',
-  errorContent: 'google_maps_error',
+  loadingContent: 'Google Maps is loading',
+  idleContent: 'Google Maps is on idle',
+  errorContent: 'Google Maps is on error',
   mapMinHeight: 'unset',
   apiKey: '',
   libraries: ['places', 'geometry']

@@ -1,5 +1,5 @@
 import { arrayOf, node, number, object, oneOfType, string } from 'prop-types'
-import { forwardRef } from 'react'
+import React, { forwardRef } from 'react'
 import { useGoogleMaps } from './hooks/useGoogleMaps'
 import MapComponent from './map/map'
 

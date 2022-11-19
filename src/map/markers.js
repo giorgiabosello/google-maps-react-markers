@@ -1,5 +1,5 @@
 import { node, object } from 'prop-types'
-import { Children, isValidElement, useMemo } from 'react'
+import React, { Children, isValidElement, useMemo } from 'react'
 import OverlayView from './overlay-view'
 
 const MapMarkers = ({ children, map, maps }) => {

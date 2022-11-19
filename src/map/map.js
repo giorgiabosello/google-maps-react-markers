@@ -1,5 +1,5 @@
 import { arrayOf, func, node, number, object, oneOfType } from 'prop-types'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { isArraysEqualEps } from '../utils/utils'
 import MapMarkers from './markers'
 
@@ -69,14 +69,14 @@ const MapComponent = ({ children, style, defaultCenter, defaultZoom, onGoogleApi
 	}, [map])
 
 	return (
-		<>
+		<React.Fragment>
 			<div ref={mapRef} style={style} className="google-map" />
 			{children && map && maps && (
 				<MapMarkers map={map} maps={maps}>
 					{children}
 				</MapMarkers>
 			)}
-		</>
+		</React.Fragment>
 	)
 }
 

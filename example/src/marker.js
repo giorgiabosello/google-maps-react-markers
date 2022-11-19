@@ -1,7 +1,7 @@
-import { func, number, oneOfType, shape, string } from "prop-types";
+import { func, number, oneOfType, string } from "prop-types";
 import markerPin from "./marker-pin.png";
 
-const Marker = ({ className, lat, lng, markerId, onClick, markerProps }) => {
+const Marker = ({ className, lat, lng, markerId, onClick, ...props }) => {
 	return (
 		<img
 			className={className}
@@ -9,9 +9,9 @@ const Marker = ({ className, lat, lng, markerId, onClick, markerProps }) => {
 			lat={lat}
 			lng={lng}
 			onClick={() => (onClick ? onClick(markerId) : null)}
-			sx={{ cursor: "pointer", fontSize: 40 }}
+			style={{ cursor: "pointer", fontSize: 40 }}
 			alt={markerId}
-			{...markerProps}
+			{...props}
 		/>
 	);
 };
@@ -35,7 +35,6 @@ Marker.propTypes = {
 	 * The function to call when the marker is clicked.
 	 */
 	onClick: func,
-	markerProps: shape({ ...Image.propTypes }),
 };
 
 export default Marker;

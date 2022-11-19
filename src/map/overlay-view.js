@@ -11,6 +11,7 @@ import createOverlay from './overlay'
  */
 const OverlayView = ({ position, pane = 'floatPane', map, maps, zIndex, children }) => {
 	const container = useMemo(() => {
+		// eslint-disable-next-line no-undef
 		const div = document.createElement('div')
 		div.style.position = 'absolute'
 		return div
