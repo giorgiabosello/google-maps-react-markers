@@ -1,6 +1,9 @@
 # google-maps-react-markers
 
-> Google Maps library with markers as react components working with React 18+
+> Google Maps library that accept markers as react components and it's working with React 18+.
+
+It supports a small set of the props of [Google Map React](https://github.com/google-map-react/google-map-react). Clustering also is possible.
+The library implements [Google Maps Custom Overlays](https://developers.google.com/maps/documentation/javascript/customoverlays) official library.
 
 [![NPM](https://img.shields.io/npm/v/google-maps-react-markers.svg)](https://www.npmjs.com/package/google-maps-react-markers) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -21,32 +24,34 @@ npm install --save google-maps-react-markers
 ```jsx
 import GoogleMap from "google-maps-react-markers";
 
+const Marker = () => <div>I am a Marker.</div>
+
 const coordinates = [
-	{
-		lat: 45.4046987,
-		lng: 12.2472504,
-		name: "Venice",
-	},
-	{
-		lat: 41.9102415,
-		lng: 12.3959151,
-		name: "Rome",
-	},
-	{
-		lat: 45.4628328,
-		lng: 9.1076927,
-		name: "Milan",
-	},
+    {
+        lat: 45.4046987,
+        lng: 12.2472504,
+        name: "Venice",
+    },
+    {
+        lat: 41.9102415,
+        lng: 12.3959151,
+        name: "Rome",
+    },
+    {
+        lat: 45.4628328,
+        lng: 9.1076927,
+        name: "Milan",
+    },
 ];
 
 const Map = () => {
-	return (
-		<GoogleMap defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }} defaultZoom={5} options={mapOptions}>
-			{coordinates.map(({ lat, lng, name }, index) => (
-				<Marker key={index} lat={lat} lng={lng} markerId={name} />
-			))}
-		</GoogleMap>
-	);
+    return (
+        <GoogleMap defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }} defaultZoom={5} options={mapOptions}>
+            {coordinates.map(({ lat, lng, name }, index) => (
+                <Marker key={index} lat={lat} lng={lng} markerId={name} />
+            ))}
+        </GoogleMap>
+    );
 };
 
 export default Map;
