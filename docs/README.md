@@ -1,16 +1,20 @@
 # google-maps-react-markers
 
-> Google Maps library that accept markers as react components and it's working with React 18+.
+> Google Maps library that accepts markers as react components and works with React 18+.
 
 It supports a small set of the props of [Google Map React](https://github.com/google-map-react/google-map-react). Clustering also is possible.
 The library implements [Google Maps Custom Overlays](https://developers.google.com/maps/documentation/javascript/customoverlays) official library.
 
 [![NPM](https://img.shields.io/npm/v/google-maps-react-markers.svg)](https://www.npmjs.com/package/google-maps-react-markers) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+**If you like this library, please consider to support me ❤️**
+
+[![Buy me a 🍺](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/giorgiabosello)
+
 ## Install
 
 ```bash
-yarn install --save google-maps-react-markers
+yarn add -D google-maps-react-markers
 ```
 
 or
@@ -59,7 +63,7 @@ const App = () => {
     );
 };
 
-export default Map;
+export default App;
 ```
 
 ## Props
