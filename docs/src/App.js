@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
 import GoogleMap from 'google-maps-react-markers'
+import { useRef, useState } from 'react'
 import mapOptions from './map-options.json'
 import Marker from './marker'
 
@@ -42,6 +42,7 @@ const App = () => {
 
 	return (
 		<>
+			{mapReady && <div>Map is ready. See for logs in developer console.</div>}
 			<GoogleMap
 				defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }}
 				defaultZoom={5}
@@ -54,7 +55,6 @@ const App = () => {
 					<Marker key={index} lat={lat} lng={lng} markerId={name} onClick={onMarkerClick} />
 				))}
 			</GoogleMap>
-			{mapReady && alert('Map is ready')}
 		</>
 	)
 }

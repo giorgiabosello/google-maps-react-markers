@@ -30,8 +30,9 @@ const OverlayView = ({ position, pane = 'floatPane', map, maps, zIndex, children
 		}
 		// overlay depends on map, so we don't need to add it to the dependency array
 		// otherwise, it will re-render the overlay every time the map changes
+		//? added children to the dependency array to re-render the overlay when the children change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [map])
+	}, [map, children])
 
 	// to move the container to the foreground and background
 	useEffect(() => {

@@ -221,7 +221,7 @@ var OverlayView = function OverlayView(_ref) {
         overlay === null || overlay === void 0 ? void 0 : overlay.setMap(null);
       };
     }
-  }, [map]);
+  }, [map, children]);
 
   React.useEffect(function () {
     container.style.zIndex = "" + zIndex;
