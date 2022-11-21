@@ -7,9 +7,10 @@ The library implements [Google Maps Custom Overlays](https://developers.google.c
 
 [![NPM](https://img.shields.io/npm/v/google-maps-react-markers.svg)](https://www.npmjs.com/package/google-maps-react-markers) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-**If you like this library, please consider to support me ❤️**
+**If you like this library, please consider supporting me ❤️**
 
-[![Buy me a 🍺](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/giorgiabosello)
+[![Buy me a Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/giorgiabosello)
+[![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/giorgiabosello)
 
 ## Install
 
@@ -46,6 +47,7 @@ const App = () => {
 
     return (
         <>
+            {mapReady && <div>Map is ready. See for logs in developer console.</div>}
             <GoogleMap
                 defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }}
                 defaultZoom={5}
@@ -58,7 +60,6 @@ const App = () => {
                     <Marker key={index} lat={lat} lng={lng} markerId={name} onClick={onMarkerClick} />
                 ))}
             </GoogleMap>
-            {mapReady && alert("Map is ready")}
         </>
     );
 };
