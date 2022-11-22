@@ -147,6 +147,18 @@ var isArraysEqualEps = function isArraysEqualEps(arrayA, arrayB, eps) {
   return false;
 };
 
+var useMemoCompare = function useMemoCompare(next, compare) {
+  var previousRef = React.useRef();
+  var previous = previousRef.current;
+  var isEqual = compare(previous, next);
+  React.useEffect(function () {
+    if (!isEqual) {
+      previousRef.current = next;
+    }
+  });
+  return isEqual ? previous : next;
+};
+
 var createOverlay = function createOverlay(_ref) {
   var container = _ref.container,
     pane = _ref.pane,
@@ -214,6 +226,10 @@ var OverlayView = function OverlayView(_ref) {
       maps: maps
     });
   }, [container, maps, pane, position]);
+
+  var childrenProps = useMemoCompare(children === null || children === void 0 ? void 0 : children.props, function (prev, next) {
+    return prev && prev.lat === next.lat && prev.lng === next.lng;
+  });
   React.useEffect(function () {
     if (!overlay.map) {
       overlay === null || overlay === void 0 ? void 0 : overlay.setMap(map);
@@ -221,12 +237,26 @@ var OverlayView = function OverlayView(_ref) {
         overlay === null || overlay === void 0 ? void 0 : overlay.setMap(null);
       };
     }
-  }, [map, children]);
+  }, [map, childrenProps]);
 
   React.useEffect(function () {
     container.style.zIndex = "" + zIndex;
   }, [zIndex, container]);
   return /*#__PURE__*/reactDom.createPortal(children, container);
+};
+OverlayView.defaultProps = {
+  zIndex: 0
+};
+OverlayView.propTypes = {
+  pane: propTypes.string,
+  position: propTypes.shape({
+    lat: propTypes.number.isRequired,
+    lng: propTypes.number.isRequired
+  }).isRequired,
+  map: propTypes.object.isRequired,
+  maps: propTypes.object.isRequired,
+  zIndex: propTypes.number,
+  children: propTypes.node.isRequired
 };
 
 var MapMarkers = function MapMarkers(_ref) {

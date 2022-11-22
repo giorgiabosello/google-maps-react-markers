@@ -50,12 +50,31 @@ const createOverlay = ({ container, pane, position, maps }) => {
 }
 
 createOverlay.propTypes = {
+	/**
+	 * The HTML container element for the overlay.
+	 */
 	container: element.isRequired,
+	/**
+	 * The HTML container element for the overlay.
+	 * @ref [MapPanes](https://developers.google.com/maps/documentation/javascript/reference/overlay-view#MapPanes)
+	 * @default 'floatPane'
+	 * @type {google.maps.MapPanes}
+	 * @required
+	 */
 	pane: string.isRequired,
+	/**
+	 * The geographical location of the overlay.
+	 * @type {google.maps.LatLng | google.maps.LatLngLiteral}
+	 * @required
+	 * @ref [LatLng](https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLng)
+	 */
 	position: shape({
 		lat: number.isRequired,
 		lng: number.isRequired,
 	}).isRequired,
+	/**
+	 * The Google Maps API.
+	 */
 	maps: object.isRequired,
 }
 

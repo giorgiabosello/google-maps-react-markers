@@ -1,0 +1,32 @@
+body {
+	background-color: #191919;
+	color: #fff;
+	font-family: Roboto Mono, monospace;
+	font-size: 1rem;
+}
+
+button {
+	color: #fff;
+	background: #000;
+	border: 0;
+	padding: 10px;
+	margin: 5px 0;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.marker {
+	transform: scale(0);
+	animation: 400ms reveal forwards;
+}
+@keyframes reveal {
+	to {
+		transform: scale(1);
+	}
+}

@@ -20,11 +20,14 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
 **Codesandbox**
 Add a codesandbox example.
 
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
+
 **Additional context**
 Add any other context about the problem here.
+
+**Suggested solution(s)**
+If you have any ideas on how to fix this bug, let us know.
