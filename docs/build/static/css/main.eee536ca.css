@@ -1,0 +1,2 @@
+body{background-color:#191919;color:#fff;font-family:Roboto Mono,monospace;font-size:1rem}button{background:#000;border:0;color:#fff;cursor:pointer;font-weight:700;margin:5px 0;padding:10px}.container{align-items:center;display:flex;justify-content:space-between}.marker{-webkit-animation:reveal .4s forwards;animation:reveal .4s forwards;-webkit-transform:scale(0);transform:scale(0)}@-webkit-keyframes reveal{to{-webkit-transform:scale(1);transform:scale(1)}}@keyframes reveal{to{-webkit-transform:scale(1);transform:scale(1)}}
+/*# sourceMappingURL=main.eee536ca.css.map*/
