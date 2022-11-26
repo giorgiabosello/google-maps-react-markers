@@ -5,6 +5,13 @@ body {
 	font-size: 1rem;
 }
 
+#root {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	min-height: 100vh;
+}
+
 button {
 	color: #fff;
 	background: #000;
@@ -19,6 +26,7 @@ button {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding: 10px;
 }
 
 .marker {

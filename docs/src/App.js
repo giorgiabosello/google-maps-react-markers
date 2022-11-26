@@ -1,5 +1,6 @@
 import GoogleMap from 'google-maps-react-markers'
 import { useEffect, useRef, useState } from 'react'
+import Info from './info'
 import mapOptions from './map-options.json'
 import Marker from './marker'
 import './style.css'
@@ -80,28 +81,13 @@ const App = () => {
 
 	return (
 		<>
-			{mapReady && (
-				<div className="container">
-					<div>
-						<div>Map is ready. See for logs in developer console.</div>
-						<div>Click UPDATE below to trigger markers coordinates change.</div>
-						<button onClick={updateCoordinates}>UPDATE</button>
-					</div>
-					<div>
-						<a href="https://github.com/giorgiabosello/google-maps-react-markers" style={{ display: 'block' }}>
-							<img
-								src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"
-								alt="Github repository"
-							/>
-						</a>
-					</div>
-				</div>
-			)}
+			{mapReady && <Info buttonAction={updateCoordinates} coordinates={currCoordinates} />}
 			<GoogleMap
+				apiKey=""
 				defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }}
 				defaultZoom={5}
 				options={mapOptions}
-				mapMinHeight="100vh"
+				mapMinHeight="600px"
 				onGoogleApiLoaded={onGoogleApiLoaded}
 				onChange={onMapChange}
 			>
