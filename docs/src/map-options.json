@@ -6,7 +6,7 @@
 	"rotateControl": true,
 	"scaleControl": false,
 	"streetViewControl": true,
-	"type": "roadmap",
+	"mapTypeId": "roadmap",
 	"zoomControl": true,
 	"styles": [
 		{
