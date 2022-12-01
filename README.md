@@ -94,7 +94,7 @@ const onMapChange = ({ bounds, zoom }) => {
     const ne = bounds.getNorthEast();
     const sw = bounds.getSouthWest();
     // useSupercluster accepts bounds in the form of [westLng, southLat, eastLng, northLat]
-    setMapBounds({ ...mapBounds, bounds: [sw.lng(), sw.lat(), ne.lng(), ne.lat()], zoom });
+    setMapBounds([sw.lng(), sw.lat(), ne.lng(), ne.lat()]);
 };
 ```
 
