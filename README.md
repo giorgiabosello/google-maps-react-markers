@@ -15,7 +15,7 @@ The library implements [Google Maps Custom Overlays](https://developers.google.c
 ## Install
 
 ```bash
-yarn add -D google-maps-react-markers
+yarn add google-maps-react-markers
 ```
 
 or
