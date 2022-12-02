@@ -48,6 +48,7 @@ const App = () => {
 	const [mapBounds, setMapBounds] = useState({})
 	const [usedCoordinates, setUsedCoordinates] = useState(0)
 	const [currCoordinates, setCurrCoordinates] = useState(coordinates[usedCoordinates])
+	const [lastClicked, setLastClicked] = useState(null)
 
 	/**
 	 * @description This function is called when the map is ready
@@ -60,17 +61,22 @@ const App = () => {
 		setMapReady(true)
 	}
 
-	const onMarkerClick = (markerId) => {
-		console.log('This is ->', markerId)
+	const onMarkerClick = ({ markerId, lat, lng }) => {
+		setLastClicked({ markerId, lat, lng })
 	}
 
 	const onMapChange = ({ bounds, zoom }) => {
 		const ne = bounds.getNorthEast()
 		const sw = bounds.getSouthWest()
-		// useSupercluster accepts bounds in the form of [westLng, southLat, eastLng, northLat]
+		/**
+		 * useSupercluster accepts bounds in the form of [westLng, southLat, eastLng, northLat]
+		 * const { clusters, supercluster } = useSupercluster({
+		 *	points: points,
+		 *	bounds: mapBounds.bounds,
+		 *	zoom: mapBounds.zoom,
+		 * })
+		 */
 		setMapBounds({ ...mapBounds, bounds: [sw.lng(), sw.lat(), ne.lng(), ne.lat()], zoom })
-
-		console.log('New bounds and zoom -> ', { bounds, zoom })
 	}
 
 	const updateCoordinates = () => setUsedCoordinates(!usedCoordinates ? 1 : 0)
@@ -81,7 +87,14 @@ const App = () => {
 
 	return (
 		<>
-			{mapReady && <Info buttonAction={updateCoordinates} coordinates={currCoordinates} />}
+			{mapReady && (
+				<Info
+					buttonAction={updateCoordinates}
+					coordinates={currCoordinates}
+					lastClicked={lastClicked}
+					mapBounds={mapBounds}
+				/>
+			)}
 			<GoogleMap
 				apiKey=""
 				defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }}

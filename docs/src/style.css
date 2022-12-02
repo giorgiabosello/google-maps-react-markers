@@ -2,7 +2,7 @@ body {
 	background-color: #191919;
 	color: #fff;
 	font-family: Roboto Mono, monospace;
-	font-size: 1rem;
+	font-size: 14px;
 }
 
 #root {
@@ -29,6 +29,25 @@ button {
 	padding: 10px;
 }
 
+.container h1, .container h2, .container h3 {
+	color: rgb(255, 255, 107);
+}
+
+.left {
+	display: flex;
+	align-items: flex-start;
+}
+
+.left > div:not(.info) {
+	padding-left: 25px;
+}
+
+.right a {
+	display: block;
+	padding: 10px;
+	background-color: #000;
+}
+
 .marker {
 	transform: scale(0);
 	animation: 400ms reveal forwards;
@@ -36,5 +55,18 @@ button {
 @keyframes reveal {
 	to {
 		transform: scale(1);
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.container {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.left {
+		flex-direction: column;
+	}
+	.left > div:not(.info) {
+		padding-left: 0;
 	}
 }

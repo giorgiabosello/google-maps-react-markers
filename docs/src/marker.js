@@ -6,9 +6,11 @@ const Marker = ({ className, lat, lng, markerId, onClick, ...props }) => {
 		<img
 			className={className}
 			src={markerPin}
+			// eslint-disable-next-line react/no-unknown-property
 			lat={lat}
+			// eslint-disable-next-line react/no-unknown-property
 			lng={lng}
-			onClick={() => (onClick ? onClick(markerId) : null)}
+			onClick={() => (onClick ? onClick({ markerId, lat, lng }) : null)}
 			style={{ cursor: 'pointer', fontSize: 40 }}
 			alt={markerId}
 			{...props}

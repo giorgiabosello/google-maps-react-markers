@@ -1,23 +1,45 @@
-import { array, func } from 'prop-types'
+import { array, func, number, shape, string } from 'prop-types'
 
-const Info = ({ buttonAction, coordinates }) => {
+const Info = ({ buttonAction, coordinates, lastClicked, mapBounds }) => {
 	return (
 		<div className="container">
-			<div>
-				<p>Map is ready. See for logs in developer console.</p>
-				<p>Click UPDATE below to trigger markers coordinates change.</p>
-				<button onClick={buttonAction}>UPDATE</button>
-				<div>
-					<p>Current coordinates:</p>
-					{coordinates?.map(({ lat, lng, name }, index) => (
-						<div key={index}>
-							{name} - {lat}, {lng}
-						</div>
-					))}
+			<div className="left">
+				<div className="info">
+					<p>Click UPDATE below to trigger markers coordinates change.</p>
+					<button onClick={buttonAction}>UPDATE</button>
+					<div>
+						<h3>Current markers:</h3>
+						{coordinates?.map(({ lat, lng, name }, index) => (
+							<div key={index}>
+								<p>{`${name} / lat: ${lat} / lng: ${lng}`}</p>
+							</div>
+						))}
+					</div>
 				</div>
+				{(mapBounds || lastClicked) && (
+					<div>
+						{mapBounds && (
+							<div className="bounds">
+								<h3>Map bounds</h3>
+								<p>Map bounds are used to calculate clusters.</p>
+								<div>
+									{mapBounds?.bounds?.map((bound, index) => (
+										<p key={index}>{bound}</p>
+									))}
+								</div>
+							</div>
+						)}
+						{lastClicked && (
+							<div className="last-clicked">
+								<h3>Last clicked</h3>
+								<p>{`${lastClicked.markerId} / lat: ${lastClicked.lat} / lng: ${lastClicked.lng}`}</p>
+							</div>
+						)}
+					</div>
+				)}
 			</div>
-			<div>
-				<a href="https://github.com/giorgiabosello/google-maps-react-markers" style={{ display: 'block' }}>
+			<div className="right">
+				<a href="https://github.com/giorgiabosello/google-maps-react-markers">
 					<img
 						src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"
 						alt="Github repository"
@@ -36,6 +58,15 @@ Info.defaultProps = {
 Info.propTypes = {
 	buttonAction: func,
 	coordinates: array,
+	lastClicked: shape({
+		lat: func,
+		lng: func,
+		markerId: string,
+	}),
+	mapBounds: shape({
+		bounds: array,
+		zoom: number,
+	}),
 }
 
 export default Info
