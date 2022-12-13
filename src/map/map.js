@@ -92,6 +92,7 @@ MapComponent.defaultProps = {
 	},
 	onGoogleApiLoaded: () => {},
 	onChange: () => {},
+	options: {},
 }
 
 MapComponent.propTypes = {
@@ -104,6 +105,7 @@ MapComponent.propTypes = {
 	defaultZoom: number.isRequired,
 	onGoogleApiLoaded: func,
 	onChange: func,
+	options: object,
 }
 
 export default MapComponent
