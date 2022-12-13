@@ -5,7 +5,7 @@ import MapMarkers from './markers'
 
 const EPS = 0.00001
 
-const MapComponent = ({ children, style, defaultCenter, defaultZoom, onGoogleApiLoaded, onChange, ...props }) => {
+const MapComponent = ({ children, style, defaultCenter, defaultZoom, onGoogleApiLoaded, onChange, options, ...props }) => {
 	const mapRef = useRef(null)
 	const prevBoundsRef = useRef(null)
 	const [map, setMap] = useState(null)
@@ -39,6 +39,7 @@ const MapComponent = ({ children, style, defaultCenter, defaultZoom, onGoogleApi
 				new window.google.maps.Map(mapRef.current, {
 					center: defaultCenter,
 					zoom: defaultZoom,
+					...options,
 					...props,
 				})
 			)
