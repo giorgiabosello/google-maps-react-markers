@@ -287,7 +287,6 @@ MapMarkers.propTypes = {
   maps: propTypes.object.isRequired
 };
 
-var _excluded = ["children", "style", "defaultCenter", "defaultZoom", "onGoogleApiLoaded", "onChange"];
 var EPS = 0.00001;
 var MapComponent = function MapComponent(_ref) {
   var children = _ref.children,
@@ -296,7 +295,7 @@ var MapComponent = function MapComponent(_ref) {
     defaultZoom = _ref.defaultZoom,
     onGoogleApiLoaded = _ref.onGoogleApiLoaded,
     onChange = _ref.onChange,
-    props = _objectWithoutPropertiesLoose(_ref, _excluded);
+    options = _ref.options;
   var mapRef = React.useRef(null);
   var prevBoundsRef = React.useRef(null);
   var _useState = React.useState(null),
@@ -331,10 +330,10 @@ var MapComponent = function MapComponent(_ref) {
       setMap(new window.google.maps.Map(mapRef.current, _extends({
         center: defaultCenter,
         zoom: defaultZoom
-      }, props)));
+      }, options)));
       setMaps(window.google.maps);
     }
-  }, [defaultCenter, defaultZoom, map, mapRef, props]);
+  }, [defaultCenter, defaultZoom, map, mapRef, options]);
   React.useEffect(function () {
     if (map) {
       if (!googleApiCalled) {
@@ -376,7 +375,8 @@ MapComponent.defaultProps = {
     position: 'absolute'
   },
   onGoogleApiLoaded: function onGoogleApiLoaded() {},
-  onChange: function onChange() {}
+  onChange: function onChange() {},
+  options: {}
 };
 MapComponent.propTypes = {
   children: propTypes.oneOfType([propTypes.arrayOf(propTypes.node), propTypes.node]),
@@ -384,10 +384,11 @@ MapComponent.propTypes = {
   defaultCenter: propTypes.object.isRequired,
   defaultZoom: propTypes.number.isRequired,
   onGoogleApiLoaded: propTypes.func,
-  onChange: propTypes.func
+  onChange: propTypes.func,
+  options: propTypes.object
 };
 
-var _excluded$1 = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps"];
+var _excluded = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps"];
 var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
   var apiKey = _ref.apiKey,
     libraries = _ref.libraries,
@@ -397,7 +398,7 @@ var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
     errorContent = _ref.errorContent,
     mapMinHeight = _ref.mapMinHeight,
     containerProps = _ref.containerProps,
-    props = _objectWithoutPropertiesLoose(_ref, _excluded$1);
+    props = _objectWithoutPropertiesLoose(_ref, _excluded);
   var status = useGoogleMaps({
     apiKey: apiKey,
     libraries: libraries

@@ -243,7 +243,7 @@ const MapComponent = ({
   defaultZoom,
   onGoogleApiLoaded,
   onChange,
-  ...props
+  options
 }) => {
   const mapRef = useRef(null);
   const prevBoundsRef = useRef(null);
@@ -273,11 +273,11 @@ const MapComponent = ({
       setMap(new window.google.maps.Map(mapRef.current, {
         center: defaultCenter,
         zoom: defaultZoom,
-        ...props
+        ...options
       }));
       setMaps(window.google.maps);
     }
-  }, [defaultCenter, defaultZoom, map, mapRef, props]);
+  }, [defaultCenter, defaultZoom, map, mapRef, options]);
   useEffect(() => {
     if (map) {
       if (!googleApiCalled) {
@@ -319,7 +319,8 @@ MapComponent.defaultProps = {
     position: 'absolute'
   },
   onGoogleApiLoaded: () => {},
-  onChange: () => {}
+  onChange: () => {},
+  options: {}
 };
 MapComponent.propTypes = {
   children: oneOfType([arrayOf(node), node]),
@@ -327,7 +328,8 @@ MapComponent.propTypes = {
   defaultCenter: object.isRequired,
   defaultZoom: number.isRequired,
   onGoogleApiLoaded: func,
-  onChange: func
+  onChange: func,
+  options: object
 };
 
 const GoogleMap = /*#__PURE__*/forwardRef(function GoogleMap({
