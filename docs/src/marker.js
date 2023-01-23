@@ -10,7 +10,7 @@ const Marker = ({ className, lat, lng, markerId, onClick, ...props }) => {
 			lat={lat}
 			// eslint-disable-next-line react/no-unknown-property
 			lng={lng}
-			onClick={() => (onClick ? onClick({ markerId, lat, lng }) : null)}
+			onClick={(e) => (onClick ? onClick(e, { markerId, lat, lng }) : null)}
 			style={{ cursor: 'pointer', fontSize: 40 }}
 			alt={markerId}
 			{...props}

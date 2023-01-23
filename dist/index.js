@@ -271,10 +271,13 @@ var MapMarkers = function MapMarkers(_ref) {
           lat: child.props.lat,
           lng: child.props.lng
         };
+        var zIndex = child.props.zIndex || undefined;
+
         return /*#__PURE__*/React__default.createElement(OverlayView, {
           position: latLng,
           map: map,
-          maps: maps
+          maps: maps,
+          zIndex: zIndex
         }, child);
       }
     });

@@ -3,12 +3,11 @@
 	"extends": [
 		"eslint:recommended",
 		"plugin:prettier/recommended",
-		"plugin:react/recommended",
 		"plugin:react-hooks/recommended",
 		"plugin:import/recommended",
 		"prettier"
 	],
-	"plugins": ["react", "react-hooks", "prettier", "typescript"],
+	"plugins": ["react-hooks", "prettier", "typescript", "jsx"],
 	"rules": {
 		"import/no-unresolved": 0,
 		"import/first": "error",
@@ -17,7 +16,8 @@
 		"react/react-in-jsx-scope": "off",
 		"react-hooks/rules-of-hooks": "error",
 		"react-hooks/exhaustive-deps": "warn",
-		"react/prop-types": "warn"
+		"react/prop-types": "warn",
+		"react/no-unknown-property": "warn"
 	},
 	"env": {
 		"es6": true,

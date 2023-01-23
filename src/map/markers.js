@@ -9,9 +9,11 @@ const MapMarkers = ({ children, map, maps }) => {
 		return Children.map(children, (child) => {
 			if (isValidElement(child)) {
 				const latLng = { lat: child.props.lat, lng: child.props.lng }
+				const zIndex = child.props.zIndex || undefined
+
 				// set the map prop on the child component
 				return (
-					<OverlayView position={latLng} map={map} maps={maps}>
+					<OverlayView position={latLng} map={map} maps={maps} zIndex={zIndex}>
 						{child}
 					</OverlayView>
 				)

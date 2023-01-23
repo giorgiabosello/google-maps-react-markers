@@ -48,7 +48,7 @@ const App = () => {
 	const [mapBounds, setMapBounds] = useState({})
 	const [usedCoordinates, setUsedCoordinates] = useState(0)
 	const [currCoordinates, setCurrCoordinates] = useState(coordinates[usedCoordinates])
-	const [lastClicked, setLastClicked] = useState(null)
+	const [highlighted, setHighlighted] = useState(null)
 
 	/**
 	 * @description This function is called when the map is ready
@@ -61,8 +61,9 @@ const App = () => {
 		setMapReady(true)
 	}
 
-	const onMarkerClick = ({ markerId, lat, lng }) => {
-		setLastClicked({ markerId, lat, lng })
+	// eslint-disable-next-line no-unused-vars
+	const onMarkerClick = (e, { markerId, lat, lng }) => {
+		setHighlighted(markerId)
 	}
 
 	const onMapChange = ({ bounds, zoom }) => {
@@ -77,6 +78,7 @@ const App = () => {
 		 * })
 		 */
 		setMapBounds({ ...mapBounds, bounds: [sw.lng(), sw.lat(), ne.lng(), ne.lat()], zoom })
+		setHighlighted(null)
 	}
 
 	const updateCoordinates = () => setUsedCoordinates(!usedCoordinates ? 1 : 0)
@@ -86,29 +88,32 @@ const App = () => {
 	}, [usedCoordinates])
 
 	return (
-		<>
-			{mapReady && (
-				<Info
-					buttonAction={updateCoordinates}
-					coordinates={currCoordinates}
-					lastClicked={lastClicked}
-					mapBounds={mapBounds}
-				/>
-			)}
-			<GoogleMap
-				apiKey=""
-				defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }}
-				defaultZoom={5}
-				options={mapOptions}
-				mapMinHeight="600px"
-				onGoogleApiLoaded={onGoogleApiLoaded}
-				onChange={onMapChange}
-			>
-				{currCoordinates.map(({ lat, lng, name }, index) => (
-					<Marker key={index} lat={lat} lng={lng} markerId={name} onClick={onMarkerClick} className="marker" />
-				))}
-			</GoogleMap>
-		</>
+		<main>
+			{mapReady && <Info buttonAction={updateCoordinates} coordinates={currCoordinates} mapBounds={mapBounds} />}
+			<div className="map-container">
+				<GoogleMap
+					apiKey=""
+					defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }}
+					defaultZoom={5}
+					options={mapOptions}
+					mapMinHeight="600px"
+					onGoogleApiLoaded={onGoogleApiLoaded}
+					onChange={onMapChange}
+				>
+					{currCoordinates.map(({ lat, lng, name }, index) => (
+						<Marker key={index} lat={lat} lng={lng} markerId={name} onClick={onMarkerClick} className="marker" />
+					))}
+				</GoogleMap>
+				{highlighted && (
+					<div className="highlighted">
+						{highlighted}{' '}
+						<button type="button" onClick={() => setHighlighted(null)}>
+							X
+						</button>
+					</div>
+				)}
+			</div>
+		</main>
 	)
 }
 

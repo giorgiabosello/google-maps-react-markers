@@ -1,6 +1,6 @@
-import { array, func, number, shape, string } from 'prop-types'
+import { array, func, number, shape } from 'prop-types'
 
-const Info = ({ buttonAction, coordinates, lastClicked, mapBounds }) => {
+const Info = ({ buttonAction, coordinates, mapBounds }) => {
 	return (
 		<div className="container">
 			<div className="left">
@@ -16,23 +16,18 @@ const Info = ({ buttonAction, coordinates, lastClicked, mapBounds }) => {
 						))}
 					</div>
 				</div>
-				{(mapBounds || lastClicked) && (
+				{mapBounds && (
 					<div>
 						{mapBounds && (
 							<div className="bounds">
 								<h3>Map bounds</h3>
 								<p>Map bounds are used to calculate clusters.</p>
 								<div>
-									{mapBounds?.bounds?.map((bound, index) => (
-										<p key={index}>{bound}</p>
-									))}
+									{mapBounds?.bounds?.map((bound, index) => {
+										const name = ['SW lng', 'SW lat', 'NE lng', 'NE lat'][index]
+										return <p key={index}>{`${name}: ${bound}`}</p>
+									})}
 								</div>
-							</div>
-						)}
-						{lastClicked && (
-							<div className="last-clicked">
-								<h3>Last clicked</h3>
-								<p>{`${lastClicked.markerId} / lat: ${lastClicked.lat} / lng: ${lastClicked.lng}`}</p>
 							</div>
 						)}
 					</div>
@@ -58,11 +53,6 @@ Info.defaultProps = {
 Info.propTypes = {
 	buttonAction: func,
 	coordinates: array,
-	lastClicked: shape({
-		lat: func,
-		lng: func,
-		markerId: string,
-	}),
 	mapBounds: shape({
 		bounds: array,
 		zoom: number,
