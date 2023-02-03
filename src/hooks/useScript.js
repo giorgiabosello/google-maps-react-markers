@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * @description Hook to load external script.
@@ -30,13 +30,20 @@ export const useScript = (
 		attributes: {},
 		callbacks: { onLoadCallback: null, onErrorCallback: null },
 		elementIdToAppend: null,
-	}
+	},
+	forcedStatus = undefined
 ) => {
 	// Keep track of script status ("idle", "loading", "ready", "error")
 	const [status, setStatus] = useState(script.src ? 'loading' : 'idle')
 
 	useEffect(
 		() => {
+			if (forcedStatus) {
+				setStatus(forcedStatus)
+				return () => {
+					// do nothing
+				}
+			}
 			// Allow falsy src value if waiting on other data needed for
 			// constructing the script URL passed to this hook.
 			if (!script.src) {
@@ -110,8 +117,10 @@ export const useScript = (
 				}
 			}
 		},
+
 		// Re-run useEffect if script changes
-		[script]
+		[script, forcedStatus, status]
 	)
+
 	return status
 }

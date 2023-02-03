@@ -1,28 +1,40 @@
-import { arrayOf, node, number, object, oneOfType, string } from 'prop-types'
+import { arrayOf, bool, node, number, object, oneOf, oneOfType, string } from 'prop-types'
 import React, { forwardRef } from 'react'
 import { useGoogleMaps } from './hooks/useGoogleMaps'
 import MapComponent from './map/map'
 
 const GoogleMap = forwardRef(function GoogleMap(
-	{ apiKey, libraries, children, loadingContent, idleContent, errorContent, mapMinHeight, containerProps, ...props },
+	{
+		apiKey,
+		libraries,
+		children,
+		loadingContent,
+		idleContent,
+		errorContent,
+		mapMinHeight,
+		containerProps,
+		loadScriptExternally,
+		status,
+		...props
+	},
 	ref
 ) {
-	const status = useGoogleMaps({ apiKey, libraries })
+	const renderers = {
+		ready: <MapComponent {...props}>{children}</MapComponent>,
+		loading: loadingContent,
+		idle: idleContent,
+		error: errorContent,
+	}
+
+	const _status = useGoogleMaps({ apiKey, libraries, loadScriptExternally, status })
+
 	return (
 		<div
 			style={{ height: '100%', width: '100%', overflow: 'hidden', position: 'relative', minHeight: mapMinHeight }}
 			ref={ref}
 			{...containerProps}
 		>
-			{status === 'ready' ? (
-				<MapComponent {...props}>{children}</MapComponent>
-			) : status === 'loading' ? (
-				loadingContent
-			) : status === 'idle' ? (
-				idleContent
-			) : status === 'error' ? (
-				errorContent
-			) : null}
+			{renderers[_status] || null}
 		</div>
 	)
 })
@@ -35,6 +47,8 @@ GoogleMap.defaultProps = {
 	mapMinHeight: 'unset',
 	apiKey: '',
 	libraries: ['places', 'geometry'],
+	loadScriptExternally: false,
+	status: 'idle',
 }
 
 GoogleMap.propTypes = {
@@ -63,6 +77,18 @@ GoogleMap.propTypes = {
 	 * Props to be passed to the container div.
 	 */
 	containerProps: object,
+	/**
+	 * Whether to load the Google Maps script externally.
+	 * If true, the status prop will be used to control the loading of the script.
+	 * If false, the script will be loaded automatically.
+	 * @default false
+	 */
+	loadScriptExternally: bool,
+	/**
+	 * The forced status of the Google Maps script.
+	 * @default 'idle'
+	 */
+	status: oneOf(['idle', 'loading', 'ready', 'error']),
 }
 
 export default GoogleMap

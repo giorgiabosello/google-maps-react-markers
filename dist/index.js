@@ -44,7 +44,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
   return target;
 }
 
-var useScript = function useScript(script) {
+var useScript = function useScript(script, forcedStatus) {
   if (script === void 0) {
     script = {
       src: '',
@@ -56,11 +56,19 @@ var useScript = function useScript(script) {
       elementIdToAppend: null
     };
   }
+  if (forcedStatus === void 0) {
+    forcedStatus = undefined;
+  }
   var _useState = React.useState(script.src ? 'loading' : 'idle'),
     status = _useState[0],
     setStatus = _useState[1];
   React.useEffect(function () {
     var _script$callbacks, _script$callbacks2;
+    if (forcedStatus) {
+      setStatus(forcedStatus);
+      return function () {
+      };
+    }
     if (!script.src) {
       setStatus('idle');
       return;
@@ -113,26 +121,30 @@ var useScript = function useScript(script) {
       }
     };
   },
-  [script]);
+  [script, forcedStatus, status]);
   return status;
 };
 
 var useGoogleMaps = function useGoogleMaps(_ref) {
   var apiKey = _ref.apiKey,
     _ref$libraries = _ref.libraries,
-    libraries = _ref$libraries === void 0 ? [] : _ref$libraries;
+    libraries = _ref$libraries === void 0 ? [] : _ref$libraries,
+    _ref$loadScriptExtern = _ref.loadScriptExternally,
+    loadScriptExternally = _ref$loadScriptExtern === void 0 ? false : _ref$loadScriptExtern,
+    _ref$status = _ref.status,
+    status = _ref$status === void 0 ? 'idle' : _ref$status;
   var script = apiKey ? {
-    src: "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(",")),
+    src: "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(',')),
     attributes: {
-      id: "googleMapsApi"
+      id: 'googleMapsApi'
     }
   } : {
-    src: "https://maps.googleapis.com/maps/api/js?libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(",")),
+    src: "https://maps.googleapis.com/maps/api/js?libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(',')),
     attributes: {
-      id: "googleMapsApi"
+      id: 'googleMapsApi'
     }
   };
-  return useScript(script);
+  return useScript(script, loadScriptExternally ? status : undefined);
 };
 
 var isArraysEqualEps = function isArraysEqualEps(arrayA, arrayB, eps) {
@@ -391,7 +403,7 @@ MapComponent.propTypes = {
   options: propTypes.object
 };
 
-var _excluded = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps"];
+var _excluded = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps", "loadScriptExternally", "status"];
 var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
   var apiKey = _ref.apiKey,
     libraries = _ref.libraries,
@@ -401,10 +413,20 @@ var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
     errorContent = _ref.errorContent,
     mapMinHeight = _ref.mapMinHeight,
     containerProps = _ref.containerProps,
+    loadScriptExternally = _ref.loadScriptExternally,
+    status = _ref.status,
     props = _objectWithoutPropertiesLoose(_ref, _excluded);
-  var status = useGoogleMaps({
+  var renderers = {
+    ready: /*#__PURE__*/React__default.createElement(MapComponent, props, children),
+    loading: loadingContent,
+    idle: idleContent,
+    error: errorContent
+  };
+  var _status = useGoogleMaps({
     apiKey: apiKey,
-    libraries: libraries
+    libraries: libraries,
+    loadScriptExternally: loadScriptExternally,
+    status: status
   });
   return /*#__PURE__*/React__default.createElement("div", _extends({
     style: {
@@ -415,7 +437,7 @@ var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
       minHeight: mapMinHeight
     },
     ref: ref
-  }, containerProps), status === 'ready' ? /*#__PURE__*/React__default.createElement(MapComponent, props, children) : status === 'loading' ? loadingContent : status === 'idle' ? idleContent : status === 'error' ? errorContent : null);
+  }, containerProps), renderers[_status] || null);
 });
 GoogleMap.defaultProps = _extends({}, MapComponent.defaultProps, {
   loadingContent: 'Google Maps is loading',
@@ -423,7 +445,9 @@ GoogleMap.defaultProps = _extends({}, MapComponent.defaultProps, {
   errorContent: 'Google Maps is on error',
   mapMinHeight: 'unset',
   apiKey: '',
-  libraries: ['places', 'geometry']
+  libraries: ['places', 'geometry'],
+  loadScriptExternally: false,
+  status: 'idle'
 });
 GoogleMap.propTypes = _extends({}, MapComponent.propTypes, {
   children: propTypes.oneOfType([propTypes.node, propTypes.arrayOf(propTypes.node)]),
@@ -431,7 +455,9 @@ GoogleMap.propTypes = _extends({}, MapComponent.propTypes, {
   idleContent: propTypes.node,
   errorContent: propTypes.node,
   mapMinHeight: propTypes.oneOfType([propTypes.number, propTypes.string]),
-  containerProps: propTypes.object
+  containerProps: propTypes.object,
+  loadScriptExternally: propTypes.bool,
+  status: propTypes.oneOf(['idle', 'loading', 'ready', 'error'])
 });
 
 module.exports = GoogleMap;
