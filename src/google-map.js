@@ -1,4 +1,4 @@
-import { arrayOf, bool, node, number, object, oneOf, oneOfType, string } from 'prop-types'
+import { arrayOf, bool, func, node, number, object, oneOf, oneOfType, string } from 'prop-types'
 import React, { forwardRef } from 'react'
 import { useGoogleMaps } from './hooks/useGoogleMaps'
 import MapComponent from './map/map'
@@ -15,6 +15,7 @@ const GoogleMap = forwardRef(function GoogleMap(
 		containerProps,
 		loadScriptExternally,
 		status,
+		scriptCallback,
 		...props
 	},
 	ref
@@ -26,7 +27,7 @@ const GoogleMap = forwardRef(function GoogleMap(
 		error: errorContent,
 	}
 
-	const _status = useGoogleMaps({ apiKey, libraries, loadScriptExternally, status })
+	const _status = useGoogleMaps({ apiKey, libraries, loadScriptExternally, status, callback: scriptCallback })
 
 	return (
 		<div
@@ -49,6 +50,7 @@ GoogleMap.defaultProps = {
 	libraries: ['places', 'geometry'],
 	loadScriptExternally: false,
 	status: 'idle',
+	scriptCallback: () => {},
 }
 
 GoogleMap.propTypes = {
@@ -89,6 +91,11 @@ GoogleMap.propTypes = {
 	 * @default 'idle'
 	 */
 	status: oneOf(['idle', 'loading', 'ready', 'error']),
+	/**
+	 * The callback function to pass to the Google Maps script.
+	 * @default () => {}
+	 */
+	scriptCallback: func,
 }
 
 export default GoogleMap

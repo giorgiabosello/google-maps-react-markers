@@ -132,14 +132,16 @@ var useGoogleMaps = function useGoogleMaps(_ref) {
     _ref$loadScriptExtern = _ref.loadScriptExternally,
     loadScriptExternally = _ref$loadScriptExtern === void 0 ? false : _ref$loadScriptExtern,
     _ref$status = _ref.status,
-    status = _ref$status === void 0 ? 'idle' : _ref$status;
+    status = _ref$status === void 0 ? 'idle' : _ref$status,
+    callback = _ref.callback;
+  if (window) window.googleMapsCallback = callback;
   var script = apiKey ? {
-    src: "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(',')),
+    src: "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "callback=googleMapsCallback&&libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(',')),
     attributes: {
       id: 'googleMapsApi'
     }
   } : {
-    src: "https://maps.googleapis.com/maps/api/js?libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(',')),
+    src: "https://maps.googleapis.com/maps/api/js?callback=googleMapsCallback&libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(',')),
     attributes: {
       id: 'googleMapsApi'
     }
@@ -403,7 +405,7 @@ MapComponent.propTypes = {
   options: propTypes.object
 };
 
-var _excluded = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps", "loadScriptExternally", "status"];
+var _excluded = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps", "loadScriptExternally", "status", "scriptCallback"];
 var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
   var apiKey = _ref.apiKey,
     libraries = _ref.libraries,
@@ -415,6 +417,7 @@ var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
     containerProps = _ref.containerProps,
     loadScriptExternally = _ref.loadScriptExternally,
     status = _ref.status,
+    scriptCallback = _ref.scriptCallback,
     props = _objectWithoutPropertiesLoose(_ref, _excluded);
   var renderers = {
     ready: /*#__PURE__*/React__default.createElement(MapComponent, props, children),
@@ -426,7 +429,8 @@ var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
     apiKey: apiKey,
     libraries: libraries,
     loadScriptExternally: loadScriptExternally,
-    status: status
+    status: status,
+    callback: scriptCallback
   });
   return /*#__PURE__*/React__default.createElement("div", _extends({
     style: {
@@ -447,7 +451,8 @@ GoogleMap.defaultProps = _extends({}, MapComponent.defaultProps, {
   apiKey: '',
   libraries: ['places', 'geometry'],
   loadScriptExternally: false,
-  status: 'idle'
+  status: 'idle',
+  scriptCallback: function scriptCallback() {}
 });
 GoogleMap.propTypes = _extends({}, MapComponent.propTypes, {
   children: propTypes.oneOfType([propTypes.node, propTypes.arrayOf(propTypes.node)]),
@@ -457,7 +462,8 @@ GoogleMap.propTypes = _extends({}, MapComponent.propTypes, {
   mapMinHeight: propTypes.oneOfType([propTypes.number, propTypes.string]),
   containerProps: propTypes.object,
   loadScriptExternally: propTypes.bool,
-  status: propTypes.oneOf(['idle', 'loading', 'ready', 'error'])
+  status: propTypes.oneOf(['idle', 'loading', 'ready', 'error']),
+  scriptCallback: propTypes.func
 });
 
 module.exports = GoogleMap;

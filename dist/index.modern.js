@@ -75,15 +75,17 @@ const useGoogleMaps = ({
   apiKey,
   libraries: _libraries = [],
   loadScriptExternally: _loadScriptExternally = false,
-  status: _status = 'idle'
+  status: _status = 'idle',
+  callback
 }) => {
+  if (window) window.googleMapsCallback = callback;
   const script = apiKey ? {
-    src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=${_libraries === null || _libraries === void 0 ? void 0 : _libraries.join(',')}`,
+    src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}callback=googleMapsCallback&&libraries=${_libraries === null || _libraries === void 0 ? void 0 : _libraries.join(',')}`,
     attributes: {
       id: 'googleMapsApi'
     }
   } : {
-    src: `https://maps.googleapis.com/maps/api/js?libraries=${_libraries === null || _libraries === void 0 ? void 0 : _libraries.join(',')}`,
+    src: `https://maps.googleapis.com/maps/api/js?callback=googleMapsCallback&libraries=${_libraries === null || _libraries === void 0 ? void 0 : _libraries.join(',')}`,
     attributes: {
       id: 'googleMapsApi'
     }
@@ -353,6 +355,7 @@ const GoogleMap = /*#__PURE__*/forwardRef(function GoogleMap({
   containerProps,
   loadScriptExternally,
   status,
+  scriptCallback,
   ...props
 }, ref) {
   const renderers = {
@@ -365,7 +368,8 @@ const GoogleMap = /*#__PURE__*/forwardRef(function GoogleMap({
     apiKey,
     libraries,
     loadScriptExternally,
-    status
+    status,
+    callback: scriptCallback
   });
   return /*#__PURE__*/React.createElement("div", Object.assign({
     style: {
@@ -387,7 +391,8 @@ GoogleMap.defaultProps = {
   apiKey: '',
   libraries: ['places', 'geometry'],
   loadScriptExternally: false,
-  status: 'idle'
+  status: 'idle',
+  scriptCallback: () => {}
 };
 GoogleMap.propTypes = {
   ...MapComponent.propTypes,
@@ -398,7 +403,8 @@ GoogleMap.propTypes = {
   mapMinHeight: oneOfType([number, string]),
   containerProps: object,
   loadScriptExternally: bool,
-  status: oneOf(['idle', 'loading', 'ready', 'error'])
+  status: oneOf(['idle', 'loading', 'ready', 'error']),
+  scriptCallback: func
 };
 
 export default GoogleMap;
