@@ -118,6 +118,7 @@ export default App
 | errorContent         | node     | no       | `'Google Maps is on error'` | Content to show when the map has an error                                                                                                               |
 | mapMinHeight         | string   | no       | `'unset'`                   | Min height of the map                                                                                                                                   |
 | containerProps       | object   | no       | `{}`                        | Props for the div container of the map                                                                                                                  |
+| scriptCallback       | function | no       | `() => {}`                  | window global callback passed to the Google Script.                                                                                                     |
 
 ## 📍 Clustering
 
