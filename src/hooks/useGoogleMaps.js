@@ -8,7 +8,7 @@ export const useGoogleMaps = ({ apiKey, libraries = [], loadScriptExternally = f
 	if (window) window.googleMapsCallback = callback
 	const script = apiKey
 		? {
-				src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}callback=googleMapsCallback&&libraries=${libraries?.join(
+				src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=googleMapsCallback&libraries=${libraries?.join(
 					','
 				)}`,
 				attributes: { id: 'googleMapsApi' },

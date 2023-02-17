@@ -80,7 +80,7 @@ const useGoogleMaps = ({
 }) => {
   if (window) window.googleMapsCallback = callback;
   const script = apiKey ? {
-    src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}callback=googleMapsCallback&&libraries=${_libraries === null || _libraries === void 0 ? void 0 : _libraries.join(',')}`,
+    src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=googleMapsCallback&libraries=${_libraries === null || _libraries === void 0 ? void 0 : _libraries.join(',')}`,
     attributes: {
       id: 'googleMapsApi'
     }
