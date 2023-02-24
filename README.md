@@ -1,19 +1,19 @@
-<h1 align="center">google-maps-react-markers</h1>
+<h1 align="center">Google Maps React Markers</h1>
 
 <p align="center">
 <a href="https://www.npmjs.com/package/google-maps-react-markers" target="_blank">
-<img src="https://img.shields.io/npm/v/google-maps-react-markers.svg?style=flat-square" alt="NPM" />
+<img src="https://img.shields.io/npm/v/google-maps-react-markers.svg?style=for-the-badge&labelColor=000000" alt="NPM" />
 </a>
 <a href="https://npm-stat.com/charts.html?package=google-maps-react-markers" target="_blank">
-<img src="https://img.shields.io/npm/dt/google-maps-react-markers.svg?style=flat-square" alt="NPM total downloads" title="last year">
+<img src="https://img.shields.io/npm/dt/google-maps-react-markers.svg?style=for-the-badge&labelColor=000000" alt="NPM total downloads" title="last year">
 </a>
-<img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square" alt="Maintained" />
+<img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge&labelColor=000000" alt="Maintained" />
 <a href="https://github.com/giorgiabosello/google-maps-react-markers/blob/master/LICENCE.md" target="_blank">
-<img src="https://img.shields.io/github/license/giorgiabosello/google-maps-react-markers?style=flat-square" alt="GitHub license: MIT" />
+<img src="https://img.shields.io/github/license/giorgiabosello/google-maps-react-markers?style=for-the-badge&labelColor=000000" alt="GitHub license: MIT" />
 </a>
-<img src="https://img.shields.io/github/stars/giorgiabosello/google-maps-react-markers?style=flat-square" alt="GitHub stars" />
+<img src="https://img.shields.io/github/stars/giorgiabosello/google-maps-react-markers?style=for-the-badge&labelColor=000000" alt="GitHub stars" />
 <a href="https://github.com/giorgiabosello/google-maps-react-markers/issues" target="_blank">
-<img src="https://img.shields.io/github/issues/giorgiabosello/google-maps-react-markers?style=flat-square" alt="GitHub open issues" />
+<img src="https://img.shields.io/github/issues/giorgiabosello/google-maps-react-markers?style=for-the-badge&labelColor=000000" alt="GitHub open issues" />
 </a>
 </p>
 
@@ -30,12 +30,12 @@ The library implements [Google Maps Custom Overlays](https://developers.google.c
 ## 🚀 Demo
 
 <a href="https://giorgiabosello.github.io/google-maps-react-markers/" target="blank">
-<img src="https://img.shields.io/website?url=https%3A%2F%2Fgiorgiabosello.github.io%2Fgoogle-maps-react-markers&logo=github&style=flat-square" />
+<img src="https://img.shields.io/website?url=https%3A%2F%2Fgiorgiabosello.github.io%2Fgoogle-maps-react-markers&logo=github&style=for-the-badge&labelColor=000000" />
 </a>
 
 See it in action [here](https://giorgiabosello.github.io/google-maps-react-markers/) _(API KEY not provided)_.
 
-Demo source code is available [here](https://github.com/giorgiabosello/google-maps-react-markers/tree/master/docs/src)
+Demo source code is available [here](https://github.com/giorgiabosello/google-maps-react-markers/tree/master/docs/src).
 
 ## 🛠 Install
 
@@ -103,7 +103,7 @@ export default App
 
 | Prop                 | Type     | Required | Default                     | Description                                                                                                                                             |
 | -------------------- | -------- | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| apiKey               | string   | **yes**  | `''`                        | Api Key to load Google Maps                                                                                                                             |
+| apiKey               | string   | **yes**  | `''`                        | API Key to load Google Maps                                                                                                                             |
 | defaultCenter        | object   | **yes**  | `{ lat: 0, lng: 0 }`        | Default center of the map                                                                                                                               |
 | defaultZoom          | number   | **yes**  | `1-20`                      | Default zoom of the map                                                                                                                                 |
 | libraries            | array    | no       | `['places', 'geometry']`    | Libraries to load                                                                                                                                       |
@@ -112,13 +112,13 @@ export default App
 | onChange             | function | no       | `() => {}`                  | Callback when the map has changed                                                                                                                       |
 | children             | node     | no       | `null`                      | Markers of the map                                                                                                                                      |
 | loadScriptExternally | bool     | no       | `false`                     | Whether to load the Google Maps script externally.<br>If `true`, the `status` prop is required and it will be used to control the loading of the script |
-| status               | string   | no       | `idle`                      | The forced status of the Google Maps script. Depends on `loadScriptExternally`.<br>It can be one of `idle`, `loading`, `ready`, `error`.                |
+| status               | string   | no       | `idle`                      | The forced status of the Google Maps script. Depends on `loadScriptExternally`.<br>It can be one of `idle`, `loading`, `ready`, `error`                 |
 | loadingContent       | node     | no       | `'Google Maps is loading'`  | Content to show while the map is loading                                                                                                                |
 | idleContent          | node     | no       | `'Google Maps is on idle'`  | Content to show when the map is idle                                                                                                                    |
 | errorContent         | node     | no       | `'Google Maps is on error'` | Content to show when the map has an error                                                                                                               |
 | mapMinHeight         | string   | no       | `'unset'`                   | Min height of the map                                                                                                                                   |
 | containerProps       | object   | no       | `{}`                        | Props for the div container of the map                                                                                                                  |
-| scriptCallback       | function | no       | `() => {}`                  | window global callback passed to the Google Script.                                                                                                     |
+| scriptCallback       | function | no       | `() => {}`                  | window global callback passed to the Google Script                                                                                                      |
 
 ## 📍 Clustering
 
