@@ -8,18 +8,18 @@ body:
     - type: checkboxes
       attributes:
           label: Verify latest release
-          description: "Verify that your issue reproduces in the latest release before opening a new issue. https://img.shields.io/npm/v/google-maps-react-markers.svg?style=for-the-badge&labelColor=000000"
+          description: "Verify that your issue reproduces in the [latest release](https://github.com/giorgiabosello/google-maps-react-markers/releases) before opening a new issue."
           options:
               - label: I verified that the issue exists in the latest release
                 required: true
     - type: dropdown
       attributes:
-        label: I know how to solve the bug
-        description: If you don't know how to solve the bug, the GitHub repository or the CodeSandbox example is required.
-        multiple: false
-        options:
-          - "I know how to solve the bug"
-          - "I don't know how to solve the bug and I will provide an example."
+          label: I know how to solve the bug
+          description: If you don't know how to solve the bug, the GitHub repository or the CodeSandbox example is required.
+          multiple: false
+          options:
+              - "I know how to solve the bug"
+              - "I don't know how to solve the bug and I will provide an example."
     - type: input
       attributes:
           label: Link to the code that reproduces this issue
