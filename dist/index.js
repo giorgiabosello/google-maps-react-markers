@@ -134,7 +134,7 @@ var useGoogleMaps = function useGoogleMaps(_ref) {
     _ref$status = _ref.status,
     status = _ref$status === void 0 ? 'idle' : _ref$status,
     callback = _ref.callback;
-  if (window) window.googleMapsCallback = callback;
+  if (typeof window !== "undefined") window.googleMapsCallback = callback;
   var script = apiKey ? {
     src: "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&callback=googleMapsCallback&libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(',')),
     attributes: {
