@@ -66,8 +66,7 @@ var useScript = function useScript(script, forcedStatus) {
     var _script$callbacks, _script$callbacks2;
     if (forcedStatus) {
       setStatus(forcedStatus);
-      return function () {
-      };
+      return function () {};
     }
     if (!script.src) {
       setStatus('idle');
@@ -120,8 +119,7 @@ var useScript = function useScript(script, forcedStatus) {
         scriptToAdd.removeEventListener('error', setStateFromEvent);
       }
     };
-  },
-  [script, forcedStatus, status]);
+  }, [script, forcedStatus, status]);
   return status;
 };
 
@@ -204,7 +202,6 @@ var createOverlay = function createOverlay(_ref) {
       _this.position = position;
       return _this;
     }
-
     return Overlay;
   }(maps.OverlayView);
   return new Overlay(container, pane, position);
@@ -240,7 +237,6 @@ var OverlayView = function OverlayView(_ref) {
       maps: maps
     });
   }, [container, maps, pane, position]);
-
   var childrenProps = useMemoCompare(children === null || children === void 0 ? void 0 : children.props, function (prev, next) {
     return prev && prev.lat === next.lat && prev.lng === next.lng;
   });
@@ -252,7 +248,6 @@ var OverlayView = function OverlayView(_ref) {
       };
     }
   }, [map, childrenProps]);
-
   React.useEffect(function () {
     container.style.zIndex = "" + zIndex;
   }, [zIndex, container]);
@@ -286,7 +281,6 @@ var MapMarkers = function MapMarkers(_ref) {
           lng: child.props.lng
         };
         var zIndex = child.props.zIndex || undefined;
-
         return /*#__PURE__*/React__default.createElement(OverlayView, {
           position: latLng,
           map: map,

@@ -1,6 +1,6 @@
 {
 	"name": "google-maps-react-markers",
-	"version": "1.1.5",
+	"version": "1.1.6",
 	"description": "Google Maps library with markers as react components",
 	"author": "Giorgia Bosello",
 	"license": "MIT",
@@ -28,7 +28,7 @@
 	},
 	"scripts": {
 		"build": "microbundle-crl --no-compress --format modern,cjs",
-		"start": "microbundle-crl watch --no-compress --format modern,cjs",
+		"dev": "microbundle-crl watch --no-compress --format modern,cjs",
 		"prepare": "run-s build",
 		"test": "run-s test:unit test:lint test:build",
 		"test:build": "run-s build",
