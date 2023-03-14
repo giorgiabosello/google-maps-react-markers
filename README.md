@@ -15,6 +15,9 @@
 <a href="https://github.com/giorgiabosello/google-maps-react-markers/issues" target="_blank">
 <img src="https://img.shields.io/github/issues/giorgiabosello/google-maps-react-markers?style=for-the-badge&labelColor=000000" alt="GitHub open issues" />
 </a>
+<a href="https://makeapullrequest.com/">
+<img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge&labelColor=000000" alt="PRs welcome" />
+</a>
 </p>
 
 Google Maps library that accepts markers as react components and works with React 18+.
@@ -139,6 +142,24 @@ const onMapChange = ({ bounds, zoom }) => {
   setMapBounds({ ...mapBounds, bounds: [sw.lng(), sw.lat(), ne.lng(), ne.lat()], zoom })
 }
 ```
+
+## 👥 Contributing
+
+To run the project locally, clone the repo and run:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+```bash
+# in another tab
+cd docs
+pnpm install
+pnpm dev
+```
+
+Do your changes to `src/` or `docs/src` directory, commits all files (ones in `dist` too) and open a PR.
 
 ## 💻 Built with
 
