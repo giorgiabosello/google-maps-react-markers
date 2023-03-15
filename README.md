@@ -148,15 +148,15 @@ const onMapChange = ({ bounds, zoom }) => {
 To run the project locally, clone the repo and run:
 
 ```bash
-pnpm install
-pnpm dev
+yarn install
+yarn dev
 ```
 
 ```bash
 # in another tab
 cd docs
-pnpm install
-pnpm dev
+yarn install
+yarn dev
 ```
 
 Do your changes to `src/` or `docs/src` directory, commits all files (ones in `dist` too) and open a PR.
