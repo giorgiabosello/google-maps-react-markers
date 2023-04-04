@@ -1,6 +1,6 @@
 {
 	"name": "google-maps-react-markers",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "Google Maps library with markers as react components",
 	"author": "Giorgia Bosello",
 	"license": "MIT",
@@ -44,20 +44,19 @@
 		"react-dom": "^18.0.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.20.12",
-		"@babel/eslint-parser": "^7.19.1",
-		"@babel/preset-env": "^7.20.2",
+		"@babel/core": "^7.21.4",
+		"@babel/eslint-parser": "^7.21.3",
+		"@babel/preset-env": "^7.21.4",
 		"@babel/preset-react": "^7.18.6",
-		"babel-eslint": "^10.0.3",
-		"cross-env": "^7.0.2",
-		"eslint": "^8.33.0",
-		"eslint-config-prettier": "^8.6.0",
+		"cross-env": "^7.0.3",
+		"eslint": "^8.37.0",
+		"eslint-config-prettier": "^8.8.0",
 		"eslint-config-standard": "^17.0.0",
 		"eslint-config-standard-react": "^13.0.0",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-jsx": "^0.1.0",
-		"eslint-plugin-n": "^15.6.1",
-		"eslint-plugin-node": "^11.0.0",
+		"eslint-plugin-n": "^15.7.0",
+		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-promise": "^6.1.1",
 		"eslint-plugin-react": "^7.32.2",
@@ -65,20 +64,20 @@
 		"eslint-plugin-standard": "^5.0.0",
 		"eslint-plugin-typescript": "^0.14.0",
 		"gh-pages": "^5.0.0",
-		"microbundle-crl": "^0.13.10",
+		"microbundle-crl": "^0.13.11",
 		"npm-run-all": "^4.1.5",
-		"prettier": "^2.8.3",
+		"prettier": "^2.8.7",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-scripts": "^5.0.1",
-		"typescript": "^5.0.2"
+		"typescript": "^5.0.3"
 	},
 	"files": [
 		"dist"
 	],
 	"dependencies": {
-		"@babel/plugin-syntax-flow": "^7.18.6",
-		"@babel/plugin-transform-react-jsx": "^7.20.13",
+		"@babel/plugin-syntax-flow": "^7.21.4",
+		"@babel/plugin-transform-react-jsx": "^7.21.0",
 		"prop-types": "^15.8.1"
 	}
 }
