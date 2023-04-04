@@ -75,8 +75,12 @@ const App = () => {
     setMapReady(true)
   }
 
-  const onMarkerClick = (markerId) => {
+  const onMarkerClick = (e, { markerId, lat, lng }) => {
     console.log('This is ->', markerId)
+
+    // inside the map instance you can call any google maps method
+    mapRef.current.setCenter({ lat, lng })
+    // rif. https://developers.google.com/maps/documentation/javascript/reference?hl=it
   }
 
   return (
@@ -104,11 +108,13 @@ export default App
 
 ## 🧐 Props
 
+### GoogleMap component
+
 | Prop                 | Type     | Required | Default                     | Description                                                                                                                                             |
 | -------------------- | -------- | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| apiKey               | string   | **yes**  | `''`                        | API Key to load Google Maps                                                                                                                             |
-| defaultCenter        | object   | **yes**  | `{ lat: 0, lng: 0 }`        | Default center of the map                                                                                                                               |
-| defaultZoom          | number   | **yes**  | `1-20`                      | Default zoom of the map                                                                                                                                 |
+| **apiKey**           | string   | **yes**  | `''`                        | API Key to load Google Maps                                                                                                                             |
+| **defaultCenter**    | object   | **yes**  | `{ lat: 0, lng: 0 }`        | Default center of the map                                                                                                                               |
+| **defaultZoom**      | number   | **yes**  | `1-20`                      | Default zoom of the map                                                                                                                                 |
 | libraries            | array    | no       | `['places', 'geometry']`    | Libraries to load                                                                                                                                       |
 | options              | object   | no       | `{}`                        | Options for the map                                                                                                                                     |
 | onGoogleApiLoaded    | function | no       | `() => {}`                  | Callback when the map is loaded                                                                                                                         |
@@ -122,6 +128,13 @@ export default App
 | mapMinHeight         | string   | no       | `'unset'`                   | Min height of the map                                                                                                                                   |
 | containerProps       | object   | no       | `{}`                        | Props for the div container of the map                                                                                                                  |
 | scriptCallback       | function | no       | `() => {}`                  | window global callback passed to the Google Script                                                                                                      |
+
+### Markers
+
+| Prop    | Type   | Required | Default     | Description             |
+| ------- | ------ | -------- | ----------- | ----------------------- |
+| **lat** | number | **yes**  | `undefined` | Latitude of the marker  |
+| **lng** | number | **yes**  | `undefined` | Longitude of the marker |
 
 ## 📍 Clustering
 
