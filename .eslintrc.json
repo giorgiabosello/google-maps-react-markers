@@ -5,6 +5,7 @@
 		"plugin:prettier/recommended",
 		"plugin:react-hooks/recommended",
 		"plugin:import/recommended",
+		"plugin:react/recommended",
 		"prettier"
 	],
 	"plugins": ["react-hooks", "prettier", "typescript", "jsx"],
@@ -21,7 +22,8 @@
 	},
 	"env": {
 		"es6": true,
-		"node": true
+		"node": true,
+		"browser": true
 	},
 	"settings": {
 		"react": {
@@ -32,7 +34,10 @@
 	"parserOptions": {
 		"sourceType": "module",
 		"ecmaVersion": 2022,
-		"requireConfigFile": false
+		"requireConfigFile": false,
+		"babelOptions": {
+			"presets": ["@babel/preset-react"]
+		}
 	},
 	"ignorePatterns": ["**/dist/**/*"],
 	"globals": {
