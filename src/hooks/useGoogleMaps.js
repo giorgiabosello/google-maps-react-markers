@@ -5,7 +5,7 @@ import { useScript } from './useScript'
  */
 export const useGoogleMaps = ({ apiKey, libraries = [], loadScriptExternally = false, status = 'idle', callback }) => {
 	// eslint-disable-next-line no-undef
-	if (typeof window !== "undefined") window.googleMapsCallback = callback
+	if (typeof window !== 'undefined') window.googleMapsCallback = callback
 	const script = apiKey
 		? {
 				src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=googleMapsCallback&libraries=${libraries?.join(

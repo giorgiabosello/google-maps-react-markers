@@ -1,11 +1,20 @@
-import { arrayOf, func, node, number, object, oneOfType } from 'prop-types'
+import { arrayOf, func, node, number, object, oneOfType, shape, string } from 'prop-types'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { isArraysEqualEps } from '../utils/utils'
 import MapMarkers from './markers'
 
 const EPS = 0.00001
 
-const MapComponent = ({ children, style, defaultCenter, defaultZoom, onGoogleApiLoaded, onChange, options }) => {
+const MapComponent = ({
+	children,
+	style,
+	defaultCenter,
+	defaultZoom,
+	onGoogleApiLoaded,
+	onChange,
+	options,
+	events,
+}) => {
 	const mapRef = useRef(null)
 	const prevBoundsRef = useRef(null)
 	const [map, setMap] = useState(null)
@@ -13,23 +22,27 @@ const MapComponent = ({ children, style, defaultCenter, defaultZoom, onGoogleApi
 	const [googleApiCalled, setGoogleApiCalled] = useState(false)
 
 	const onIdle = useCallback(() => {
-		const zoom = map.getZoom()
-		const bounds = map.getBounds()
-		const centerLatLng = map.getCenter()
+		try {
+			const zoom = map.getZoom()
+			const bounds = map.getBounds()
+			const centerLatLng = map.getCenter()
 
-		const ne = bounds.getNorthEast()
-		const sw = bounds.getSouthWest()
-		const boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()]
+			const ne = bounds.getNorthEast()
+			const sw = bounds.getSouthWest()
+			const boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()]
 
-		if (!isArraysEqualEps(boundsArray, prevBoundsRef.current, EPS)) {
-			if (onChange) {
-				onChange({
-					zoom,
-					center: [centerLatLng.lng(), centerLatLng.lat()],
-					bounds,
-				})
+			if (!isArraysEqualEps(boundsArray, prevBoundsRef.current, EPS)) {
+				if (onChange) {
+					onChange({
+						zoom,
+						center: [centerLatLng.lng(), centerLatLng.lat()],
+						bounds,
+					})
+				}
+				prevBoundsRef.current = boundsArray
 			}
-			prevBoundsRef.current = boundsArray
+		} catch (e) {
+			console.error(e)
 		}
 	}, [map, onChange])
 
@@ -70,7 +83,16 @@ const MapComponent = ({ children, style, defaultCenter, defaultZoom, onGoogleApi
 
 	return (
 		<React.Fragment>
-			<div ref={mapRef} style={style} className="google-map" />
+			<div
+				ref={mapRef}
+				style={style}
+				className="google-map"
+				// spread the events as props
+				{...events?.reduce((acc, { name, handler } = {}) => {
+					acc[name] = handler
+					return acc
+				}, {})}
+			/>
 			{children && map && maps && (
 				<MapMarkers map={map} maps={maps}>
 					{children}
@@ -93,6 +115,7 @@ MapComponent.defaultProps = {
 	onGoogleApiLoaded: () => {},
 	onChange: () => {},
 	options: {},
+	events: [],
 }
 
 MapComponent.propTypes = {
@@ -106,6 +129,23 @@ MapComponent.propTypes = {
 	onGoogleApiLoaded: func,
 	onChange: func,
 	options: object,
+	/**
+	 * The events to pass to the Google Maps instance (`div`).
+	 * @type {Array}
+	 * @example
+	 * [
+	 *  {
+	 *   name: 'onClick',
+	 *   handler: (event) => { ... }
+	 *  }
+	 * ]
+	 */
+	events: arrayOf(
+		shape({
+			name: string.isRequired,
+			handler: func.isRequired,
+		})
+	),
 }
 
 export default MapComponent
