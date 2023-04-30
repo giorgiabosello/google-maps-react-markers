@@ -76,7 +76,7 @@ const useGoogleMaps = ({
   status: _status = 'idle',
   callback
 }) => {
-  if (typeof window !== "undefined") window.googleMapsCallback = callback;
+  if (typeof window !== 'undefined') window.googleMapsCallback = callback;
   const script = apiKey ? {
     src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=googleMapsCallback&libraries=${_libraries === null || _libraries === void 0 ? void 0 : _libraries.join(',')}`,
     attributes: {
@@ -248,7 +248,8 @@ const MapComponent = ({
   defaultZoom,
   onGoogleApiLoaded,
   onChange,
-  options
+  options,
+  events
 }) => {
   const mapRef = useRef(null);
   const prevBoundsRef = useRef(null);
@@ -256,21 +257,25 @@ const MapComponent = ({
   const [maps, setMaps] = useState(null);
   const [googleApiCalled, setGoogleApiCalled] = useState(false);
   const onIdle = useCallback(() => {
-    const zoom = map.getZoom();
-    const bounds = map.getBounds();
-    const centerLatLng = map.getCenter();
-    const ne = bounds.getNorthEast();
-    const sw = bounds.getSouthWest();
-    const boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()];
-    if (!isArraysEqualEps(boundsArray, prevBoundsRef.current, EPS)) {
-      if (onChange) {
-        onChange({
-          zoom,
-          center: [centerLatLng.lng(), centerLatLng.lat()],
-          bounds
-        });
+    try {
+      const zoom = map.getZoom();
+      const bounds = map.getBounds();
+      const centerLatLng = map.getCenter();
+      const ne = bounds.getNorthEast();
+      const sw = bounds.getSouthWest();
+      const boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()];
+      if (!isArraysEqualEps(boundsArray, prevBoundsRef.current, EPS)) {
+        if (onChange) {
+          onChange({
+            zoom,
+            center: [centerLatLng.lng(), centerLatLng.lat()],
+            bounds
+          });
+        }
+        prevBoundsRef.current = boundsArray;
       }
-      prevBoundsRef.current = boundsArray;
+    } catch (e) {
+      console.error(e);
     }
   }, [map, onChange]);
   useEffect(() => {
@@ -304,11 +309,17 @@ const MapComponent = ({
       }
     };
   }, [map]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", Object.assign({
     ref: mapRef,
     style: style,
     className: "google-map"
-  }), children && map && maps && /*#__PURE__*/React.createElement(MapMarkers, {
+  }, events === null || events === void 0 ? void 0 : events.reduce((acc, {
+    name,
+    handler
+  } = {}) => {
+    acc[name] = handler;
+    return acc;
+  }, {}))), children && map && maps && /*#__PURE__*/React.createElement(MapMarkers, {
     map: map,
     maps: maps
   }, children));
@@ -325,7 +336,8 @@ MapComponent.defaultProps = {
   },
   onGoogleApiLoaded: () => {},
   onChange: () => {},
-  options: {}
+  options: {},
+  events: []
 };
 MapComponent.propTypes = {
   children: oneOfType([arrayOf(node), node]),
@@ -334,7 +346,11 @@ MapComponent.propTypes = {
   defaultZoom: number.isRequired,
   onGoogleApiLoaded: func,
   onChange: func,
-  options: object
+  options: object,
+  events: arrayOf(shape({
+    name: string.isRequired,
+    handler: func.isRequired
+  }))
 };
 
 const GoogleMap = /*#__PURE__*/forwardRef(function GoogleMap({

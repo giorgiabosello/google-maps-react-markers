@@ -132,7 +132,7 @@ var useGoogleMaps = function useGoogleMaps(_ref) {
     _ref$status = _ref.status,
     status = _ref$status === void 0 ? 'idle' : _ref$status,
     callback = _ref.callback;
-  if (typeof window !== "undefined") window.googleMapsCallback = callback;
+  if (typeof window !== 'undefined') window.googleMapsCallback = callback;
   var script = apiKey ? {
     src: "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&callback=googleMapsCallback&libraries=" + (libraries === null || libraries === void 0 ? void 0 : libraries.join(',')),
     attributes: {
@@ -306,7 +306,8 @@ var MapComponent = function MapComponent(_ref) {
     defaultZoom = _ref.defaultZoom,
     onGoogleApiLoaded = _ref.onGoogleApiLoaded,
     onChange = _ref.onChange,
-    options = _ref.options;
+    options = _ref.options,
+    events = _ref.events;
   var mapRef = React.useRef(null);
   var prevBoundsRef = React.useRef(null);
   var _useState = React.useState(null),
@@ -319,21 +320,25 @@ var MapComponent = function MapComponent(_ref) {
     googleApiCalled = _useState3[0],
     setGoogleApiCalled = _useState3[1];
   var onIdle = React.useCallback(function () {
-    var zoom = map.getZoom();
-    var bounds = map.getBounds();
-    var centerLatLng = map.getCenter();
-    var ne = bounds.getNorthEast();
-    var sw = bounds.getSouthWest();
-    var boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()];
-    if (!isArraysEqualEps(boundsArray, prevBoundsRef.current, EPS)) {
-      if (onChange) {
-        onChange({
-          zoom: zoom,
-          center: [centerLatLng.lng(), centerLatLng.lat()],
-          bounds: bounds
-        });
+    try {
+      var zoom = map.getZoom();
+      var bounds = map.getBounds();
+      var centerLatLng = map.getCenter();
+      var ne = bounds.getNorthEast();
+      var sw = bounds.getSouthWest();
+      var boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()];
+      if (!isArraysEqualEps(boundsArray, prevBoundsRef.current, EPS)) {
+        if (onChange) {
+          onChange({
+            zoom: zoom,
+            center: [centerLatLng.lng(), centerLatLng.lat()],
+            bounds: bounds
+          });
+        }
+        prevBoundsRef.current = boundsArray;
       }
-      prevBoundsRef.current = boundsArray;
+    } catch (e) {
+      console.error(e);
     }
   }, [map, onChange]);
   React.useEffect(function () {
@@ -366,11 +371,17 @@ var MapComponent = function MapComponent(_ref) {
       }
     };
   }, [map]);
-  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement("div", {
+  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement("div", _extends({
     ref: mapRef,
     style: style,
     className: "google-map"
-  }), children && map && maps && /*#__PURE__*/React__default.createElement(MapMarkers, {
+  }, events === null || events === void 0 ? void 0 : events.reduce(function (acc, _temp) {
+    var _ref2 = _temp === void 0 ? {} : _temp,
+      name = _ref2.name,
+      handler = _ref2.handler;
+    acc[name] = handler;
+    return acc;
+  }, {}))), children && map && maps && /*#__PURE__*/React__default.createElement(MapMarkers, {
     map: map,
     maps: maps
   }, children));
@@ -387,7 +398,8 @@ MapComponent.defaultProps = {
   },
   onGoogleApiLoaded: function onGoogleApiLoaded() {},
   onChange: function onChange() {},
-  options: {}
+  options: {},
+  events: []
 };
 MapComponent.propTypes = {
   children: propTypes.oneOfType([propTypes.arrayOf(propTypes.node), propTypes.node]),
@@ -396,7 +408,11 @@ MapComponent.propTypes = {
   defaultZoom: propTypes.number.isRequired,
   onGoogleApiLoaded: propTypes.func,
   onChange: propTypes.func,
-  options: propTypes.object
+  options: propTypes.object,
+  events: propTypes.arrayOf(propTypes.shape({
+    name: propTypes.string.isRequired,
+    handler: propTypes.func.isRequired
+  }))
 };
 
 var _excluded = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps", "loadScriptExternally", "status", "scriptCallback"];
