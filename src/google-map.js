@@ -16,6 +16,7 @@ const GoogleMap = forwardRef(function GoogleMap(
 		loadScriptExternally,
 		status,
 		scriptCallback,
+		externalApiParams,
 		...props
 	},
 	ref
@@ -27,7 +28,14 @@ const GoogleMap = forwardRef(function GoogleMap(
 		error: errorContent,
 	}
 
-	const _status = useGoogleMaps({ apiKey, libraries, loadScriptExternally, status, callback: scriptCallback })
+	const _status = useGoogleMaps({
+		apiKey,
+		libraries,
+		loadScriptExternally,
+		status,
+		externalApiParams,
+		callback: scriptCallback,
+	})
 
 	return (
 		<div
@@ -96,6 +104,11 @@ GoogleMap.propTypes = {
 	 * @default () => {}
 	 */
 	scriptCallback: func,
+	/**
+	 * Prop to be passed on to google map api while loading the script such as region & language
+	 * e.g. {region: 'JP', language: 'ja'} can be used to localize map in japanese
+	 */
+	externalApiParams: object,
 }
 
 export default GoogleMap
