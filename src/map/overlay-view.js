@@ -1,17 +1,27 @@
-import { node, number, object, shape, string } from 'prop-types'
+import { bool, func, node, number, object, shape, string } from 'prop-types'
 import { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import useMemoCompare from '../hooks/useMemoCompare'
 import createOverlay from './overlay'
 
+const noop = () => {}
+
 /**
- * @param {HTMLElement} container
  * @param {google.maps.MapPanes} pane - The pane on which to display the overlay. This is the Pane name, not the Pane itself. Defaults to floatPane.
- * @param {google.maps.LatLng | google.maps.LatLngLiteral} position
+ * @param {google.maps.LatLng | google.maps.LatLngLiteral} position - The geographical location of the overlay.
+ * @param {google.maps.Map} map - The map on which to display the overlay.
+ * @param {google.maps} maps - The Google Maps API.
+ * @param {number} zIndex - The z-index of the overlay.
+ * @param {ReactNode} children - The children of the OverlayView - the Marker component.
+ * @param {object} drag - The drag configuration of the overlay.
+ * @param {boolean} drag.draggable - If true, the marker can be dragged. Default value is false.
+ * @param {function} drag.onDragStart - This event is fired when the user starts dragging the marker.
+ * @param {function} drag.onDrag - This event is repeatedly fired while the user drags the marker.
+ * @param {function} drag.onDragEnd - This event is fired when the user stops dragging the marker.
  * @returns {void}
  * @ref [MapPanes](https://developers.google.com/maps/documentation/javascript/reference/overlay-view#MapPanes)
  */
-const OverlayView = ({ position, pane = 'floatPane', map, maps, zIndex, children }) => {
+const OverlayView = ({ pane, position, map, maps, zIndex, children, drag }) => {
 	const container = useMemo(() => {
 		// eslint-disable-next-line no-undef
 		const div = document.createElement('div')
@@ -20,7 +30,7 @@ const OverlayView = ({ position, pane = 'floatPane', map, maps, zIndex, children
 	}, [])
 
 	const overlay = useMemo(() => {
-		return createOverlay({ container, pane, position, maps })
+		return createOverlay({ container, pane, position, maps, drag })
 	}, [container, maps, pane, position])
 
 	// Because React does not do deep comparisons, a custom hook is used.
@@ -51,6 +61,7 @@ const OverlayView = ({ position, pane = 'floatPane', map, maps, zIndex, children
 }
 
 OverlayView.defaultProps = {
+	pane: 'floatPane',
 	zIndex: 0,
 }
 
@@ -99,6 +110,17 @@ OverlayView.propTypes = {
 	 * @ref [ReactNode](https://reactjs.org/docs/react-api.html#reactnode)
 	 */
 	children: node.isRequired,
+	/**
+	 * The drag configuration of the overlay.
+	 * @type {object}
+	 * @default { draggable: false, onDragStart: noop, onDrag: noop, onDragEnd: noop }
+	 */
+	drag: shape({
+		draggable: bool,
+		onDragStart: func,
+		onDrag: func,
+		onDragEnd: func,
+	}),
 }
 
 export default OverlayView

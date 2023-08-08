@@ -101,7 +101,18 @@ const App = () => {
 					onChange={onMapChange}
 				>
 					{currCoordinates.map(({ lat, lng, name }, index) => (
-						<Marker key={index} lat={lat} lng={lng} markerId={name} onClick={onMarkerClick} className="marker" />
+						<Marker
+							key={index}
+							lat={lat}
+							lng={lng}
+							markerId={name}
+							onClick={onMarkerClick}
+							className="marker"
+							// draggable={true}
+							// onDragStart={(e, { latLng }) => {}}
+							// onDrag={(e, { latLng }) => {}}
+							// onDragEnd={(e, { latLng }) => {}}
+						/>
 					))}
 				</GoogleMap>
 				{highlighted && (
