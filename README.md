@@ -96,7 +96,17 @@ const App = () => {
         onChange={(map) => console.log('Map moved', map)}
       >
         {coordinates.map(({ lat, lng, name }, index) => (
-          <Marker key={index} lat={lat} lng={lng} markerId={name} onClick={onMarkerClick} />
+          <Marker
+            key={index}
+            lat={lat}
+            lng={lng}
+            markerId={name}
+            onClick={onMarkerClick}
+            // draggable={true}
+            // onDragStart={(e, { latLng }) => {}}
+            // onDrag={(e, { latLng }) => {}}
+            // onDragEnd={(e, { latLng }) => {}}
+          />
         ))}
       </GoogleMap>
     </>
@@ -129,13 +139,18 @@ export default App
 | mapMinHeight         | string   | no       | `'unset'`                   | Min height of the map                                                                                                                                                                 |
 | containerProps       | object   | no       | `{}`                        | Props for the div container of the map                                                                                                                                                |
 | scriptCallback       | function | no       | `() => {}`                  | window global callback passed to the Google Script                                                                                                                                    |
+| externalApiParams    | object   | no       | `undefined`                 | Optional params to pass to the Google API script. Eg. `{region: 'IT', language: 'it'}`                                                                                                |
 
 ### Markers
 
-| Prop    | Type   | Required | Default     | Description             |
-| ------- | ------ | -------- | ----------- | ----------------------- |
-| **lat** | number | **yes**  | `undefined` | Latitude of the marker  |
-| **lng** | number | **yes**  | `undefined` | Longitude of the marker |
+| Prop        | Type   | Required | Default     | Description                                                    |
+| ----------- | ------ | -------- | ----------- | -------------------------------------------------------------- |
+| **lat**     | number | **yes**  | `undefined` | Latitude of the marker                                         |
+| **lng**     | number | **yes**  | `undefined` | Longitude of the marker                                        |
+| draggable   | bool   | no       | `false`     | If true, the marker can be dragged                             |
+| onDragStart | func   | no       | `() => {}`  | This event is fired when the user starts dragging the marker   |
+| onDrag      | func   | no       | `() => {}`  | This event is repeatedly fired while the user drags the marker |
+| onDragEnd   | func   | no       | `() => {}`  | This event is fired when the user stops dragging the marker    |
 
 ## 📍 Clustering
 
