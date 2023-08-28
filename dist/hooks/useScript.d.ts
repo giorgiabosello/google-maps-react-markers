@@ -6,5 +6,5 @@ export function useScript(script?: {
         onErrorCallback?: Function;
     };
     elementIdToAppend?: string;
-}): "idle" | "loading" | "ready" | "error";
+}, forcedStatus?: any): "idle" | "loading" | "ready" | "error";
 //# sourceMappingURL=useScript.d.ts.map

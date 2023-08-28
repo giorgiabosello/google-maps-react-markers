@@ -6,9 +6,9 @@ declare function MapMarkers({ children, map, maps }: {
 }): any;
 declare namespace MapMarkers {
     namespace propTypes {
-        export const children: ReactNode;
+        export let children: ReactNode;
         export { object as map };
-        export const maps: object;
+        export let maps: object;
     }
 }
 //# sourceMappingURL=markers.d.ts.map

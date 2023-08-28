@@ -217,11 +217,11 @@ createOverlay.propTypes = {
 };
 
 const OverlayView = ({
-  pane,
+  pane: _pane = 'floatPane',
   position,
   map,
   maps,
-  zIndex,
+  zIndex: _zIndex = 0,
   children,
   drag
 }) => {
@@ -233,12 +233,12 @@ const OverlayView = ({
   const overlay = useMemo(() => {
     return createOverlay({
       container,
-      pane,
+      pane: _pane,
       position,
       maps,
       drag
     });
-  }, [container, maps, pane, position]);
+  }, [container, drag, maps, _pane, position]);
   const childrenProps = useMemoCompare(children === null || children === void 0 ? void 0 : children.props, (prev, next) => {
     return prev && prev.lat === next.lat && prev.lng === next.lng;
   });
@@ -251,13 +251,9 @@ const OverlayView = ({
     }
   }, [map, childrenProps]);
   useEffect(() => {
-    container.style.zIndex = `${zIndex}`;
-  }, [zIndex, container]);
+    container.style.zIndex = `${_zIndex}`;
+  }, [_zIndex, container]);
   return /*#__PURE__*/createPortal(children, container);
-};
-OverlayView.defaultProps = {
-  pane: 'floatPane',
-  zIndex: 0
 };
 OverlayView.propTypes = {
   pane: string,
@@ -330,14 +326,22 @@ MapMarkers.propTypes = {
 
 const EPS = 0.00001;
 const MapComponent = ({
-  children,
-  style,
+  children: _children = null,
+  style: _style = {
+    width: '100%',
+    height: '100%',
+    left: 0,
+    top: 0,
+    margin: 0,
+    padding: 0,
+    position: 'absolute'
+  },
   defaultCenter,
   defaultZoom,
-  onGoogleApiLoaded,
-  onChange,
-  options,
-  events
+  onGoogleApiLoaded: _onGoogleApiLoaded = () => {},
+  onChange: _onChange = () => {},
+  options: _options = {},
+  events: _events = []
 }) => {
   const mapRef = useRef(null);
   const prevBoundsRef = useRef(null);
@@ -353,8 +357,8 @@ const MapComponent = ({
       const sw = bounds.getSouthWest();
       const boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()];
       if (!isArraysEqualEps(boundsArray, prevBoundsRef.current, EPS)) {
-        if (onChange) {
-          onChange({
+        if (_onChange) {
+          _onChange({
             zoom,
             center: [centerLatLng.lng(), centerLatLng.lat()],
             bounds
@@ -365,21 +369,21 @@ const MapComponent = ({
     } catch (e) {
       console.error(e);
     }
-  }, [map, onChange]);
+  }, [map, _onChange]);
   useEffect(() => {
     if (mapRef.current && !map) {
       setMap(new window.google.maps.Map(mapRef.current, {
         center: defaultCenter,
         zoom: defaultZoom,
-        ...options
+        ..._options
       }));
       setMaps(window.google.maps);
     }
-  }, [defaultCenter, defaultZoom, map, mapRef, options]);
+  }, [defaultCenter, defaultZoom, map, mapRef, _options]);
   useEffect(() => {
     if (map) {
       if (!googleApiCalled) {
-        onGoogleApiLoaded({
+        _onGoogleApiLoaded({
           map,
           maps,
           ref: mapRef.current
@@ -389,7 +393,7 @@ const MapComponent = ({
       window.google.maps.event.clearListeners(map, 'idle');
       window.google.maps.event.addListener(map, 'idle', onIdle);
     }
-  }, [googleApiCalled, map, maps, onChange, onGoogleApiLoaded, onIdle]);
+  }, [googleApiCalled, map, maps, _onChange, _onGoogleApiLoaded, onIdle]);
   useEffect(() => {
     return () => {
       if (map) {
@@ -399,33 +403,18 @@ const MapComponent = ({
   }, [map]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", Object.assign({
     ref: mapRef,
-    style: style,
+    style: _style,
     className: "google-map"
-  }, events === null || events === void 0 ? void 0 : events.reduce((acc, {
+  }, _events === null || _events === void 0 ? void 0 : _events.reduce((acc, {
     name,
     handler
   } = {}) => {
     acc[name] = handler;
     return acc;
-  }, {}))), children && map && maps && /*#__PURE__*/React.createElement(MapMarkers, {
+  }, {}))), _children && map && maps && /*#__PURE__*/React.createElement(MapMarkers, {
     map: map,
     maps: maps
-  }, children));
-};
-MapComponent.defaultProps = {
-  style: {
-    width: '100%',
-    height: '100%',
-    left: 0,
-    top: 0,
-    margin: 0,
-    padding: 0,
-    position: 'absolute'
-  },
-  onGoogleApiLoaded: () => {},
-  onChange: () => {},
-  options: {},
-  events: []
+  }, _children));
 };
 MapComponent.propTypes = {
   children: oneOfType([arrayOf(node), node]),
@@ -442,18 +431,18 @@ MapComponent.propTypes = {
 };
 
 const GoogleMap = /*#__PURE__*/forwardRef(function GoogleMap({
-  apiKey,
-  libraries,
-  children,
-  loadingContent,
-  idleContent,
-  errorContent,
-  mapMinHeight,
-  containerProps,
-  loadScriptExternally,
-  status,
-  scriptCallback,
-  externalApiParams,
+  apiKey = '',
+  libraries = ['places', 'geometry'],
+  children = null,
+  loadingContent = 'Google Maps is loading',
+  idleContent = 'Google Maps is on idle',
+  errorContent = 'Google Maps is on error',
+  mapMinHeight = 'unset',
+  containerProps = {},
+  loadScriptExternally = false,
+  status = 'idle',
+  scriptCallback = () => {},
+  externalApiParams = {},
   ...props
 }, ref) {
   const renderers = {
@@ -481,18 +470,6 @@ const GoogleMap = /*#__PURE__*/forwardRef(function GoogleMap({
     ref: ref
   }, containerProps), renderers[_status] || null);
 });
-GoogleMap.defaultProps = {
-  ...MapComponent.defaultProps,
-  loadingContent: 'Google Maps is loading',
-  idleContent: 'Google Maps is on idle',
-  errorContent: 'Google Maps is on error',
-  mapMinHeight: 'unset',
-  apiKey: '',
-  libraries: ['places', 'geometry'],
-  loadScriptExternally: false,
-  status: 'idle',
-  scriptCallback: () => {}
-};
 GoogleMap.propTypes = {
   ...MapComponent.propTypes,
   children: oneOfType([node, arrayOf(node)]),

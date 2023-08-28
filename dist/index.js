@@ -282,11 +282,13 @@ createOverlay.propTypes = {
 };
 
 var OverlayView = function OverlayView(_ref) {
-  var pane = _ref.pane,
+  var _ref$pane = _ref.pane,
+    pane = _ref$pane === void 0 ? 'floatPane' : _ref$pane,
     position = _ref.position,
     map = _ref.map,
     maps = _ref.maps,
-    zIndex = _ref.zIndex,
+    _ref$zIndex = _ref.zIndex,
+    zIndex = _ref$zIndex === void 0 ? 0 : _ref$zIndex,
     children = _ref.children,
     drag = _ref.drag;
   var container = React.useMemo(function () {
@@ -302,7 +304,7 @@ var OverlayView = function OverlayView(_ref) {
       maps: maps,
       drag: drag
     });
-  }, [container, maps, pane, position]);
+  }, [container, drag, maps, pane, position]);
   var childrenProps = useMemoCompare(children === null || children === void 0 ? void 0 : children.props, function (prev, next) {
     return prev && prev.lat === next.lat && prev.lng === next.lng;
   });
@@ -318,10 +320,6 @@ var OverlayView = function OverlayView(_ref) {
     container.style.zIndex = "" + zIndex;
   }, [zIndex, container]);
   return /*#__PURE__*/reactDom.createPortal(children, container);
-};
-OverlayView.defaultProps = {
-  pane: 'floatPane',
-  zIndex: 0
 };
 OverlayView.propTypes = {
   pane: propTypes.string,
@@ -395,14 +393,28 @@ MapMarkers.propTypes = {
 
 var EPS = 0.00001;
 var MapComponent = function MapComponent(_ref) {
-  var children = _ref.children,
-    style = _ref.style,
+  var _ref$children = _ref.children,
+    children = _ref$children === void 0 ? null : _ref$children,
+    _ref$style = _ref.style,
+    style = _ref$style === void 0 ? {
+      width: '100%',
+      height: '100%',
+      left: 0,
+      top: 0,
+      margin: 0,
+      padding: 0,
+      position: 'absolute'
+    } : _ref$style,
     defaultCenter = _ref.defaultCenter,
     defaultZoom = _ref.defaultZoom,
-    onGoogleApiLoaded = _ref.onGoogleApiLoaded,
-    onChange = _ref.onChange,
-    options = _ref.options,
-    events = _ref.events;
+    _ref$onGoogleApiLoade = _ref.onGoogleApiLoaded,
+    onGoogleApiLoaded = _ref$onGoogleApiLoade === void 0 ? function () {} : _ref$onGoogleApiLoade,
+    _ref$onChange = _ref.onChange,
+    onChange = _ref$onChange === void 0 ? function () {} : _ref$onChange,
+    _ref$options = _ref.options,
+    options = _ref$options === void 0 ? {} : _ref$options,
+    _ref$events = _ref.events,
+    events = _ref$events === void 0 ? [] : _ref$events;
   var mapRef = React.useRef(null);
   var prevBoundsRef = React.useRef(null);
   var _useState = React.useState(null),
@@ -481,21 +493,6 @@ var MapComponent = function MapComponent(_ref) {
     maps: maps
   }, children));
 };
-MapComponent.defaultProps = {
-  style: {
-    width: '100%',
-    height: '100%',
-    left: 0,
-    top: 0,
-    margin: 0,
-    padding: 0,
-    position: 'absolute'
-  },
-  onGoogleApiLoaded: function onGoogleApiLoaded() {},
-  onChange: function onChange() {},
-  options: {},
-  events: []
-};
 MapComponent.propTypes = {
   children: propTypes.oneOfType([propTypes.arrayOf(propTypes.node), propTypes.node]),
   style: propTypes.object,
@@ -512,18 +509,30 @@ MapComponent.propTypes = {
 
 var _excluded = ["apiKey", "libraries", "children", "loadingContent", "idleContent", "errorContent", "mapMinHeight", "containerProps", "loadScriptExternally", "status", "scriptCallback", "externalApiParams"];
 var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
-  var apiKey = _ref.apiKey,
-    libraries = _ref.libraries,
-    children = _ref.children,
-    loadingContent = _ref.loadingContent,
-    idleContent = _ref.idleContent,
-    errorContent = _ref.errorContent,
-    mapMinHeight = _ref.mapMinHeight,
-    containerProps = _ref.containerProps,
-    loadScriptExternally = _ref.loadScriptExternally,
-    status = _ref.status,
-    scriptCallback = _ref.scriptCallback,
-    externalApiParams = _ref.externalApiParams,
+  var _ref$apiKey = _ref.apiKey,
+    apiKey = _ref$apiKey === void 0 ? '' : _ref$apiKey,
+    _ref$libraries = _ref.libraries,
+    libraries = _ref$libraries === void 0 ? ['places', 'geometry'] : _ref$libraries,
+    _ref$children = _ref.children,
+    children = _ref$children === void 0 ? null : _ref$children,
+    _ref$loadingContent = _ref.loadingContent,
+    loadingContent = _ref$loadingContent === void 0 ? 'Google Maps is loading' : _ref$loadingContent,
+    _ref$idleContent = _ref.idleContent,
+    idleContent = _ref$idleContent === void 0 ? 'Google Maps is on idle' : _ref$idleContent,
+    _ref$errorContent = _ref.errorContent,
+    errorContent = _ref$errorContent === void 0 ? 'Google Maps is on error' : _ref$errorContent,
+    _ref$mapMinHeight = _ref.mapMinHeight,
+    mapMinHeight = _ref$mapMinHeight === void 0 ? 'unset' : _ref$mapMinHeight,
+    _ref$containerProps = _ref.containerProps,
+    containerProps = _ref$containerProps === void 0 ? {} : _ref$containerProps,
+    _ref$loadScriptExtern = _ref.loadScriptExternally,
+    loadScriptExternally = _ref$loadScriptExtern === void 0 ? false : _ref$loadScriptExtern,
+    _ref$status = _ref.status,
+    status = _ref$status === void 0 ? 'idle' : _ref$status,
+    _ref$scriptCallback = _ref.scriptCallback,
+    scriptCallback = _ref$scriptCallback === void 0 ? function () {} : _ref$scriptCallback,
+    _ref$externalApiParam = _ref.externalApiParams,
+    externalApiParams = _ref$externalApiParam === void 0 ? {} : _ref$externalApiParam,
     props = _objectWithoutPropertiesLoose(_ref, _excluded);
   var renderers = {
     ready: /*#__PURE__*/React__default.createElement(MapComponent, props, children),
@@ -549,17 +558,6 @@ var GoogleMap = /*#__PURE__*/React.forwardRef(function GoogleMap(_ref, ref) {
     },
     ref: ref
   }, containerProps), renderers[_status] || null);
-});
-GoogleMap.defaultProps = _extends({}, MapComponent.defaultProps, {
-  loadingContent: 'Google Maps is loading',
-  idleContent: 'Google Maps is on idle',
-  errorContent: 'Google Maps is on error',
-  mapMinHeight: 'unset',
-  apiKey: '',
-  libraries: ['places', 'geometry'],
-  loadScriptExternally: false,
-  status: 'idle',
-  scriptCallback: function scriptCallback() {}
 });
 GoogleMap.propTypes = _extends({}, MapComponent.propTypes, {
   children: propTypes.oneOfType([propTypes.node, propTypes.arrayOf(propTypes.node)]),
