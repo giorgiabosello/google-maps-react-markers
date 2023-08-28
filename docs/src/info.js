@@ -1,6 +1,6 @@
 import { array, func, number, shape } from 'prop-types'
 
-const Info = ({ buttonAction, coordinates, mapBounds }) => {
+const Info = ({ buttonAction = () => {}, coordinates = [], mapBounds }) => {
 	return (
 		<div className="container">
 			<div className="left">
@@ -43,11 +43,6 @@ const Info = ({ buttonAction, coordinates, mapBounds }) => {
 			</div>
 		</div>
 	)
-}
-
-Info.defaultProps = {
-	buttonAction: () => {},
-	coordinates: [],
 }
 
 Info.propTypes = {

@@ -4,8 +4,6 @@ import { createPortal } from 'react-dom'
 import useMemoCompare from '../hooks/useMemoCompare'
 import createOverlay from './overlay'
 
-const noop = () => {}
-
 /**
  * @param {google.maps.MapPanes} pane - The pane on which to display the overlay. This is the Pane name, not the Pane itself. Defaults to floatPane.
  * @param {google.maps.LatLng | google.maps.LatLngLiteral} position - The geographical location of the overlay.
@@ -21,7 +19,7 @@ const noop = () => {}
  * @returns {void}
  * @ref [MapPanes](https://developers.google.com/maps/documentation/javascript/reference/overlay-view#MapPanes)
  */
-const OverlayView = ({ pane, position, map, maps, zIndex, children, drag }) => {
+const OverlayView = ({ pane = 'floatPane', position, map, maps, zIndex = 0, children, drag }) => {
 	const container = useMemo(() => {
 		// eslint-disable-next-line no-undef
 		const div = document.createElement('div')
@@ -31,7 +29,7 @@ const OverlayView = ({ pane, position, map, maps, zIndex, children, drag }) => {
 
 	const overlay = useMemo(() => {
 		return createOverlay({ container, pane, position, maps, drag })
-	}, [container, maps, pane, position])
+	}, [container, drag, maps, pane, position])
 
 	// Because React does not do deep comparisons, a custom hook is used.
 	// This fixes the issue where the overlay is not updated when the position changes.
@@ -58,11 +56,6 @@ const OverlayView = ({ pane, position, map, maps, zIndex, children, drag }) => {
 	}, [zIndex, container])
 
 	return createPortal(children, container)
-}
-
-OverlayView.defaultProps = {
-	pane: 'floatPane',
-	zIndex: 0,
 }
 
 OverlayView.propTypes = {

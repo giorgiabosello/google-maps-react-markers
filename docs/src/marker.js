@@ -18,8 +18,6 @@ const Marker = ({ className, lat, lng, markerId, onClick, ...props }) => {
 	)
 }
 
-Marker.defaultProps = {}
-
 Marker.propTypes = {
 	className: string,
 	/**

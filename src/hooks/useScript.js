@@ -31,7 +31,7 @@ export const useScript = (
 		callbacks: { onLoadCallback: null, onErrorCallback: null },
 		elementIdToAppend: null,
 	},
-	forcedStatus = undefined
+	forcedStatus = undefined,
 ) => {
 	// Keep track of script status ("idle", "loading", "ready", "error")
 	const [status, setStatus] = useState(script.src ? 'loading' : 'idle')
@@ -119,7 +119,7 @@ export const useScript = (
 		},
 
 		// Re-run useEffect if script changes
-		[script, forcedStatus, status]
+		[script, forcedStatus, status],
 	)
 
 	return status

@@ -6,14 +6,22 @@ import MapMarkers from './markers'
 const EPS = 0.00001
 
 const MapComponent = ({
-	children,
-	style,
+	children = null,
+	style = {
+		width: '100%',
+		height: '100%',
+		left: 0,
+		top: 0,
+		margin: 0,
+		padding: 0,
+		position: 'absolute',
+	},
 	defaultCenter,
 	defaultZoom,
-	onGoogleApiLoaded,
-	onChange,
-	options,
-	events,
+	onGoogleApiLoaded = () => {},
+	onChange = () => {},
+	options = {},
+	events = [],
 }) => {
 	const mapRef = useRef(null)
 	const prevBoundsRef = useRef(null)
@@ -53,7 +61,7 @@ const MapComponent = ({
 					center: defaultCenter,
 					zoom: defaultZoom,
 					...options,
-				})
+				}),
 			)
 			setMaps(window.google.maps)
 		}
@@ -102,22 +110,6 @@ const MapComponent = ({
 	)
 }
 
-MapComponent.defaultProps = {
-	style: {
-		width: '100%',
-		height: '100%',
-		left: 0,
-		top: 0,
-		margin: 0,
-		padding: 0,
-		position: 'absolute',
-	},
-	onGoogleApiLoaded: () => {},
-	onChange: () => {},
-	options: {},
-	events: [],
-}
-
 MapComponent.propTypes = {
 	/**
 	 * The Markers on the Map.
@@ -144,7 +136,7 @@ MapComponent.propTypes = {
 		shape({
 			name: string.isRequired,
 			handler: func.isRequired,
-		})
+		}),
 	),
 }
 

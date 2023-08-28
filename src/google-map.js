@@ -5,21 +5,21 @@ import MapComponent from './map/map'
 
 const GoogleMap = forwardRef(function GoogleMap(
 	{
-		apiKey,
-		libraries,
-		children,
-		loadingContent,
-		idleContent,
-		errorContent,
-		mapMinHeight,
-		containerProps,
-		loadScriptExternally,
-		status,
-		scriptCallback,
-		externalApiParams,
+		apiKey = '',
+		libraries = ['places', 'geometry'],
+		children = null,
+		loadingContent = 'Google Maps is loading',
+		idleContent = 'Google Maps is on idle',
+		errorContent = 'Google Maps is on error',
+		mapMinHeight = 'unset',
+		containerProps = {},
+		loadScriptExternally = false,
+		status = 'idle',
+		scriptCallback = () => {},
+		externalApiParams = {},
 		...props
 	},
-	ref
+	ref,
 ) {
 	const renderers = {
 		ready: <MapComponent {...props}>{children}</MapComponent>,
@@ -47,19 +47,6 @@ const GoogleMap = forwardRef(function GoogleMap(
 		</div>
 	)
 })
-
-GoogleMap.defaultProps = {
-	...MapComponent.defaultProps,
-	loadingContent: 'Google Maps is loading',
-	idleContent: 'Google Maps is on idle',
-	errorContent: 'Google Maps is on error',
-	mapMinHeight: 'unset',
-	apiKey: '',
-	libraries: ['places', 'geometry'],
-	loadScriptExternally: false,
-	status: 'idle',
-	scriptCallback: () => {},
-}
 
 GoogleMap.propTypes = {
 	...MapComponent.propTypes,

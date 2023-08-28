@@ -17,7 +17,7 @@ export const useGoogleMaps = ({
 	const script = apiKey
 		? {
 				src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=googleMapsCallback&libraries=${libraries?.join(
-					','
+					',',
 				)}${apiParams ? '&' + apiParams : ''}`,
 				attributes: { id: 'googleMapsApi' },
 		  }

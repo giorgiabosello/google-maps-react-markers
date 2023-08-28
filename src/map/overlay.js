@@ -81,8 +81,8 @@ const createOverlay = ({ container, pane, position, maps, drag }) => {
 			const point = projection.fromLatLngToDivPixel(this.position)
 			if (point === null) return
 			this.container.style.transform = `translate(${point.x}px, ${point.y}px)`
-			this.container.style.width = '0px';
-			this.container.style.height = '0px';
+			this.container.style.width = '0px'
+			this.container.style.height = '0px'
 		}
 
 		/**
