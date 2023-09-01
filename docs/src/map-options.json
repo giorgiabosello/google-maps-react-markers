@@ -1,12 +1,12 @@
 {
-	"mapTypeControl": true,
-	"fullscreenControl": false,
 	"maxZoom": 20,
 	"minZoom": 3,
-	"rotateControl": true,
-	"scaleControl": false,
-	"streetViewControl": true,
 	"mapTypeId": "roadmap",
+	"mapTypeControl": true,
+	"scaleControl": true,
+	"streetViewControl": true,
+	"rotateControl": true,
+	"fullscreenControl": true,
 	"zoomControl": true,
 	"styles": [
 		{
