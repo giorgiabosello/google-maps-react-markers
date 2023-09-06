@@ -1,6 +1,6 @@
 {
 	"name": "google-maps-react-markers",
-	"version": "2.0.0",
+	"version": "2.0.0-alpha.0",
 	"description": "Google Maps library with markers as react components",
 	"author": "Giorgia Bosello",
 	"license": "MIT",
