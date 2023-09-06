@@ -20,47 +20,23 @@
 		"google-maps-react-markers",
 		"react-component"
 	],
-	"main": "src/index.ts",
+	"main": "dist/index.js",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"type": "module",
 	"scripts": {
-		"dev": "concurrently \"pnpm build --watch\"",
-		"build": "tsup --onSuccess \"pnpm link:self\"",
+		"dev": "concurrently \"yarn build --watch\"",
+		"build": "tsup --onSuccess \"yarn link:self\"",
 		"type-check": "tsc",
-		"lint": "eslint --ignore-path .gitignore \"{src,tests}/**/*.+(ts|js|tsx)\"",
-		"lint:fix": "pnpm lint --fix && prettier --write .",
+		"lint": "eslint --ignore-path .gitignore \"{src,docs/src}/**/*.+(ts|js|tsx)\"",
+		"lint:fix": "yarn lint --fix && prettier --write .",
 		"prepare": "husky install",
 		"commit": "cz",
-		"release": "pnpm build && pnpm release-it",
-		"link:self": "pnpm yalc publish && pnpm link",
-		"predeploy": "cd docs && pnpm install && pnpm build",
+		"release": "yarn build && yarn release-it",
+		"link:self": "yarn yalc publish && yarn link",
+		"predeploy": "cd docs && yarn install && yarn build",
 		"deploy": "gh-pages -d docs/build",
-		"publish": "pnpm build && npm publish"
-	},
-	"tsup": {
-		"entry": [
-			"src/index.ts"
-		],
-		"treeshake": true,
-		"sourcemap": "inline",
-		"minify": true,
-		"clean": true,
-		"dts": true,
-		"splitting": false,
-		"format": [
-			"cjs",
-			"esm"
-		],
-		"external": [
-			"react"
-		],
-		"injectStyle": false
-	},
-	"types": "./dist/index.d.ts",
-	"exports": {
-		".": {
-			"require": "./dist/index.js",
-			"import": "./dist/index.mjs"
-		}
+		"final:publish": "yarn build && npm publish"
 	},
 	"files": [
 		"dist"
@@ -103,7 +79,6 @@
 		"@types/node": "20.5.9",
 		"@types/react": "18.2.21",
 		"@types/react-dom": "18.2.7",
-		"@types/react-test-renderer": "18.0.1",
 		"@typescript-eslint/eslint-plugin": "6.6.0",
 		"@typescript-eslint/parser": "6.6.0",
 		"babel-loader": "9.1.3",
@@ -128,6 +103,7 @@
 		"prop-types": "15.8.1",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
+		"react-scripts": "^5.0.1",
 		"release-it": "16.1.5",
 		"storybook": "7.4.0",
 		"tsup": "7.2.0",

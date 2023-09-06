@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { EventProps, Map, MapProps, MapsLibrary } from '../utils/types'
 import { isArraysEqualEps } from '../utils/utils'
 import MapMarkers from './markers'
-import { EventProps, Map, MapProps, MapsLibrary } from '../utils/types'
 
 function MapComponent({
 	children = null,

@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { useGoogleMaps } from './map/hooks/useGoogleMaps'
 import MapComponent from './map/map'
 import { GoogleMapProps } from './utils/types'

@@ -1,4 +1,4 @@
-import { createOverlayProps } from '../utils/types'
+import { Pane, createOverlayProps } from '../utils/types'
 
 // return lat, lng from LatLngLiteral
 const getLatLng = (LatLng: google.maps.LatLng | null) => {
@@ -52,14 +52,17 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 				this.container.addEventListener('mouseup', (e) => {
 					that.map?.set('draggable', true)
 					this.container.style.cursor = 'default'
-					google.maps.event.removeListener(that.moveHandler)
+					if (that.moveHandler) {
+						google.maps.event.removeListener(that.moveHandler)
+						that.moveHandler = null
+					}
 					drag.onDragEnd(e, { latLng: getLatLng(that.position) })
 				})
 			}
 			// Add the element to the pane.
-			const pane = this.getPanes()?.[this.pane]
-			pane?.classList.add('google-map-markers-overlay')
-			pane?.appendChild(this.container)
+			const currentPane = this.getPanes()?.[this.pane]
+			currentPane?.classList.add('google-map-markers-overlay')
+			currentPane?.appendChild(this.container)
 		}
 
 		draw = () => {
@@ -84,18 +87,18 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 			}
 		}
 
-		private container: HTMLDivElement
+		public container: HTMLDivElement
 
-		private pane: string
+		public pane: Pane
 
-		private position: google.maps.LatLng | google.maps.LatLngLiteral
+		public position: google.maps.LatLng
 
 		public map = this.getMap()
 
-		private moveHandler: google.maps.MapsEventListener | null
+		public moveHandler: google.maps.MapsEventListener | null
 
 		// eslint-disable-next-line no-shadow
-		constructor(container: HTMLDivElement, pane: string, position: google.maps.LatLngLiteral) {
+		constructor(container: HTMLDivElement, pane: Pane, position: google.maps.LatLng) {
 			super()
 
 			// Initialize all properties.

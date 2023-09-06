@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, isValidElement, useMemo } from 'react'
+import { Children, cloneElement, isValidElement, useMemo } from 'react'
 import { MapMarkersProps } from '../utils/types'
 import OverlayView from './overlay-view'
 
@@ -25,7 +25,7 @@ const MapMarkers = ({ children, map, maps }: MapMarkersProps) => {
 
 				return (
 					<OverlayView
-						position={latLng}
+						position={new maps.LatLng(latLng.lat, latLng.lng)}
 						map={map}
 						maps={maps}
 						zIndex={zIndex}

@@ -62,10 +62,10 @@ export interface MapContextProps {
 }
 
 export interface OverlayViewProps extends MapContextProps {
-	children?: React.ReactNode
+	children?: React.ReactElement
 	drag?: Drag
 	pane?: Pane | undefined
-	position: LatLng | LatLngLiteral
+	position: LatLng
 	zIndex?: number | 0
 }
 
@@ -74,7 +74,7 @@ export interface createOverlayProps {
 	drag?: Drag
 	maps: MapContextProps['maps']
 	pane: Pane
-	position: LatLng | LatLngLiteral
+	position: LatLng
 }
 
 export interface EventProps {
@@ -87,7 +87,7 @@ export interface onGoogleApiLoadedProps extends MapContextProps {
 }
 
 export interface MapMarkersProps extends MapContextProps {
-	children?: React.ReactNode
+	children: React.ReactNode
 }
 
 export interface MapProps {

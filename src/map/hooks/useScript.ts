@@ -1,21 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { useEffect, useState } from 'react'
-
-export type UseScriptStatus = 'idle' | 'loading' | 'ready' | 'error'
-
-export interface ScriptProps {
-	attributes?: { [key: string]: string }
-	callbacks?: {
-		onErrorCallback?: () => void
-		onLoadCallback?: () => void
-	}
-	elementIdToAppend?: string
-	src: string
-}
-export interface UseScriptOptions {
-	removeOnUnmount?: boolean
-	shouldPreventLoad?: boolean
-}
+import { ScriptProps, UseScriptOptions, UseScriptStatus } from '../../utils/types'
 
 // Cached script statuses
 const cachedScriptStatuses: Record<string, UseScriptStatus | undefined> = {}

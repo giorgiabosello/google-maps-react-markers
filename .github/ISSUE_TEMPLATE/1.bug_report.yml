@@ -1,59 +1,59 @@
 name: Bug Report
 description: Create a bug report for Google Maps React Markers
-labels: ["template: bug"]
+labels: ['template: bug']
 body:
-    - type: markdown
-      attributes:
-          value: If you leave out sections there is a high likelihood it will be moved to the GitHub Discussions ["Help" section](https://github.com/giorgiabosello/google-maps-react-markers/discussions/categories/help).
-    - type: checkboxes
-      attributes:
-          label: Verify latest release
-          description: "Verify that your issue reproduces in the [latest release](https://github.com/giorgiabosello/google-maps-react-markers/releases) before opening a new issue."
-          options:
-              - label: I verified that the issue exists in the latest release
-                required: true
-    - type: dropdown
-      attributes:
-          label: I know how to solve the bug
-          description: If you don't know how to solve the bug, the GitHub repository or the CodeSandbox example is required.
-          multiple: false
-          options:
-              - "I know how to solve the bug"
-              - "I don't know how to solve the bug and I will provide an example."
-    - type: input
-      attributes:
-          label: Link to the code that reproduces this issue
-          description: A link to a GitHub repository or a [CodeSandbox](https://codesandbox.io/) minimal reproduction. You can find a minimal reproduction example [here](https://github.com/giorgiabosello/google-maps-react-markers/tree/master/docs/src) and it should include only changes that contribute to the issue.
-      validations:
+  - type: markdown
+    attributes:
+      value: If you leave out sections there is a high likelihood it will be moved to the GitHub Discussions ["Help" section](https://github.com/giorgiabosello/google-maps-react-markers/discussions/categories/help).
+  - type: checkboxes
+    attributes:
+      label: Verify latest release
+      description: 'Verify that your issue reproduces in the [latest release](https://github.com/giorgiabosello/google-maps-react-markers/releases) before opening a new issue.'
+      options:
+        - label: I verified that the issue exists in the latest release
           required: true
-    - type: textarea
-      attributes:
-          label: To Reproduce
-          description: Steps to reproduce the behavior, please provide a clear description of how to reproduce the issue. Screenshots can be provided in the issue body below. If using code blocks, make sure that [syntax highlighting is correct](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks#syntax-highlighting) and double check that the rendered preview is not broken.
-      validations:
-          required: true
-    - type: textarea
-      attributes:
-          label: Describe the Bug
-          description: A clear and concise description of what the bug is.
-      validations:
-          required: true
-    - type: textarea
-      attributes:
-          label: Expected Behavior
-          description: A clear and concise description of what you expected to happen.
-      validations:
-          required: true
-    - type: markdown
-      attributes:
-          value: Before posting the issue go through the steps you've written down to make sure the steps provided are detailed and clear.
-    - type: markdown
-      attributes:
-          value: Contributors should be able to follow the steps provided in order to reproduce the bug.
-    - type: markdown
-      attributes:
-          value: These steps are used to add integration tests to ensure the same issue does not happen again. Thanks in advance!
-    - type: input
-      attributes:
-          label: Which browser are you using? (if relevant)
-          description: "Please specify the exact version. For example: Chrome 100.0.4878.0"
+  - type: dropdown
+    attributes:
+      label: I know how to solve the bug
+      description: If you don't know how to solve the bug, the GitHub repository or the CodeSandbox example is required.
+      multiple: false
+      options:
+        - 'I know how to solve the bug'
+        - "I don't know how to solve the bug and I will provide an example."
+  - type: input
+    attributes:
+      label: Link to the code that reproduces this issue
+      description: A link to a GitHub repository or a [CodeSandbox](https://codesandbox.io/) minimal reproduction. You can find a minimal reproduction example [here](https://github.com/giorgiabosello/google-maps-react-markers/tree/master/docs/src) and it should include only changes that contribute to the issue.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior, please provide a clear description of how to reproduce the issue. Screenshots can be provided in the issue body below. If using code blocks, make sure that [syntax highlighting is correct](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks#syntax-highlighting) and double check that the rendered preview is not broken.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: Before posting the issue go through the steps you've written down to make sure the steps provided are detailed and clear.
+  - type: markdown
+    attributes:
+      value: Contributors should be able to follow the steps provided in order to reproduce the bug.
+  - type: markdown
+    attributes:
+      value: These steps are used to add integration tests to ensure the same issue does not happen again. Thanks in advance!
+  - type: input
+    attributes:
+      label: Which browser are you using? (if relevant)
+      description: 'Please specify the exact version. For example: Chrome 100.0.4878.0'

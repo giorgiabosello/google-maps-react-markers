@@ -1,6 +1,6 @@
 name: Feature Request
 description: Create a bug report for Google Maps React Markers
-labels: ["template: enhancement"]
+labels: ['template: enhancement']
 body:
   - type: markdown
     attributes:
