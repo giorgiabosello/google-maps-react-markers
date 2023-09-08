@@ -30,6 +30,11 @@ The library implements [Google Maps Custom Overlays](https://developers.google.c
 [![Buy me a Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/giorgiabosello)
 [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/giorgiabosello)
 
+## 🚧 Status
+> **Currently working on a fully typed TypeScript version of the library. It will be released soon. Stay tuned!**
+
+Feedbacks are welcome in [this discussion](https://github.com/giorgiabosello/google-maps-react-markers/discussions/109).
+
 ## 🚀 Demo
 
 <a href="https://giorgiabosello.github.io/google-maps-react-markers/" target="blank">
@@ -193,7 +198,9 @@ Do your changes to `src/` or `docs/src` directory, commits all files (ones in `d
 ## 💻 Built with
 
 - [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
 - [Google Maps Custom Overlays](https://developers.google.com/maps/documentation/javascript/customoverlays)
+- [tsup](https://github.com/egoist/tsup): for bundling
 - [ESLint](https://eslint.org/): for linting
 - [Prettier](https://prettier.io/): for code formatting
 
