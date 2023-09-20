@@ -10,7 +10,7 @@ const MapMarkers = ({ children, map, maps }: MapMarkersProps) => {
 
 		return Children.map(children, (child) => {
 			if (isValidElement(child)) {
-				const latLng = { lat: child.props.lat, lng: child.props.lng }
+				const latLng = { lat: child.props.lat, lng: child.props.lng } as google.maps.LatLngLiteral
 				const { zIndex, draggable = false, onDragStart = noop, onDrag = noop, onDragEnd = noop } = child.props || {}
 
 				// clone child without draggable props

@@ -25,7 +25,7 @@ function MapComponent({
 	const prevBoundsRef = useRef<number[] | undefined>()
 	const [map, setMap] = useState<Map>()
 	const [maps, setMaps] = useState<MapsLibrary>()
-	const [googleApiCalled, setGoogleApiCalled] = useState(false)
+	const [googleApiCalled, setGoogleApiCalled] = useState<boolean>(false)
 
 	const onIdle = useCallback(() => {
 		try {
@@ -69,7 +69,7 @@ function MapComponent({
 				new google.maps.Map(mapRef.current as HTMLElement, {
 					center: defaultCenter,
 					zoom: defaultZoom,
-					...options,
+					...(options as google.maps.MapOptions),
 				}),
 			)
 			setMaps(google.maps)

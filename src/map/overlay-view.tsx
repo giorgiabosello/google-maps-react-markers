@@ -5,11 +5,11 @@ import useMemoCompare from './hooks/useMemoCompare'
 import createOverlay from './overlay'
 
 const OverlayView = ({ pane = 'floatPane', position, map, maps, zIndex = 0, children, drag }: OverlayViewProps) => {
-	const container = useMemo(() => {
+	const container = useMemo<HTMLDivElement>(() => {
 		// eslint-disable-next-line no-undef
-		const div = document.createElement('div')
+		const div = document.createElement('div') as HTMLDivElement
 		div.style.position = 'absolute'
-		return div
+		return div as HTMLDivElement
 	}, [])
 
 	const overlay = useMemo(
@@ -20,7 +20,7 @@ const OverlayView = ({ pane = 'floatPane', position, map, maps, zIndex = 0, chil
 	// Because React does not do deep comparisons, a custom hook is used.
 	// This fixes the issue where the overlay is not updated when the position changes.
 	const childrenProps = useMemoCompare(
-		children?.props,
+		children?.props as any,
 		(prev: { lat: any; lng: any }, next: { lat: any; lng: any }) =>
 			prev && prev.lat === next.lat && prev.lng === next.lng,
 	)

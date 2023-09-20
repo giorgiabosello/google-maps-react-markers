@@ -3,7 +3,7 @@ import { Pane, createOverlayProps } from '../utils/types'
 // return lat, lng from LatLngLiteral
 const getLatLng = (LatLng: google.maps.LatLng | null) => {
 	try {
-		const latLng = { lat: LatLng?.lat(), lng: LatLng?.lng() }
+		const latLng = { lat: LatLng?.lat(), lng: LatLng?.lng() } as google.maps.LatLngLiteral
 		return latLng
 	} catch (e) {
 		return LatLng
@@ -60,15 +60,15 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 				})
 			}
 			// Add the element to the pane.
-			const currentPane = this.getPanes()?.[this.pane]
+			const currentPane = this.getPanes()?.[this.pane] as HTMLElement
 			currentPane?.classList.add('google-map-markers-overlay')
 			currentPane?.appendChild(this.container)
 		}
 
 		draw = () => {
-			const projection = this.getProjection()
+			const projection = this.getProjection() as google.maps.MapCanvasProjection
 			// Computes the pixel coordinates of the given geographical location in the DOM element that holds the draggable map.
-			const point = projection.fromLatLngToDivPixel(this.position)
+			const point = projection.fromLatLngToDivPixel(this.position) as google.maps.Point
 			if (point === null) return
 			this.container.style.transform = `translate(${point.x}px, ${point.y}px)`
 			this.container.style.width = '0px'

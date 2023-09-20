@@ -48,7 +48,7 @@ function useScript(
 	},
 	forcedStatus?: UseScriptStatus,
 	options: UseScriptOptions = { removeOnUnmount: false, shouldPreventLoad: false },
-) {
+): 'idle' | 'loading' | 'ready' | 'error' {
 	const [status, setStatus] = useState<UseScriptStatus>(() => {
 		if (!script.src || options?.shouldPreventLoad) {
 			return 'idle'

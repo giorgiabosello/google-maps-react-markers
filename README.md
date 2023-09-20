@@ -66,6 +66,8 @@ npm install --save google-maps-react-markers
 ## 💻 Usage
 
 ```jsx
+import GoogleMap from 'google-maps-react-markers'
+
 const App = () => {
   const mapRef = useRef(null)
   const [mapReady, setMapReady] = useState(false)
