@@ -1,46 +1,59 @@
 {
 	"root": true,
-	"extends": [
-		"eslint:recommended",
-		"plugin:prettier/recommended",
-		"plugin:react-hooks/recommended",
-		"plugin:import/recommended",
-		"plugin:react/recommended",
-		"prettier"
-	],
-	"plugins": ["react-hooks", "prettier", "typescript", "jsx"],
-	"rules": {
-		"import/no-unresolved": 0,
-		"import/first": "error",
-		"import/newline-after-import": "error",
-		"import/no-duplicates": "error",
-		"react/react-in-jsx-scope": "off",
-		"react-hooks/rules-of-hooks": "error",
-		"react-hooks/exhaustive-deps": "warn",
-		"react/prop-types": "warn",
-		"react/no-unknown-property": "warn"
-	},
 	"env": {
+		"browser": true,
+		"es2021": true,
 		"es6": true,
-		"node": true,
-		"browser": true
+		"node": true
 	},
-	"settings": {
-		"react": {
-			"version": "detect"
-		}
-	},
-	"parser": "@babel/eslint-parser",
+	"extends": ["plugin:react/recommended", "airbnb", "prettier"],
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"sourceType": "module",
-		"ecmaVersion": 2022,
-		"requireConfigFile": false,
-		"babelOptions": {
-			"presets": ["@babel/preset-react"]
-		}
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": "latest",
+		"sourceType": "module"
 	},
-	"ignorePatterns": ["**/dist/**/*"],
+	"plugins": ["react", "@typescript-eslint", "typescript-sort-keys", "unused-imports", "prettier", "prefer-arrow", "sort-class-members"],
+	"rules": {
+		"@typescript-eslint/no-unused-vars": "error",
+		"import/extensions": "off",
+		"import/no-extraneous-dependencies": "off",
+		"import/no-unresolved": "off",
+		"import/prefer-default-export": "off",
+		"no-nested-ternary": "off",
+		"no-plusplus": "off",
+		"no-unused-vars": "off",
+		"no-use-before-define": "off",
+		"prettier/prettier": "error",
+		"react/destructuring-assignment": "off",
+		"react/function-component-definition": "off",
+		"react/jsx-filename-extension": "off",
+		"react/jsx-props-no-spreading": "off",
+		"react/react-in-jsx-scope": "off",
+		"react/require-default-props": "off",
+		"typescript-sort-keys/interface": "error",
+		"typescript-sort-keys/string-enum": "error",
+		"unused-imports/no-unused-imports": "error",
+		"prefer-arrow/prefer-arrow-functions": [
+			"error",
+			{
+				"disallowPrototype": true,
+				"singleReturnOnly": true,
+				"classPropertiesAllowed": false
+			}
+		],
+		"sort-class-members/sort-class-members": [
+			"error",
+			{
+				"order": ["[static-properties]", "[properties]", "[conventional-private-properties]", "constructor", "[static-methods]", "[methods]", "[conventional-private-methods]"],
+				"accessorPairPositioning": "getThenSet"
+			}
+		]
+	},
 	"globals": {
-		"globalThis": "readonly"
+		"globalThis": "readonly",
+		"google": "readonly"
 	}
 }

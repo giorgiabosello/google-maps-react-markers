@@ -1,8 +1,10 @@
 import { func, number, oneOfType, string } from 'prop-types'
+import React from 'react'
 import markerPin from './marker-pin.png'
 
-const Marker = ({ className, lat, lng, markerId, onClick, ...props }) => {
-	return (
+const Marker = ({ className, lat, lng, markerId, onClick, ...props }) =>
+	lat && lng ? (
+		// eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
 		<img
 			className={className}
 			src={markerPin}
@@ -15,8 +17,7 @@ const Marker = ({ className, lat, lng, markerId, onClick, ...props }) => {
 			alt={markerId}
 			{...props}
 		/>
-	)
-}
+	) : null
 
 Marker.propTypes = {
 	className: string,

@@ -1,5 +1,5 @@
 import GoogleMap from 'google-maps-react-markers'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Info from './info'
 import mapOptions from './map-options.json'
 import Marker from './marker'
@@ -55,14 +55,13 @@ const App = () => {
 	 * @param {Object} map - reference to the map instance
 	 * @param {Object} maps - reference to the maps library
 	 */
-	// eslint-disable-next-line no-unused-vars
-	const onGoogleApiLoaded = ({ map, maps }) => {
+	const onGoogleApiLoaded = ({ map /* , maps */ }) => {
 		mapRef.current = map
 		setMapReady(true)
 	}
 
 	// eslint-disable-next-line no-unused-vars
-	const onMarkerClick = (e, { markerId, lat, lng }) => {
+	const onMarkerClick = (e, { markerId /* , lat, lng */ }) => {
 		setHighlighted(markerId)
 	}
 
@@ -102,6 +101,7 @@ const App = () => {
 				>
 					{currCoordinates.map(({ lat, lng, name }, index) => (
 						<Marker
+							// eslint-disable-next-line react/no-array-index-key
 							key={index}
 							lat={lat}
 							lng={lng}

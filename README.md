@@ -30,8 +30,9 @@ The library implements [Google Maps Custom Overlays](https://developers.google.c
 [![Buy me a Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/giorgiabosello)
 [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/giorgiabosello)
 
-## 🚧 Status
-> **Currently working on a fully typed TypeScript version of the library. It will be released soon. Stay tuned!**
+## 💬 Discussion
+
+> **Released TypeScript version of the library!**
 
 Feedbacks are welcome in [this discussion](https://github.com/giorgiabosello/google-maps-react-markers/discussions/109).
 
@@ -108,7 +109,7 @@ const App = () => {
             lat={lat}
             lng={lng}
             markerId={name}
-            onClick={onMarkerClick}
+            onClick={onMarkerClick} // you need to manage this prop on your Marker component!
             // draggable={true}
             // onDragStart={(e, { latLng }) => {}}
             // onDrag={(e, { latLng }) => {}}
@@ -164,6 +165,10 @@ export default App
 For clustering, follow this [guide](https://www.leighhalliday.com/google-maps-clustering) using [useSupercluster Hook](https://github.com/leighhalliday/use-supercluster), but use bounds in this way:
 
 ```jsx
+const [mapBounds, setMapBounds] = useState({
+  bounds: [0, 0, 0, 0],
+  zoom: 0,
+})
 const onMapChange = ({ bounds, zoom }) => {
   const ne = bounds.getNorthEast()
   const sw = bounds.getSouthWest()

@@ -1,0 +1,10 @@
+dist
+coverage
+.prettierignore
+yarn.lock
+*.snap
+.npmrc
+.husky
+.gitignore
+.editorconfig
+.env.template

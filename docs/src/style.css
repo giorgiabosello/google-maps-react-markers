@@ -1,7 +1,9 @@
 body {
 	background-color: #191919;
 	color: #fff;
-	font-family: Roboto Mono, monospace;
+	font-family:
+		Roboto Mono,
+		monospace;
 	font-size: 0.8rem;
 }
 
