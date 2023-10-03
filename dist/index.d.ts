@@ -7,12 +7,45 @@ declare global {
         googleMapsCallback?: () => void;
     }
 }
+type MapMouseEvent = google.maps.MapMouseEvent;
 type Map = google.maps.Map;
 type MapsLibrary = typeof google.maps;
+type MapPanes = google.maps.MapPanes;
 type MapOptions = google.maps.MapOptions;
+type LatLng = google.maps.LatLng;
 type LatLngLiteral = google.maps.LatLngLiteral;
 type LatLngBounds = google.maps.LatLngBounds;
+type LatLngBoundsLiteral = google.maps.LatLngBoundsLiteral;
+/**
+ * The drag configuration of the overlay.
+ */
+type Drag = {
+    /**
+     * Whether the overlay is draggable.
+     * @default false
+     */
+    draggable: boolean;
+    /**
+     * Callback fired repeatedly when the overlay is dragged.
+     * @param e The event.
+     * @param props The props.
+     */
+    onDrag: (e: MouseEvent, props: {}) => void;
+    /**
+     * Callback fired when the drag has ended.
+     * @param e The event.
+     * @param props The props.
+     */
+    onDragEnd: (e: MouseEvent, props: {}) => void;
+    /**
+     * Callback fired when the drag has started.
+     * @param e The event.
+     * @param props The props.
+     */
+    onDragStart: (e: MouseEvent, props: {}) => void;
+};
 type UseScriptStatus = 'idle' | 'loading' | 'ready' | 'error';
+type Pane = 'floatPane' | 'mapPane' | 'markerLayer' | 'overlayLayer' | 'overlayMouseTarget';
 interface IUseGoogleMaps {
     /**
      * The Google Maps API key.
@@ -49,6 +82,42 @@ interface IUseGoogleMaps {
      */
     status?: UseScriptStatus;
 }
+interface ScriptProps {
+    /**
+     * The attributes to be passed to the script element.
+     */
+    attributes?: {
+        [key: string]: string;
+    };
+    /**
+     * The callback to be called when the script has loaded
+     * successfully or has failed to load.
+     */
+    callbacks?: {
+        onErrorCallback?: () => void;
+        onLoadCallback?: () => void;
+    };
+    /**
+     * The ID of the HTML element where the script will be appended.
+     * If not provided, the script will be appended to the `body` element.
+     */
+    elementIdToAppend?: string;
+    /**
+     * The URL of the script to be loaded.
+     */
+    src: string;
+}
+interface UseScriptOptions {
+    /**
+     * Whether to remove the script when the component unmounts.
+     */
+    removeOnUnmount?: boolean;
+    /**
+     * Whether to prevent the script from loading.
+     * @default false
+     */
+    shouldPreventLoad?: boolean;
+}
 interface MapContextProps {
     /**
      * The Google Maps instance.
@@ -58,6 +127,55 @@ interface MapContextProps {
      * The Google Maps API object.
      */
     maps: MapsLibrary;
+}
+interface OverlayViewProps extends MapContextProps {
+    /**
+     * The children to be rendered within the overlay.
+     */
+    children?: React__default.ReactElement;
+    /**
+     * The drag configuration of the overlay.
+     * @default { draggable: false }
+     */
+    drag?: Drag;
+    /**
+     * The map pane in which to render the overlay.
+     * @default 'floatPane'
+     */
+    pane?: Pane | undefined;
+    /**
+     * The geographical coordinates of the overlay.
+     */
+    position: LatLng;
+    /**
+     * The z-index of the overlay.
+     * @default 0
+     */
+    zIndex?: number | 0;
+}
+interface createOverlayProps {
+    /**
+     * The HTML container element in which to render the overlay.
+     */
+    container: HTMLDivElement;
+    /**
+     * The drag configuration of the overlay.
+     * @default { draggable: false }
+     */
+    drag?: Drag;
+    /**
+     * The Google Maps API object.
+     */
+    maps: MapContextProps['maps'];
+    /**
+     * The map pane in which to render the overlay.
+     * @default 'floatPane'
+     */
+    pane: Pane;
+    /**
+     * The geographical coordinates of the overlay.
+     */
+    position: LatLng;
 }
 interface EventProps {
     /**
@@ -78,6 +196,12 @@ interface onGoogleApiLoadedProps extends MapContextProps {
      * The ref of the Map.
      */
     ref: HTMLDivElement | null;
+}
+interface MapMarkersProps extends MapContextProps {
+    /**
+     * The Markers to be rendered on the map.
+     */
+    children: React__default.ReactNode;
 }
 interface MapProps {
     /**
@@ -168,4 +292,4 @@ interface GoogleMapProps extends MapProps, IUseGoogleMaps {
 
 declare const GoogleMap: React.ForwardRefExoticComponent<GoogleMapProps & React.RefAttributes<HTMLDivElement>>;
 
-export { GoogleMap as default };
+export { Drag, EventProps, GoogleMapProps, IUseGoogleMaps, LatLng, LatLngBounds, LatLngBoundsLiteral, LatLngLiteral, Map, MapContextProps, MapMarkersProps, MapMouseEvent, MapOptions, MapPanes, MapProps, MapsLibrary, OverlayViewProps, Pane, ScriptProps, UseScriptOptions, UseScriptStatus, createOverlayProps, GoogleMap as default, onGoogleApiLoadedProps };
