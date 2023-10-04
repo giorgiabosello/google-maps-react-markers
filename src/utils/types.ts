@@ -7,9 +7,6 @@ declare global {
 	}
 }
 
-window.googleMapsCallback = () => {}
-window.google = undefined
-
 export type MapMouseEvent = google.maps.MapMouseEvent
 export type Map = google.maps.Map
 export type MapsLibrary = typeof google.maps
