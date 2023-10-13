@@ -104,7 +104,6 @@
 		"react-dom": "^18.2.0",
 		"react-scripts": "^5.0.1",
 		"release-it": "16.1.5",
-		"storybook": "7.4.0",
 		"tsup": "7.2.0",
 		"typescript": "5.2.2",
 		"yalc": "1.0.0-pre.53"
