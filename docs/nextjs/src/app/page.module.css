@@ -1,0 +1,138 @@
+.main {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	padding: 2rem;
+	min-height: 100vh;
+}
+
+.description {
+	display: inherit;
+	justify-content: inherit;
+	align-items: inherit;
+	font-size: 0.85rem;
+	width: 100%;
+	z-index: 2;
+	font-family: var(--font-mono);
+	margin-bottom: 1rem;
+	padding: 1rem;
+	background-color: rgba(var(--callout-rgb), 0.5);
+	border: 1px solid rgba(var(--callout-border-rgb), 0.3);
+	border-radius: var(--border-radius);
+}
+
+.card {
+	padding: 1rem 1.2rem;
+	border-radius: var(--border-radius);
+	background: rgba(var(--card-rgb), 0);
+	border: 1px solid rgba(var(--card-border-rgb), 0);
+	transition:
+		background 200ms,
+		border 200ms;
+}
+
+.card span {
+	display: inline-block;
+	transition: transform 200ms;
+}
+
+.card h2 {
+	font-weight: 600;
+	margin-bottom: 0.7rem;
+}
+
+.card p {
+	margin: 0;
+	opacity: 0.6;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	max-width: 30ch;
+}
+
+.marker {
+	transform: scale(0);
+	animation: 400ms reveal forwards;
+}
+
+.mapContainer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.action {
+	color: #000;
+	background: rgb(255, 255, 107);
+	border: 0;
+	padding: 10px;
+	margin: 5px 0;
+	cursor: pointer;
+	font-weight: bold;
+	margin: 1rem 0 2rem;
+}
+
+.container h1,
+.container h2,
+.container h3 {
+	color: rgb(255, 255, 107);
+	margin: 0.5rem 0;
+}
+
+.container p {
+	margin-bottom: 8px;
+}
+
+.grid {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+	.card:hover {
+		background: rgba(var(--card-rgb), 0.1);
+		border: 1px solid rgba(var(--card-border-rgb), 0.15);
+	}
+
+	.card:hover span {
+		transform: translateX(4px);
+	}
+}
+
+@media (prefers-reduced-motion) {
+	.card:hover span {
+		transform: none;
+	}
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+	.content {
+		padding: 4rem;
+	}
+
+	.card {
+		padding: 1rem 2.5rem;
+	}
+
+	.card h2 {
+		margin-bottom: 0.5rem;
+	}
+
+	.description {
+		font-size: 0.8rem;
+	}
+
+	.description a {
+		padding: 1rem;
+	}
+}
+
+@keyframes reveal {
+	to {
+		transform: scale(1);
+	}
+}
