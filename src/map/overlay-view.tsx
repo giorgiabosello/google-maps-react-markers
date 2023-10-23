@@ -1,10 +1,18 @@
-import { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { OverlayViewProps } from '../utils/types'
 import useMemoCompare from './hooks/useMemoCompare'
 import createOverlay from './overlay'
 
-const OverlayView = ({ pane = 'floatPane', position, map, maps, zIndex = 0, children, drag }: OverlayViewProps) => {
+const OverlayView = ({
+	pane = 'floatPane',
+	position,
+	map,
+	maps,
+	zIndex = 0,
+	children,
+	drag,
+}: OverlayViewProps): React.JSX.Element => {
 	const container = useMemo<HTMLDivElement>(() => {
 		// eslint-disable-next-line no-undef
 		const div = document.createElement('div') as HTMLDivElement
