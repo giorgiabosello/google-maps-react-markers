@@ -195,12 +195,18 @@ yarn dev
 
 ```bash
 # in another tab
+## with NextJS and SSR
+cd docs/nextjs
+yarn install
+yarn dev
+
+## with CRA and CSR
 cd docs
 yarn install
 yarn dev
 ```
 
-Do your changes to `src/` or `docs/src` directory, commits all files (ones in `dist` too) and open a PR.
+Do your changes to `src/` or `docs/src` or `docs/nextjs/src` directory, commits all files (`yarn.lock` and ones in `dist` too) and open a PR.
 
 ## 💻 Built with
 
