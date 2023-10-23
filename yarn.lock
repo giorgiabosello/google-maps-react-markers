@@ -5353,9 +5353,9 @@ eslint-plugin-react@7.33.2, eslint-plugin-react@^7.27.1:
     string.prototype.matchall "^4.0.8"
 
 eslint-plugin-sort-class-members@^1.18.0:
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.18.0.tgz#561746eb30abc4e8bb8d582d359c652299e450d8"
-  integrity sha512-y4r5OC3LJNHJZCWfVwFnnRiNrQ/LRf7Pb1wD6/CP8Y4qmUvjtmkwrLvyY755p8SFTOOXVd33HgFuF3XxVW1xbg==
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.19.0.tgz#9ad7a674c4cb477fceaddb8162515372d381c733"
+  integrity sha512-YayvASA1bavdPeRU9FMPnale2+Oi3aMcHGVC5EUm9b671oxm7ahvR+q8BfsU2aV+KAFezNfu47VPgdZK6gwYPw==
 
 eslint-plugin-testing-library@^5.0.1:
   version "5.11.1"
