@@ -189,24 +189,18 @@ const onMapChange = ({ bounds, zoom }) => {
 To run the project locally, clone the repo and run:
 
 ```bash
+# in the root directory
 yarn install
-yarn dev
 ```
 
 ```bash
-# in another tab
-## with NextJS and SSR
-cd docs/nextjs
-yarn install
-yarn dev
-
-## with CRA and CSR
+# in another tab (with NextJS and SSR)
 cd docs
 yarn install
 yarn dev
 ```
 
-Do your changes to `src/` or `docs/src` or `docs/nextjs/src` directory, commits all files (`yarn.lock` and ones in `dist` too) and open a PR.
+Do your changes to `src/` or `docs/src` directory, commits all files in the root directory (`yarn.lock` and ones in `dist` too) and open a PR.
 
 ## 💻 Built with
 
