@@ -1,4 +1,4 @@
-import styles from '../page.module.css'
+import styles from '../app/page.module.css'
 
 interface InfoProps {
 	bounds?: number[]

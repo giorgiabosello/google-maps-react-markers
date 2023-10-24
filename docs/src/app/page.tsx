@@ -1,71 +1,37 @@
-import GoogleMap from 'google-maps-react-markers'
-import React, { useEffect, useRef, useState } from 'react'
-import Info from './info'
-import mapOptions from './map-options.json'
-import Marker from './marker'
-import './style.css'
+'use client'
 
-const coordinates = [
-	[
-		{
-			lat: 45.4046987,
-			lng: 12.2472504,
-			name: 'Venice',
-		},
-		{
-			lat: 41.9102415,
-			lng: 12.3959151,
-			name: 'Rome',
-		},
-		{
-			lat: 45.4628328,
-			lng: 9.1076927,
-			name: 'Milan',
-		},
-	],
-	[
-		{
-			lat: 40.8518,
-			lng: 14.2681,
-			name: 'Naples',
-		},
-		{
-			lat: 43.7696,
-			lng: 11.2558,
-			name: 'Florence',
-		},
-		{
-			lat: 37.5023,
-			lng: 15.0873,
-			name: 'Catania',
-		},
-	],
-]
+import GoogleMap, { LatLngBounds, MapContextProps } from 'google-maps-react-markers'
+import { useEffect, useRef, useState } from 'react'
+import coordinates from '../components/coordinates'
+import Info from '../components/info'
+import mapOptions from '../components/map-options.json'
+import Marker from '../components/marker'
+import styles from './page.module.css'
 
-const App = () => {
-	const mapRef = useRef(null)
-	const [mapReady, setMapReady] = useState(false)
-	const [mapBounds, setMapBounds] = useState({})
-	const [usedCoordinates, setUsedCoordinates] = useState(0)
+export default function Home() {
+	const mapRef = useRef<any>(null)
+	const [mapReady, setMapReady] = useState<boolean>(false)
+	const [mapBounds, setMapBounds] = useState<{ bounds: number[]; zoom: number }>({ bounds: [], zoom: 0 })
+	const [usedCoordinates, setUsedCoordinates] = useState<number>(0)
 	const [currCoordinates, setCurrCoordinates] = useState(coordinates[usedCoordinates])
-	const [highlighted, setHighlighted] = useState(null)
+	const [highlighted, setHighlighted] = useState<string | null>(null)
 
 	/**
 	 * @description This function is called when the map is ready
 	 * @param {Object} map - reference to the map instance
 	 * @param {Object} maps - reference to the maps library
 	 */
-	const onGoogleApiLoaded = ({ map /* , maps */ }) => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const onGoogleApiLoaded = ({ map, maps }: { map: MapContextProps['map']; maps: MapContextProps['maps'] }) => {
 		mapRef.current = map
 		setMapReady(true)
 	}
 
-	// eslint-disable-next-line no-unused-vars
-	const onMarkerClick = (e, { markerId /* , lat, lng */ }) => {
+	const onMarkerClick = (e: any, { markerId /* , lat, lng */ }: { lat: number; lng: number; markerId: string }) => {
 		setHighlighted(markerId)
 	}
 
-	const onMapChange = ({ bounds, zoom }) => {
+	const onMapChange = ({ bounds, zoom }: { bounds: LatLngBounds; zoom: number }) => {
 		const ne = bounds.getNorthEast()
 		const sw = bounds.getSouthWest()
 		/**
@@ -85,11 +51,12 @@ const App = () => {
 	useEffect(() => {
 		setCurrCoordinates(coordinates[usedCoordinates])
 	}, [usedCoordinates])
-
 	return (
-		<main>
-			{mapReady && <Info buttonAction={updateCoordinates} coordinates={currCoordinates} mapBounds={mapBounds} />}
-			<div className="map-container">
+		<main className={styles.main}>
+			<div className={styles.description}>
+				{mapReady && <Info buttonAction={updateCoordinates} coordinates={currCoordinates} bounds={mapBounds?.bounds} />}
+			</div>
+			<div className={styles.mapContainer}>
 				<GoogleMap
 					apiKey=""
 					defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }}
@@ -107,7 +74,7 @@ const App = () => {
 							lng={lng}
 							markerId={name}
 							onClick={onMarkerClick}
-							className="marker"
+							className={styles.marker}
 							// draggable={true}
 							// onDragStart={(e, { latLng }) => {}}
 							// onDrag={(e, { latLng }) => {}}
@@ -124,8 +91,20 @@ const App = () => {
 					</div>
 				)}
 			</div>
+
+			<div className={styles.grid}>
+				<a
+					href="https://github.com/giorgiabosello/google-maps-react-markers"
+					className={styles.card}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<h2>
+						GitHub <span>-&gt;</span>
+					</h2>
+					<p>Find the source code on GitHub.</p>
+				</a>
+			</div>
 		</main>
 	)
 }
-
-export default App
