@@ -22,7 +22,7 @@ function MapComponent({
 	events = [],
 }: MapProps) {
 	const mapRef = useRef<HTMLDivElement>(null)
-	const prevBoundsRef = useRef<number[] | undefined>()
+	const prevBoundsRef = useRef<number[]>([])
 	const [map, setMap] = useState<Map>()
 	const [maps, setMaps] = useState<MapsLibrary>()
 	const [googleApiCalled, setGoogleApiCalled] = useState<boolean>(false)
