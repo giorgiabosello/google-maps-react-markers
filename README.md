@@ -88,7 +88,7 @@ const App = () => {
 
     // inside the map instance you can call any google maps method
     mapRef.current.setCenter({ lat, lng })
-    // rif. https://developers.google.com/maps/documentation/javascript/reference?hl=it
+    // ref. https://developers.google.com/maps/documentation/javascript/reference?hl=it
   }
 
   return (
