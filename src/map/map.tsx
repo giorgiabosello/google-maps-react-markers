@@ -83,7 +83,7 @@ function MapComponent({
 				setGoogleApiCalled(true)
 			}
 
-			google.maps.event.clearListeners(map, 'idle')
+			if (google.maps.event.hasListeners(map, 'idle')) google.maps.event.clearListeners(map, 'idle')
 			// Idle event is fired when the map becomes idle after panning or zooming.
 			google.maps.event.addListener(map, 'idle', onIdle)
 		}

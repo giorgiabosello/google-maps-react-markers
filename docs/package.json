@@ -9,9 +9,12 @@
 		"start": "next start",
 		"lint": "next lint"
 	},
+	"engines": {
+		"node": ">=18.17.0"
+	},
 	"dependencies": {
 		"google-maps-react-markers": "link:..",
-		"next": "13.5.4",
+		"next": "14.0.1",
 		"react": "link:../node_modules/react",
 		"react-dom": "link:../node_modules/react-dom"
 	},

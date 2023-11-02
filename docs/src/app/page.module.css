@@ -90,6 +90,35 @@
 	width: 100%;
 }
 
+.highlighted {
+	position: absolute;
+	bottom: 20px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	max-width: fit-content;
+	/* card style */
+	background-color: #000;
+	padding: 10px;
+	border-radius: 5px;
+	/* text style */
+	color: #fff;
+	font-size: 1rem;
+	text-align: center;
+	/* animation */
+	transform: scale(0);
+	animation: 400ms reveal forwards;
+}
+
+.highlighted button {
+	font-size: 1rem;
+	color: rgb(255, 255, 107);
+	background-color: transparent;
+	border: 0;
+	padding: 4px;
+	cursor: pointer;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
 	.card:hover {
