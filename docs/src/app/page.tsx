@@ -83,7 +83,7 @@ export default function Home() {
 					))}
 				</GoogleMap>
 				{highlighted && (
-					<div className="highlighted">
+					<div className={styles.highlighted}>
 						{highlighted}{' '}
 						<button type="button" onClick={() => setHighlighted(null)}>
 							X

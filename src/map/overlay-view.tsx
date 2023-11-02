@@ -14,7 +14,6 @@ const OverlayView = ({
 	drag,
 }: OverlayViewProps): React.JSX.Element => {
 	const container = useMemo<HTMLDivElement>(() => {
-		// eslint-disable-next-line no-undef
 		const div = document.createElement('div') as HTMLDivElement
 		div.style.position = 'absolute'
 		return div as HTMLDivElement
