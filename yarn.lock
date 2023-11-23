@@ -1687,9 +1687,9 @@
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
 
 "@types/google.maps@^3.54.6":
-  version "3.54.6"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.54.6.tgz#ec2f82126f0a23427d62c480198972996bca3dc6"
-  integrity sha512-cTGbsddDgEwZ/6xPywI7HKbeYJkfXFg92HdYnlE0HO3gT/030CVdUHLO2uQOkEo0YMp6TRPqTlAnRGNbQJu8vw==
+  version "3.54.8"
+  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.54.8.tgz#56db76153a4ec90a9a03368afec7a806f8c7d551"
+  integrity sha512-xHdc9bzyMFJK4cyl3FIyXYQYrLES06apQ3TPRllVsLOcwqqCeCRB6o6OdZw8NoJPwmBPIHT+KBBb6e9bccwFkQ==
 
 "@types/http-cache-semantics@^4.0.2":
   version "4.0.3"
