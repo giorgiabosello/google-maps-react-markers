@@ -77,17 +77,17 @@ function MapComponent({
 	}, [defaultCenter, defaultZoom, map, mapRef, options])
 
 	useEffect(() => {
-		if (map) {
-			if (!googleApiCalled) {
-				if (onGoogleApiLoaded && maps) onGoogleApiLoaded({ map, maps, ref: mapRef.current })
-				setGoogleApiCalled(true)
+		if (map && !googleApiCalled) {
+			if (typeof onGoogleApiLoaded === 'function' && maps) {
+				onGoogleApiLoaded({ map, maps, ref: mapRef.current })
 			}
+			setGoogleApiCalled(true)
 
 			if (google.maps.event.hasListeners(map, 'idle')) google.maps.event.clearListeners(map, 'idle')
 			// Idle event is fired when the map becomes idle after panning or zooming.
 			google.maps.event.addListener(map, 'idle', onIdle)
 		}
-	}, [googleApiCalled, map, maps, onChange, onGoogleApiLoaded, onIdle])
+	}, [googleApiCalled, map, onGoogleApiLoaded])
 
 	useEffect(
 		() =>
