@@ -69,7 +69,15 @@
 	margin: 5px 0;
 	cursor: pointer;
 	font-weight: bold;
-	margin: 1rem 0 2rem;
+	margin: 1rem 0 0;
+}
+
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	width: 100%;
+	gap: 16px;
 }
 
 .container h1,
@@ -81,6 +89,19 @@
 
 .container p {
 	margin-bottom: 8px;
+}
+
+.info,
+.bounds {
+	width: 100%;
+	flex-basis: 100%;
+}
+
+.buttonContainer {
+	width: 100%;
+	flex-basis: 100%;
+	text-align: center;
+	margin-top: 1rem;
 }
 
 .grid {
@@ -157,6 +178,19 @@
 
 	.description a {
 		padding: 1rem;
+	}
+}
+
+/* Desktop */
+@media (min-width: 700px) {
+	.container {
+		justify-content: space-between;
+	}
+
+	.info,
+	.bounds {
+		width: calc(50% - 16px);
+		flex-basis: calc(50% - 16px);
 	}
 }
 

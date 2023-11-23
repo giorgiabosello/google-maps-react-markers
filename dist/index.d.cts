@@ -292,4 +292,4 @@ interface GoogleMapProps extends MapProps, IUseGoogleMaps {
 
 declare const GoogleMap: React.ForwardRefExoticComponent<GoogleMapProps & React.RefAttributes<HTMLDivElement>>;
 
-export { Drag, EventProps, GoogleMapProps, IUseGoogleMaps, LatLng, LatLngBounds, LatLngBoundsLiteral, LatLngLiteral, Map, MapContextProps, MapMarkersProps, MapMouseEvent, MapOptions, MapPanes, MapProps, MapsLibrary, OverlayViewProps, Pane, ScriptProps, UseScriptOptions, UseScriptStatus, createOverlayProps, GoogleMap as default, onGoogleApiLoadedProps };
+export { type Drag, type EventProps, type GoogleMapProps, type IUseGoogleMaps, type LatLng, type LatLngBounds, type LatLngBoundsLiteral, type LatLngLiteral, type Map, type MapContextProps, type MapMarkersProps, type MapMouseEvent, type MapOptions, type MapPanes, type MapProps, type MapsLibrary, type OverlayViewProps, type Pane, type ScriptProps, type UseScriptOptions, type UseScriptStatus, type createOverlayProps, GoogleMap as default, type onGoogleApiLoadedProps };
