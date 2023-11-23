@@ -14,7 +14,7 @@
 	},
 	"dependencies": {
 		"google-maps-react-markers": "link:..",
-		"next": "14.0.1",
+		"next": "14.0.3",
 		"react": "link:../node_modules/react",
 		"react-dom": "link:../node_modules/react-dom"
 	},
@@ -23,7 +23,7 @@
 		"@types/react": "link:../node_modules/@types/react",
 		"@types/react-dom": "link:../node_modules/@types/react-dom",
 		"eslint": "link:../node_modules/eslint",
-		"eslint-config-next": "13.5.4",
+		"eslint-config-next": "14.0.3",
 		"typescript": "link:../node_modules/typescript"
 	}
 }
