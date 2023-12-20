@@ -16,6 +16,10 @@ export default function Home() {
 	const [currCoordinates, setCurrCoordinates] = useState(coordinates[usedCoordinates])
 	const [highlighted, setHighlighted] = useState<string | null>(null)
 
+	const [dragStart, setDragStart] = useState<{ lat: number; lng: number } | null>(null)
+	const [dragEnd, setDragEnd] = useState<{ lat: number; lng: number } | null>(null)
+	const [dragging, setDragging] = useState<{ lat: number; lng: number } | null>(null)
+
 	/**
 	 * @description This function is called when the map is ready
 	 * @param {Object} map - reference to the map instance
@@ -46,19 +50,37 @@ export default function Home() {
 		setHighlighted(null)
 	}
 
-	const updateCoordinates = () => setUsedCoordinates(!usedCoordinates ? 1 : 0)
+	const updateCoordinates = () => {
+		setUsedCoordinates(!usedCoordinates ? 1 : 0)
+		// reset drag
+		setDragStart(null)
+		setDragEnd(null)
+		setDragging(null)
+	}
 
 	useEffect(() => {
 		setCurrCoordinates(coordinates[usedCoordinates])
 	}, [usedCoordinates])
+
 	return (
 		<main className={styles.main}>
 			<div className={styles.description}>
-				{mapReady && <Info buttonAction={updateCoordinates} coordinates={currCoordinates} bounds={mapBounds?.bounds} />}
+				{mapReady && (
+					<Info
+						buttonAction={updateCoordinates}
+						coordinates={currCoordinates}
+						bounds={mapBounds?.bounds}
+						drag={{
+							dragStart,
+							dragEnd,
+							dragging,
+						}}
+					/>
+				)}
 			</div>
 			<div className={styles.mapContainer}>
 				<GoogleMap
-					apiKey=""
+					apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}
 					defaultCenter={{ lat: 45.4046987, lng: 12.2472504 }}
 					defaultZoom={5}
 					options={mapOptions}
@@ -75,16 +97,16 @@ export default function Home() {
 							markerId={name}
 							onClick={onMarkerClick}
 							className={styles.marker}
-							// draggable={true}
-							// onDragStart={(e, { latLng }) => {}}
-							// onDrag={(e, { latLng }) => {}}
-							// onDragEnd={(e, { latLng }) => {}}
+							draggable={index === 0}
+							onDrag={(e, { latLng }) => setDragging({ lat: latLng.lat, lng: latLng.lng })}
+							onDragStart={(e, { latLng }) => setDragStart({ lat: latLng.lat, lng: latLng.lng })}
+							onDragEnd={(e, { latLng }) => setDragEnd({ lat: latLng.lat, lng: latLng.lng })}
 						/>
 					))}
 				</GoogleMap>
 				{highlighted && (
 					<div className={styles.highlighted}>
-						{highlighted}{' '}
+						{highlighted}
 						<button type="button" onClick={() => setHighlighted(null)}>
 							X
 						</button>

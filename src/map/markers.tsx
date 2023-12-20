@@ -17,7 +17,7 @@ const MapMarkers = ({ children, map, maps }: MapMarkersProps) => {
 				// eslint-disable-next-line no-param-reassign
 				child = cloneElement(child, {
 					...child.props,
-					draggable: undefined,
+					// draggable: undefined,
 					onDragStart: undefined,
 					onDrag: undefined,
 					onDragEnd: undefined,
