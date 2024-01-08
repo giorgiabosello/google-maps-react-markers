@@ -70,7 +70,7 @@
 		"@babel/preset-react": "7.23.3",
 		"@babel/preset-typescript": "7.23.3",
 		"@commitlint/cli": "18.4.3",
-		"@commitlint/config-conventional": "18.4.3",
+		"@commitlint/config-conventional": "18.4.4",
 		"@ryansonshine/commitizen": "4.2.8",
 		"@ryansonshine/cz-conventional-changelog": "3.3.4",
 		"@types/google.maps": "^3.54.9",
