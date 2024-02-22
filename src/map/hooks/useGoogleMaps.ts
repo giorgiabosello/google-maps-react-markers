@@ -20,11 +20,11 @@ export const useGoogleMaps = ({
 					',',
 				)}${apiParams ? `&${apiParams}` : ''}`,
 				attributes: { id: 'googleMapsApi' },
-		  }
+			}
 		: {
 				src: `https://maps.googleapis.com/maps/api/js?callback=googleMapsCallback&libraries=${libraries?.join(',')}`,
 				attributes: { id: 'googleMapsApi' },
-		  }
+			}
 
 	return useScript(script, loadScriptExternally ? status : undefined)
 }
