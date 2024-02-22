@@ -67,10 +67,17 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies (root)
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Load env file
+        uses: natterstefan/action-next-env@v1
+        with:
+          working-directory: docs
+          environment: prod
       - name: Install dependencies
         run: cd docs && ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: cd docs && ${{ steps.detect-package-manager.outputs.runner }} build
+        env:
+          NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:

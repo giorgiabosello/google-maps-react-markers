@@ -29,10 +29,6 @@ const nextConfig = {
 	 * @see https://nextjs.org/docs/app/api-reference/next-config-js/basePath
 	 */
 	basePath: process.env.NODE_ENV === 'development' ? '' : '/google-maps-react-markers',
-	// Will be available on both server and client
-	publicRuntimeConfig: {
-		NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-	},
 }
 
 module.exports = nextConfig
