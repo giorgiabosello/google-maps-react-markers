@@ -141,8 +141,8 @@ function useScript(
 						? script.callbacks.onLoadCallback()
 						: null
 					: script.callbacks?.onErrorCallback
-					? script.callbacks.onErrorCallback()
-					: null
+						? script.callbacks.onErrorCallback()
+						: null
 
 				setStatus(newStatus)
 				cachedScriptStatuses[script.src] = newStatus
