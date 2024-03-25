@@ -1665,9 +1665,9 @@
   integrity sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==
 
 "@types/google.maps@^3.54.9":
-  version "3.55.3"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.55.3.tgz#15ec847b64d80fe3602fda77a5ab8dfff3a0dee1"
-  integrity sha512-UF1nfj8h/Vj4wEcdjv5v314HkDB6AWaN34Fr/u+6Oaj+GSRlG+k4c3DnJNKv7S23RvDdvIPt4ON6ONJpzNnarA==
+  version "3.55.5"
+  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.55.5.tgz#cee2391af1e32aae9f1c1a8d0c2dec265fb60645"
+  integrity sha512-U1QwCo1GeeLm0YI/GoHvfd1VfwgnoUSBcKCMXXFAM+2izSSuqqwZUJ9XNO6NxZxmYKjBNI+NF5eGF6uUSb1aSg==
 
 "@types/http-cache-semantics@^4.0.2":
   version "4.0.3"
