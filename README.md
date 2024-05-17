@@ -151,14 +151,15 @@ export default App
 
 ### Markers
 
-| Prop        | Type   | Required | Default     | Description                                                    |
-| ----------- | ------ | -------- | ----------- | -------------------------------------------------------------- |
-| **lat**     | number | **yes**  | `undefined` | Latitude of the marker                                         |
-| **lng**     | number | **yes**  | `undefined` | Longitude of the marker                                        |
-| draggable   | bool   | no       | `false`     | If true, the marker can be dragged                             |
-| onDragStart | func   | no       | `() => {}`  | This event is fired when the user starts dragging the marker   |
-| onDrag      | func   | no       | `() => {}`  | This event is repeatedly fired while the user drags the marker |
-| onDragEnd   | func   | no       | `() => {}`  | This event is fired when the user stops dragging the marker    |
+| Prop        | Type   | Required | Default     | Description                                                                                              |
+| ----------- | ------ | -------- | ----------- | -------------------------------------------------------------------------------------------------------- |
+| **lat**     | number | **yes**  | `undefined` | Latitude of the marker                                                                                   |
+| **lng**     | number | **yes**  | `undefined` | Longitude of the marker                                                                                  |
+| draggable   | bool   | no       | `false`     | If true, the marker can be dragged                                                                       |
+| onDragStart | func   | no       | `() => {}`  | This event is fired when the user starts dragging the marker                                             |
+| onDrag      | func   | no       | `() => {}`  | This event is repeatedly fired while the user drags the marker                                           |
+| onDragEnd   | func   | no       | `() => {}`  | This event is fired when the user stops dragging the marker                                              |
+| zIndex      | number | no       | 0           | The z-index of the marker. To bring the marker to the front, e.g. when it is active, set a higher value. |
 
 ## 📍 Clustering
 
