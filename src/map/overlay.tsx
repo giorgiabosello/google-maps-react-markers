@@ -73,10 +73,15 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 			const projection = this.getProjection() as google.maps.MapCanvasProjection
 			// Computes the pixel coordinates of the given geographical location in the DOM element that holds the draggable map.
 			const point = projection?.fromLatLngToDivPixel(this.position) as google.maps.Point
+			
+			// Manage offset for the overlay, since the overlay is centered on the point
+			// we need to offset the overlay by half of its width and height
+			// to make the overlay appear where the point is
+			const offset = { x: this.container.offsetWidth / 2, y: this.container.offsetHeight / 2 }
+
 			if (!point) return
-			this.container.style.transform = `translate(${point.x}px, ${point.y}px)`
-			this.container.style.width = '0px'
-			this.container.style.height = '0px'
+			this.container.style.transform = `translate(${point.x - offset.x}px, ${point.y - offset.y}px)`
+
 		}
 
 		/**

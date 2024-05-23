@@ -1,6 +1,6 @@
 {
 	"name": "google-maps-react-markers",
-	"version": "2.0.9",
+	"version": "2.0.10",
 	"description": "Google Maps library that accepts markers as react components, works with React 18+ and it is fully typed.",
 	"author": "Giorgia Bosello",
 	"license": "MIT",

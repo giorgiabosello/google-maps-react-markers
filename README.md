@@ -191,7 +191,8 @@ To run the project locally, clone the repo and run:
 
 ```bash
 # in the root directory
-yarn install
+yarn --frozen-install
+yarn dev
 ```
 
 ```bash
