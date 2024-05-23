@@ -101,6 +101,7 @@ export default function Home() {
 							onDrag={(e, { latLng }) => setDragging({ lat: latLng.lat, lng: latLng.lng })}
 							onDragStart={(e, { latLng }) => setDragStart({ lat: latLng.lat, lng: latLng.lng })}
 							onDragEnd={(e, { latLng }) => setDragEnd({ lat: latLng.lat, lng: latLng.lng })}
+							// zIndex={highlighted === name ? 1000 : 0}
 						/>
 					))}
 				</GoogleMap>
