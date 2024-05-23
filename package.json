@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/giorgiabosello/google-maps-react-markers.git"
+		"url": "git+https://github.com/giorgiabosello/google-maps-react-markers.git"
 	},
 	"homepage": "https://giorgiabosello.github.io/google-maps-react-markers/",
 	"keywords": [
