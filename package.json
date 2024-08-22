@@ -1,6 +1,6 @@
 {
 	"name": "google-maps-react-markers",
-	"version": "2.0.10",
+	"version": "2.0.11",
 	"description": "Google Maps library that accepts markers as react components, works with React 18+ and it is fully typed.",
 	"author": "Giorgia Bosello",
 	"license": "MIT",
@@ -34,9 +34,9 @@
 		"dev": "concurrently \"yarn build --watch\"",
 		"build": "tsup --onSuccess \"yarn link:self\"",
 		"type-check": "tsc",
-		"lint": "eslint --ignore-path .gitignore \"{src,docs/src}/**/*.+(ts|js|tsx)\"",
+		"lint": "eslint --ignore-pattern .gitignore \"{src,docs/src}/**/*.+(ts|js|tsx)\"",
 		"lint:fix": "yarn lint --fix && prettier --write .",
-		"prepare": "husky install",
+		"prepare": "husky || true",
 		"commit": "cz",
 		"release": "yarn build && yarn release-it",
 		"link:self": "yarn yalc publish && yarn link",
@@ -47,7 +47,7 @@
 	],
 	"lint-staged": {
 		"./{src,tests}/**/*.{ts,js,jsx,tsx}": [
-			"eslint --ignore-path .gitignore --fix"
+			"eslint --ignore-pattern .gitignore --fix"
 		],
 		"*": "prettier --write"
 	},
