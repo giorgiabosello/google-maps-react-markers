@@ -28,8 +28,8 @@ const OverlayView = ({
 	// This fixes the issue where the overlay is not updated when the position changes.
 	const childrenProps = useMemoCompare(
 		children?.props as any,
-		(prev: { lat: any; lng: any }, next: { lat: any; lng: any }) =>
-			prev && prev.lat === next.lat && prev.lng === next.lng,
+		(prev: { lat: any; lng: any; draggable: boolean }, next: { lat: any; lng: any; draggable: boolean }) =>
+			prev && prev.lat === next.lat && prev.lng === next.lng && prev.draggable === next.draggable; ,
 	)
 
 	useEffect(() => {
