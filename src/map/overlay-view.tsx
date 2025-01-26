@@ -29,7 +29,7 @@ const OverlayView = ({
 	const childrenProps = useMemoCompare(
 		children?.props as any,
 		(prev: { lat: any; lng: any; draggable: boolean }, next: { lat: any; lng: any; draggable: boolean }) =>
-			prev && prev.lat === next.lat && prev.lng === next.lng && prev.draggable === next.draggable; ,
+			prev && prev.lat === next.lat && prev.lng === next.lng && prev.draggable === next.draggable,
 	)
 
 	useEffect(() => {
