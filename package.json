@@ -38,7 +38,6 @@
 		"lint:fix": "yarn lint --fix && prettier --write .",
 		"prepare": "husky || true",
 		"commit": "cz",
-		"release": "yarn build && yarn release-it",
 		"link:self": "yarn yalc publish && yarn link",
 		"final:publish": "yarn build && npm publish"
 	},
@@ -54,17 +53,6 @@
 	"config": {
 		"commitizen": {
 			"path": "./node_modules/@ryansonshine/cz-conventional-changelog"
-		}
-	},
-	"release-it": {
-		"git": {
-			"commitMessage": "chore(release): v${version}"
-		},
-		"github": {
-			"release": true
-		},
-		"npm": {
-			"publish": false
 		}
 	},
 	"engines": {
@@ -106,7 +94,6 @@
 		"prop-types": "15.8.1",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"release-it": "17.2.1",
 		"tsup": "8.3.6",
 		"typescript": "^5.7.3",
 		"yalc": "1.0.0-pre.53"
