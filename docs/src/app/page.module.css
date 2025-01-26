@@ -63,7 +63,7 @@
 
 .action {
 	color: #000;
-	background: rgb(255, 255, 107);
+	background: rgba(var(--highlight-rgb));
 	border: 0;
 	padding: 10px;
 	margin: 5px 0;
@@ -83,7 +83,7 @@
 .container h1,
 .container h2,
 .container h3 {
-	color: rgb(255, 255, 107);
+	color: rgba(var(--highlight-rgb));
 	margin: 0.5rem 0;
 }
 
@@ -133,7 +133,7 @@
 
 .highlighted button {
 	font-size: 1rem;
-	color: rgb(255, 255, 107);
+	color: rgba(var(--highlight-rgb));
 	background-color: transparent;
 	border: 0;
 	padding: 4px;

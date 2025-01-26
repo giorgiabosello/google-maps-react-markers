@@ -2,7 +2,6 @@ import styles from '../app/page.module.css'
 
 interface InfoProps {
 	bounds?: number[]
-	buttonAction?: () => void
 	coordinates?: { lat: number; lng: number; name: string }[]
 	drag?: {
 		dragEnd: { lat: number; lng: number } | null
@@ -11,7 +10,7 @@ interface InfoProps {
 	}
 }
 
-const Info = ({ buttonAction = () => {}, coordinates = [], bounds, drag }: InfoProps) => (
+const Info = ({ coordinates = [], bounds, drag }: InfoProps) => (
 	<div className={styles.container}>
 		<div className={styles.info}>
 			<div>
@@ -25,7 +24,10 @@ const Info = ({ buttonAction = () => {}, coordinates = [], bounds, drag }: InfoP
 			</div>
 			<div>
 				<h3>🖐🏼 Drag</h3>
-				<p>Drag the blue marker to see its coordinates change.</p>
+				<p>
+					Drag the <span style={{ color: 'rgb(var(--highlight-rgb))' }}>yellow</span> marker to see its coordinates
+					change.
+				</p>
 				{drag?.dragStart && drag?.dragEnd && (
 					<>
 						<p>Drag start:</p>
@@ -52,13 +54,6 @@ const Info = ({ buttonAction = () => {}, coordinates = [], bounds, drag }: InfoP
 				</div>
 			</div>
 		)}
-		<div className={styles.buttonContainer}>
-			<p>Click UPDATE below to trigger markers coordinates change.</p>
-			<p>Or move the map to trigger bounds change.</p>
-			<button className={styles.action} type="button" onClick={buttonAction}>
-				UPDATE
-			</button>
-		</div>
 	</div>
 )
 

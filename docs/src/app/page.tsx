@@ -1,7 +1,7 @@
 'use client'
 
 import GoogleMap, { LatLngBounds, MapContextProps } from 'google-maps-react-markers'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import coordinates from '../components/coordinates'
 import Info from '../components/info'
 import mapOptions from '../components/map-options.json'
@@ -12,8 +12,6 @@ export default function Home() {
 	const mapRef = useRef<any>(null)
 	const [mapReady, setMapReady] = useState<boolean>(false)
 	const [mapBounds, setMapBounds] = useState<{ bounds: number[]; zoom: number }>({ bounds: [], zoom: 0 })
-	const [usedCoordinates, setUsedCoordinates] = useState<number>(0)
-	const [currCoordinates, setCurrCoordinates] = useState(coordinates[usedCoordinates])
 	const [highlighted, setHighlighted] = useState<string | null>(null)
 
 	const [dragStart, setDragStart] = useState<{ lat: number; lng: number } | null>(null)
@@ -50,25 +48,11 @@ export default function Home() {
 		setHighlighted(null)
 	}
 
-	const updateCoordinates = () => {
-		setUsedCoordinates(!usedCoordinates ? 1 : 0)
-		// reset drag
-		setDragStart(null)
-		setDragEnd(null)
-		setDragging(null)
-	}
-
-	useEffect(() => {
-		setCurrCoordinates(coordinates[usedCoordinates])
-	}, [usedCoordinates])
-
 	return (
 		<main className={styles.main}>
 			<div className={styles.description}>
 				{mapReady && (
 					<Info
-						buttonAction={updateCoordinates}
-						coordinates={currCoordinates}
 						bounds={mapBounds?.bounds}
 						drag={{
 							dragStart,
@@ -88,7 +72,7 @@ export default function Home() {
 					onGoogleApiLoaded={onGoogleApiLoaded}
 					onChange={onMapChange}
 				>
-					{currCoordinates.map(({ lat, lng, name }, index) => (
+					{coordinates.map(({ lat, lng, name }, index) => (
 						<Marker
 							// eslint-disable-next-line react/no-array-index-key
 							key={index}

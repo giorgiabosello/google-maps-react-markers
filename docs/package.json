@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
+		"dev": "next dev -H google-maps-react-markers.com.tech",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
@@ -14,7 +14,7 @@
 	},
 	"dependencies": {
 		"google-maps-react-markers": "link:..",
-		"next": "14.2.10",
+		"next": "15.1.6",
 		"react": "link:../node_modules/react",
 		"react-dom": "link:../node_modules/react-dom"
 	},
