@@ -247,8 +247,7 @@ interface MapProps {
     options?: MapOptions;
     /**
      * The style of the map container.
-     * @default
-     * {
+     * @default {
      *  width: '100%',
      *  height: '100%',
      *  left: 0,
