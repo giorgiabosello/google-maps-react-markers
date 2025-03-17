@@ -94,7 +94,7 @@
 		"prop-types": "15.8.1",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"tsup": "8.3.6",
+		"tsup": "8.4.0",
 		"typescript": "^5.7.3",
 		"yalc": "1.0.0-pre.53"
 	},
