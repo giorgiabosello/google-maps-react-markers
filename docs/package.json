@@ -14,7 +14,7 @@
 	},
 	"dependencies": {
 		"google-maps-react-markers": "link:..",
-		"next": "15.2.3",
+		"next": "15.2.4",
 		"react": "link:../node_modules/react",
 		"react-dom": "link:../node_modules/react-dom"
 	},
