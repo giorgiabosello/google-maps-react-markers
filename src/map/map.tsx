@@ -113,7 +113,7 @@ function MapComponent({
 						return acc
 					},
 					{} as { [key: string]: any },
-				)}
+				), {}}
 			/>
 			{children && map && maps && (
 				<MapMarkers map={map} maps={maps}>
