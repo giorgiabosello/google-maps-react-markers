@@ -1,4 +1,6 @@
-<h1 align="center">Google Maps React Markers</h1>
+<p align="center">
+<img src=".github/cover.png" alt="Google Maps React Markers" width="100%" />
+</p>
 
 <p align="center">
 <a href="https://www.npmjs.com/package/google-maps-react-markers" target="_blank">
