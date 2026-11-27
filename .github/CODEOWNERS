@@ -1,0 +1,3 @@
+# Every pull request needs a review from the maintainer before it can be merged
+# (with "Require review from Code Owners" turned on in branch protection).
+* @giorgiabosello

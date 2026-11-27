@@ -30,3 +30,7 @@ pnpm-debug.log*
 # copied from the repository root at pack time
 packages/google-maps-react-markers/README.md
 packages/google-maps-react-markers/LICENCE.md
+
+# Lighthouse CI reports
+lighthouse-report/
+.lighthouseci/

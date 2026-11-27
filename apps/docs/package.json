@@ -6,9 +6,10 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
-		"start": "serve out",
 		"typecheck": "next typegen && tsc --noEmit",
-		"dev:host": "next dev --hostname google-maps-react-markers.test"
+		"dev:host": "next dev --hostname google-maps-react-markers.test",
+		"a11y": "node scripts/a11y-audit.mjs",
+		"serve": "node scripts/serve.mjs"
 	},
 	"dependencies": {
 		"@googlemaps/markerclusterer": "^2.6.2",
@@ -31,7 +32,9 @@
 		"@types/node": "^24.19.4",
 		"@types/react": "^19.3.3",
 		"@types/react-dom": "^19.3.0",
+		"axe-core": "4.14.1",
 		"postcss": "~8.5.33",
+		"puppeteer-core": "24.43.1",
 		"serve": "^14.2.5",
 		"tailwindcss": "^4.3.5",
 		"typescript": "~6.0.3"

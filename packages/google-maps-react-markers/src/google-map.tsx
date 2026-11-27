@@ -202,7 +202,8 @@ export const GoogleMap = (props: GoogleMapProps) => {
 			// Assistive technology waits for the map instead of reading a half-built one.
 			aria-busy={loading || undefined}
 		>
-			<div key={mapId ?? ''} ref={mapDivRef} style={layerStyle} />
+			{/* Google draws the map here. The attribute lets tests and styles tell its UI apart. */}
+			<div key={mapId ?? ''} ref={mapDivRef} style={layerStyle} data-gmrm-map="" />
 			{hasError ? (
 				// role="alert" is announced as soon as it appears.
 				<div role="alert" style={layerStyle}>

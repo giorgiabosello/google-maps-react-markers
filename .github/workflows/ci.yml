@@ -1,5 +1,9 @@
 name: CI
 
+# Runs on every pull request and on pushes to the release branches.
+# "Ready to merge" sums up every check: it is the one to require in branch protection.
+# Pull requests run with a read-only token and no secrets: the docs build without the Maps key.
+
 on:
   pull_request:
   push:
@@ -50,5 +54,78 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm docs:build
+      - name: Build the docs at the root, for the audits
+        run: pnpm docs:build
+        env:
+          DOCS_BASE_PATH: ''
       - run: pnpm --filter example-vite build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: docs-site
+          path: apps/docs/out
+          retention-days: 3
+
+  accessibility:
+    name: Accessibility (axe-core, WCAG 2.2 AAA)
+    needs: docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v8
+        with:
+          name: docs-site
+          path: apps/docs/out
+      - name: Audit every page, dark and light theme
+        run: pnpm --filter docs a11y
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+
+  lighthouse:
+    name: Lighthouse
+    needs: docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v8
+        with:
+          name: docs-site
+          path: apps/docs/out
+      - name: Accessibility 100 and SEO 90 required, performance and best practices reported
+        working-directory: apps/docs
+        run: npx --yes @lhci/cli@0.16.1 autorun
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: lighthouse-report
+          path: apps/docs/lighthouse-report
+          retention-days: 14
+
+  ready:
+    name: Ready to merge
+    if: always()
+    needs: [check, docs, accessibility, lighthouse]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Every check passed
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Results: $RESULTS"
+          for result in $RESULTS; do
+            if [ "$result" != "success" ]; then
+              echo "::error::At least one check did not pass. The pull request is not ready to merge."
+              exit 1
+            fi
+          done
+          echo "### Ready to merge: every check passed. Final approval is the maintainer's." >> "$GITHUB_STEP_SUMMARY"

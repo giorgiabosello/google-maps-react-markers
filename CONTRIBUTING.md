@@ -30,6 +30,16 @@ pnpm build        # build the library
 pnpm check:package && pnpm size  # publint, are-the-types-wrong, size limit
 ```
 
+### Accessibility and Lighthouse checks
+
+CI audits the static export. To run the same checks locally (Google Chrome must be installed; set `CHROME_PATH` if it is not in the default place):
+
+```bash
+DOCS_BASE_PATH= NEXT_PUBLIC_GOOGLE_MAPS_API_KEY= pnpm docs:build
+pnpm --filter docs a11y                              # axe-core, every page, dark and light, WCAG 2.2 AAA
+(cd apps/docs && npx --yes @lhci/cli@0.16.1 autorun)  # Lighthouse
+```
+
 ### Real maps locally
 
 Without an API key the site works, but Google shows the maps in development mode (watermark and its own grey style). To see the real styles:
@@ -56,6 +66,8 @@ Use `.test` rather than `.local`: on macOS `.local` goes through Bonjour and res
 - Add a changeset if the published package changes: `pnpm changeset`.
 - Use [Conventional Commits](https://www.conventionalcommits.org/) (`fix(marker): ...`, `feat: ...`): a commit hook checks it.
 - Update the docs in `apps/docs/content/docs` when you change the API.
+- Interactive markers and controls must work with the keyboard and have an accessible name.
+- CI must be green: **Ready to merge** sums up lint, types, tests on Node 22 and 24, package checks, bundle size, the axe audit and Lighthouse. The maintainer reviews and approves every pull request.
 
 ## Releases
 
