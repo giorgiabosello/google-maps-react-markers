@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/lib/default-colors.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/*
+ * Palette from the repository cover (.github/cover.png):
+ * navy-black background, slate map grid, cyan to blue accent, green and cyan glowing dots,
+ * magenta-violet avatars, blue clusters, amber stars.
+ */
+@theme {
+	--color-brand-cyan: #5ad3f5;
+	--color-brand-blue: #3b82f6;
+	--color-brand-green: #22c55e;
+	--color-brand-magenta: #d946ef;
+	--color-brand-violet: #8b5cf6;
+	--color-brand-amber: #fbbf24;
+	--color-brand-navy: #0a0e14;
+	--color-brand-ink: #0b1220;
+	/* Brand colors for text: 7:1 or more on the page background (WCAG AAA), dark values below. */
+	--color-brand-cyan-text: #0c4a6e;
+	--color-brand-magenta-text: #86198f;
+
+	--color-fd-background: #f6f8fb;
+	--color-fd-foreground: #0b1220;
+	--color-fd-muted: #edf1f6;
+	--color-fd-muted-foreground: #454f5d;
+	--color-fd-popover: #ffffff;
+	--color-fd-popover-foreground: #0b1220;
+	--color-fd-card: #ffffff;
+	--color-fd-card-foreground: #0b1220;
+	--color-fd-border: #dfe5ee;
+	--color-fd-primary: #0c4a6e;
+	--color-fd-primary-foreground: #ffffff;
+	--color-fd-secondary: #eef3f8;
+	--color-fd-secondary-foreground: #0b1220;
+	--color-fd-accent: #e3f4fc;
+	--color-fd-accent-foreground: #0b1220;
+	--color-fd-ring: #0369a1;
+
+	--font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+	--font-mono: var(--font-geist-mono), ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.dark {
+	--color-fd-background: #0a0e14;
+	--color-fd-foreground: #e6edf5;
+	--color-fd-muted: #111821;
+	--color-fd-muted-foreground: #a3afbe;
+	--color-fd-popover: #0e141c;
+	--color-fd-popover-foreground: #e6edf5;
+	--color-fd-card: #0e141c;
+	--color-fd-card-foreground: #e6edf5;
+	--color-fd-border: rgb(148 163 184 / 0.14);
+	--color-fd-primary: #5ad3f5;
+	--color-fd-primary-foreground: #04121a;
+	--color-fd-secondary: #141c27;
+	--color-fd-secondary-foreground: #e6edf5;
+	--color-fd-accent: rgb(90 211 245 / 0.1);
+	--color-fd-accent-foreground: #e6edf5;
+	--color-fd-ring: #5ad3f5;
+	--color-brand-cyan-text: #5ad3f5;
+	--color-brand-magenta-text: #f0abfc;
+}
+
+html {
+	scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+	margin-right: 0px !important;
+	--removed-body-scroll-bar-size: 0px !important;
+}
+
+/* "React Markers" in the cover: cyan to blue. */
+.text-brand-gradient {
+	background-image: linear-gradient(100deg, #5ad3f5 10%, #60a5fa 70%, #3b82f6 100%);
+	background-clip: text;
+	color: transparent;
+}
+
+/* The cover's map grid, fading out towards the edges. */
+.bg-map-grid {
+	background-image:
+		linear-gradient(to right, rgb(148 163 184 / 0.09) 1px, transparent 1px),
+		linear-gradient(to bottom, rgb(148 163 184 / 0.09) 1px, transparent 1px);
+	background-size: 72px 72px;
+	mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, black 30%, transparent 80%);
+}
+
+/* Glowing map dots, like the cyan and green ones in the cover. */
+.glow-dot {
+	border-radius: 9999px;
+	box-shadow:
+		0 0 0 6px color-mix(in srgb, currentColor 22%, transparent),
+		0 0 24px 4px color-mix(in srgb, currentColor 45%, transparent);
+	background: currentColor;
+}
+
+/* Marker content must not inherit prose styles when a demo sits inside MDX. */
+.demo-frame :where(p, span, div, button) {
+	margin: 0;
+}
+
+/* Respect "reduce motion": no transitions, animations or smooth scrolling (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/*
+ * github-light-high-contrast keeps comments at 5:1. Darken them to 7:1 (WCAG AAA).
+ * An !important stylesheet rule wins over Shiki's inline custom property.
+ */
+.shiki span[style*='--shiki-light:#66707B'] {
+	--shiki-light: #454f5d !important;
+}

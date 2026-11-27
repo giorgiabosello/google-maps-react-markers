@@ -1,0 +1,146 @@
+{
+	"variant": "light",
+	"backgroundColor": "#f4f7fb",
+	"styles": [
+		{
+			"id": "natural.base",
+			"geometry": {
+				"fillColor": "#f4f7fb"
+			}
+		},
+		{
+			"id": "natural.land",
+			"geometry": {
+				"fillColor": "#eef2f7"
+			}
+		},
+		{
+			"id": "natural.land.landCover",
+			"geometry": {
+				"fillColor": "#eef2f7"
+			}
+		},
+		{
+			"id": "natural.land.landCover.forest",
+			"geometry": {
+				"fillColor": "#dcefe3"
+			}
+		},
+		{
+			"id": "natural.water",
+			"geometry": {
+				"fillColor": "#cfe8f4"
+			},
+			"label": {
+				"textFillColor": "#5b88a8",
+				"textStrokeColor": "#f4f7fb"
+			}
+		},
+		{
+			"id": "infrastructure.urbanArea",
+			"geometry": {
+				"fillColor": "#e9eef5"
+			}
+		},
+		{
+			"id": "infrastructure.building",
+			"geometry": {
+				"fillColor": "#e2e8f0",
+				"strokeColor": "#ffffff"
+			}
+		},
+		{
+			"id": "infrastructure.roadNetwork.road",
+			"geometry": {
+				"fillColor": "#ffffff",
+				"strokeColor": "#ffffff"
+			},
+			"label": {
+				"visible": false
+			}
+		},
+		{
+			"id": "infrastructure.roadNetwork.road.arterial",
+			"geometry": {
+				"fillColor": "#e7edf4",
+				"strokeColor": "#e7edf4"
+			}
+		},
+		{
+			"id": "infrastructure.roadNetwork.road.highway",
+			"geometry": {
+				"fillColor": "#cde8f5",
+				"strokeColor": "#cde8f5"
+			}
+		},
+		{
+			"id": "infrastructure.roadNetwork.roadShield",
+			"label": {
+				"visible": false
+			}
+		},
+		{
+			"id": "infrastructure.roadNetwork.roadSign",
+			"label": {
+				"visible": false
+			}
+		},
+		{
+			"id": "infrastructure.railwayTrack",
+			"geometry": {
+				"visible": false
+			}
+		},
+		{
+			"id": "infrastructure.transitStation",
+			"label": {
+				"visible": false
+			}
+		},
+		{
+			"id": "pointOfInterest",
+			"label": {
+				"visible": false
+			}
+		},
+		{
+			"id": "pointOfInterest.recreation.park",
+			"geometry": {
+				"fillColor": "#dcefe3"
+			}
+		},
+		{
+			"id": "political.border",
+			"geometry": {
+				"color": "#c9d3df"
+			}
+		},
+		{
+			"id": "political.landParcel",
+			"geometry": {
+				"visible": false
+			}
+		},
+		{
+			"id": "political.countryOrRegion",
+			"label": {
+				"textFillColor": "#4a5565",
+				"textStrokeColor": "#f4f7fb"
+			}
+		},
+		{
+			"id": "political.stateOrProvince",
+			"label": {
+				"textFillColor": "#6b7684",
+				"textStrokeColor": "#f4f7fb"
+			}
+		},
+		{
+			"id": "political.city",
+			"label": {
+				"textFillColor": "#3b4656",
+				"textStrokeColor": "#f4f7fb"
+			}
+		}
+	]
+}

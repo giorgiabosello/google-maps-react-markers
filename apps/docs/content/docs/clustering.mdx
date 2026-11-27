@@ -1,0 +1,76 @@
+---
+title: 'Clustering'
+description: 'Group thousands of points with supercluster.'
+---
+
+Clustering is not built in: you choose the algorithm. The easiest is [supercluster](https://github.com/mapbox/supercluster), fed by the `bbox` and `zoom` from `onChange`.
+
+<ClusteringDemo />
+
+```tsx
+'use client'
+
+import { type BBox, GoogleMap, Marker } from 'google-maps-react-markers'
+import { useMemo, useRef, useState } from 'react'
+import Supercluster from 'supercluster'
+
+export function ClusterMap({ points }: { points: { id: string; lat: number; lng: number }[] }) {
+	const mapRef = useRef<google.maps.Map | null>(null)
+	const [view, setView] = useState<{ bbox: BBox; zoom: number } | null>(null)
+
+	const index = useMemo(() => {
+		const cluster = new Supercluster<{ id: string }>({ radius: 60, maxZoom: 16 })
+		cluster.load(
+			points.map((point) => ({
+				type: 'Feature',
+				properties: { id: point.id },
+				geometry: { type: 'Point', coordinates: [point.lng, point.lat] },
+			})),
+		)
+		return cluster
+	}, [points])
+
+	const clusters = view ? index.getClusters(view.bbox, Math.round(view.zoom)) : []
+
+	return (
+		<GoogleMap
+			defaultCenter={{ lat: 48, lng: 10 }}
+			defaultZoom={4}
+			onLoad={({ map }) => (mapRef.current = map)}
+			onChange={({ bbox, zoom }) => setView({ bbox, zoom })}
+		>
+			{clusters.map((feature) => {
+				const [lng, lat] = feature.geometry.coordinates
+				if (!('cluster' in feature.properties)) {
+					return (
+						<Marker key={feature.properties.id} lat={lat} lng={lng}>
+							<Dot />
+						</Marker>
+					)
+				}
+				const { cluster_id, point_count } = feature.properties
+				return (
+					<Marker
+						key={`cluster-${cluster_id}`}
+						lat={lat}
+						lng={lng}
+						onClick={() =>
+							mapRef.current?.moveCamera({ center: { lat, lng }, zoom: index.getClusterExpansionZoom(cluster_id) })
+						}
+					>
+						<ClusterBubble count={point_count} />
+					</Marker>
+				)
+			})}
+		</GoogleMap>
+	)
+}
+```
+
+- Keep the index in `useMemo`: building it is the expensive part.
+- `bbox` is already in supercluster's `[westLng, southLat, eastLng, northLat]` order.
+- Use stable keys (`cluster-${cluster_id}`, point ids), so markers are reused while you zoom.
+
+## Without clustering
+
+Before reaching for clusters, measure: the [stress test](/docs/examples/many-markers) renders up to 5,000 plain markers. A few hundred markers rarely need clustering.

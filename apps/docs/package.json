@@ -1,0 +1,39 @@
+{
+	"name": "docs",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "serve out",
+		"typecheck": "next typegen && tsc --noEmit",
+		"dev:host": "next dev --hostname google-maps-react-markers.test"
+	},
+	"dependencies": {
+		"@googlemaps/markerclusterer": "^2.6.2",
+		"cn": "^0.5.2",
+		"fumadocs-core": "^16.19.7",
+		"fumadocs-mdx": "^15.6.4",
+		"fumadocs-ui": "^16.19.7",
+		"google-maps-react-markers": "workspace:*",
+		"lucide-react": "~1.81.0",
+		"next": "^16.4.6",
+		"next-themes": "^0.4.6",
+		"react": "^19.3.1",
+		"react-dom": "^19.3.1",
+		"supercluster": "^9.1.0"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "^4.3.5",
+		"@types/geojson": "^7946.0.16",
+		"@types/mdx": "^2.0.14",
+		"@types/node": "^24.19.4",
+		"@types/react": "^19.3.3",
+		"@types/react-dom": "^19.3.0",
+		"postcss": "~8.5.33",
+		"serve": "^14.2.5",
+		"tailwindcss": "^4.3.5",
+		"typescript": "~6.0.3"
+	}
+}

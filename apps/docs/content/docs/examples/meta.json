@@ -1,0 +1,4 @@
+{
+	"title": "Examples",
+	"pages": ["index", "few-markers", "many-markers", "draggable", "clustering", "controlled", "multiple-maps", "rtl", "styled-map"]
+}

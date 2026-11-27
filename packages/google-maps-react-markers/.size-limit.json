@@ -1,0 +1,16 @@
+[
+	{
+		"name": "google-maps-react-markers (with the Google loader)",
+		"path": "dist/index.js",
+		"import": "*",
+		"ignore": ["react", "react-dom"],
+		"limit": "6.5 kB"
+	},
+	{
+		"name": "google-maps-react-markers (library code only)",
+		"path": "dist/index.js",
+		"import": "*",
+		"ignore": ["react", "react-dom", "@googlemaps/js-api-loader"],
+		"limit": "6 kB"
+	}
+]

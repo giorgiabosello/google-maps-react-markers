@@ -1,0 +1,24 @@
+name: Close issues without a reproduction
+
+on:
+  schedule:
+    - cron: '30 1 * * *'
+
+permissions:
+  issues: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v11
+        with:
+          # Only issues waiting for a reproduction go stale: real bugs and requests stay open.
+          only-issue-labels: needs-repro
+          days-before-issue-stale: 30
+          days-before-issue-close: 14
+          stale-issue-label: stale
+          stale-issue-message: 'This issue has been waiting for a reproduction for 30 days. It will be closed in 14 days without one.'
+          close-issue-message: 'Closed because no reproduction was provided. Comment with one and it will be reopened.'
+          days-before-pr-stale: -1
+          days-before-pr-close: -1

@@ -23,7 +23,7 @@ body:
   - type: input
     attributes:
       label: Link to the code that reproduces this issue
-      description: A link to a GitHub repository or a [CodeSandbox](https://codesandbox.io/) minimal reproduction. You can find a minimal reproduction example [here](https://github.com/giorgiabosello/google-maps-react-markers/tree/master/docs/src) and it should include only changes that contribute to the issue.
+      description: A link to a GitHub repository or a [CodeSandbox](https://codesandbox.io/) minimal reproduction. You can find a minimal reproduction example [here](https://github.com/giorgiabosello/google-maps-react-markers/tree/master/examples/vite) and it should include only changes that contribute to the issue.
     validations:
       required: true
   - type: textarea

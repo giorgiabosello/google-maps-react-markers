@@ -1,0 +1,67 @@
+---
+title: 'Events and camera'
+description: 'React to map changes, listen to map events, control center and zoom.'
+---
+
+## onChange
+
+`onChange` fires when the map settles after a pan or a zoom (Google's `idle` event), and only when the center, zoom or bounds really changed.
+
+```tsx
+<GoogleMap
+	defaultCenter={{ lat: 45, lng: 10 }}
+	defaultZoom={5}
+	onChange={({ center, zoom, bounds, bbox, map }) => {
+		// center: { lat, lng }
+		// zoom: number
+		// bounds: google.maps.LatLngBounds
+		// bbox: [westLng, southLat, eastLng, northLat], ready for supercluster
+	}}
+/>
+```
+
+## Map events
+
+Every common map event is a prop. Mouse events receive `(event, map)`, the others `(map)`.
+
+```tsx
+<GoogleMap
+	onClick={(event) => console.log(event.latLng?.toJSON())}
+	onZoomChanged={(map) => console.log(map.getZoom())}
+	onDragEnd={(map) => console.log(map.getCenter()?.toJSON())}
+/>
+```
+
+Available: `onClick`, `onDoubleClick`, `onContextMenu`, `onMouseMove`, `onMouseOver`, `onMouseOut`, `onDragStart`, `onDrag`, `onDragEnd`, `onIdle`, `onBoundsChanged`, `onCenterChanged`, `onZoomChanged`, `onHeadingChanged`, `onTiltChanged`, `onMapTypeIdChanged`, `onTilesLoaded`.
+
+Handlers always see your latest props and state: you do not need `useCallback`. Only events with a handler get a listener.
+
+## Controlled center and zoom
+
+`defaultCenter` and `defaultZoom` set the first camera. Pass `center` and `zoom` to drive the camera from state:
+
+<ControlledDemo />
+
+```tsx
+const [center, setCenter] = useState({ lat: 38.72, lng: -9.14 })
+const [zoom, setZoom] = useState(5)
+
+<GoogleMap
+  center={center}
+  zoom={zoom}
+  onChange={(event) => {
+    setCenter(event.center)
+    setZoom(event.zoom)
+  }}
+>
+```
+
+When `center` or `zoom` change, the map moves there. Users can still pan and zoom: `onChange` writes the new camera back into state. A new object with the same coordinates does nothing.
+
+## The map instance
+
+For anything else, use the `google.maps.Map` instance: from `onLoad`, or from [`useMap()`](/docs/hooks) inside the map.
+
+```tsx
+<GoogleMap onLoad={({ map }) => map.fitBounds(bounds)} />
+```

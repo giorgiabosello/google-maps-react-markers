@@ -1,0 +1,94 @@
+---
+title: 'Migrating from v2 to v3'
+description: 'Every breaking change, with before and after.'
+---
+
+v3 is a rewrite for React 19 and current Google Maps APIs. Most apps migrate in three steps: rename the import, wrap markers in `<Marker>`, rename a few props.
+
+## Requirements
+
+- **React 19** and React DOM 19 (v2 accepted React 18).
+- **ESM only.** `require('google-maps-react-markers')` works only on Node 22.12+ (`require(esm)`); bundlers are unaffected.
+- **Node.js 22.12+** for server rendering and builds.
+
+## 1. Named import
+
+```diff
+- import GoogleMap from 'google-maps-react-markers'
++ import { GoogleMap, Marker } from 'google-maps-react-markers'
+```
+
+## 2. Wrap markers in `<Marker>`
+
+v2 read `lat`, `lng` and drag props from any child and cloned it. v3 has an explicit `<Marker>`: your component goes inside, and the map props go on `<Marker>`.
+
+```diff
+  <GoogleMap apiKey={key} defaultCenter={center} defaultZoom={5}>
+    {points.map((point) => (
+-     <MyPin
+-       key={point.id}
+-       lat={point.lat}
+-       lng={point.lng}
+-       draggable
+-       onDragEnd={(e, { latLng }) => save(latLng)}
+-       zIndex={2}
+-     />
++     <Marker
++       key={point.id}
++       lat={point.lat}
++       lng={point.lng}
++       draggable
++       onDragEnd={(e, { latLng }) => save(latLng)}
++       zIndex={2}
++     >
++       <MyPin />
++     </Marker>
+    ))}
+  </GoogleMap>
+```
+
+Fragments, wrapper components and conditional children now work. Your component no longer receives `lat`/`lng` unless you pass them.
+
+## 3. Props
+
+| v2                                                                    | v3                                                                                                                       |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `onGoogleApiLoaded({ map, maps, ref })`                               | `onLoad({ map, maps })`. For the container, use `ref`.                                                                   |
+| `onChange({ center: [lng, lat], zoom, bounds })`                      | `onChange({ center: { lat, lng }, zoom, bounds, bbox, map })`                                                            |
+| `events={[{ name: 'onClick', handler }]}` (DOM events on the map div) | Map event props: `onClick`, `onZoomChanged`, ... with Google Maps events. See [Events](/docs/events).                    |
+| `libraries` defaulted to `['places', 'geometry']`                     | Defaults to none. Pass `libraries={['places', 'geometry']}` or use `useMapsLibrary()`.                                   |
+| `externalApiParams={{ language, region }}`                            | `language`, `region`, `version`, `channel`, `authReferrerPolicy`, `mapIds` props.                                        |
+| `loadScriptExternally` + `status`                                     | Removed: if the page already loaded the API, it is reused automatically. Use `useGoogleMapsStatus()` to read the status. |
+| `scriptCallback`                                                      | Removed. Use `onLoad`.                                                                                                   |
+| `loadingContent`, `errorContent` defaulted to English text            | Default to `null`.                                                                                                       |
+| `idleContent`                                                         | Removed: there is no idle state.                                                                                         |
+| `mapMinHeight="600px"`                                                | `style={{ minHeight: 600 }}` or a class.                                                                                 |
+| `containerProps={{ className }}`                                      | `className`, `style`, `id`, `ref` directly.                                                                              |
+| `style` (inner map div)                                               | `style` now applies to the container.                                                                                    |
+| Marker drag callbacks `(e: MouseEvent, { latLng })`                   | Same shape, `e` is the DOM `Event` (a `PointerEvent` with the overlay renderer).                                         |
+
+## 4. Types
+
+The v2 types `MapContextProps`, `onGoogleApiLoadedProps`, `EventProps`, `MapMarkersProps`, `OverlayViewProps`, `Map`, `MapsLibrary`, `LatLng`, `LatLngBounds` and similar aliases are gone. Use the `google.maps.*` types directly (they come with the package) and the new exports: `GoogleMapProps`, `MarkerProps`, `MapChangeEvent`, `MapLoadEvent`.
+
+## Behavior changes
+
+- **Advanced markers.** With a `mapId`, markers now use `AdvancedMarkerElement`. Without one, they use the overlay renderer like v2. Pass `markerRenderer="overlay"` to keep v2 rendering with a `mapId`. See [Renderers](/docs/renderers).
+- **Overlay pane.** Overlay markers moved from `floatPane` to `overlayMouseTarget`, so info windows now open above markers.
+- **Clicks.** Clicking a marker no longer fires the map's click.
+- **Touch dragging** now works on the overlay renderer.
+- **Options are reactive.** Changing `options` calls `map.setOptions()`. In v2 options were read once.
+- **Server rendering.** The `window is not defined` errors are gone: components render on the server.
+
+## Clustering
+
+`onChange` now gives you `bbox` in supercluster's order, so the manual conversion is gone:
+
+```diff
+- onChange={({ bounds, zoom }) => {
+-   const ne = bounds.getNorthEast()
+-   const sw = bounds.getSouthWest()
+-   setView({ bounds: [sw.lng(), sw.lat(), ne.lng(), ne.lat()], zoom })
+- }}
++ onChange={({ bbox, zoom }) => setView({ bbox, zoom })}
+```

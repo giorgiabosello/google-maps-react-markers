@@ -1,0 +1,9 @@
+{
+	"$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
+	"changelog": ["@changesets/changelog-github", { "repo": "giorgiabosello/google-maps-react-markers" }],
+	"commit": false,
+	"access": "public",
+	"baseBranch": "master",
+	"updateInternalDependencies": "patch",
+	"privatePackages": { "version": false, "tag": false }
+}

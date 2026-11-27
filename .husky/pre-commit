@@ -1,4 +1,2 @@
 #!/bin/sh
-. "$(dirname "$0")/common.sh"
-
-yarn lint-staged
+pnpm exec lint-staged

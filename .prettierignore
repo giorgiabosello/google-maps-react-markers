@@ -1,10 +1,8 @@
 dist
+out
+.next
+.source
 coverage
-.prettierignore
-yarn.lock
-*.snap
-.npmrc
+pnpm-lock.yaml
+.changeset/*.md
 .husky
-.gitignore
-.editorconfig
-.env.template

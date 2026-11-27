@@ -1,0 +1,54 @@
+---
+title: 'Hooks'
+description: 'useMap, useMapsLibrary and useGoogleMapsStatus.'
+---
+
+## useMap
+
+Returns the `google.maps.Map` of the closest `<GoogleMap>`, or `null` while it loads and on the server. Use it in components rendered inside the map.
+
+```tsx
+import { useMap } from 'google-maps-react-markers'
+import { useEffect } from 'react'
+
+function FitToMarkers({ points }: { points: google.maps.LatLngLiteral[] }) {
+	const map = useMap()
+	useEffect(() => {
+		if (!map || points.length === 0) return
+		const bounds = new google.maps.LatLngBounds()
+		for (const point of points) bounds.extend(point)
+		map.fitBounds(bounds, 48)
+	}, [map, points])
+	return null
+}
+
+;<GoogleMap defaultCenter={center} defaultZoom={4}>
+	<FitToMarkers points={points} />
+</GoogleMap>
+```
+
+`useMap()` throws outside `<GoogleMap>`. Outside the map, keep the instance from `onLoad`.
+
+## useMapsLibrary
+
+Loads a Maps JavaScript API library on demand and returns it, or `null` until it is ready.
+
+```tsx
+import { useMapsLibrary } from 'google-maps-react-markers'
+
+function PlaceSearch() {
+	const places = useMapsLibrary('places')
+	// places?.Place, places?.AutocompleteSuggestion, ...
+}
+```
+
+It works anywhere on the page once a `<GoogleMap>` has configured the loader. To load a library together with the map, pass it in `libraries`.
+
+## useGoogleMapsStatus
+
+Returns `'loading'`, `'ready'` or `'error'`. It is always `'loading'` on the server, so it is safe for hydration.
+
+```tsx
+const status = useGoogleMapsStatus()
+if (status === 'error') return <p>The map is not available right now.</p>
+```

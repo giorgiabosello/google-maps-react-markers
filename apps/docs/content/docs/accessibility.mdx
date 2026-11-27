@@ -1,0 +1,63 @@
+---
+title: 'Accessibility'
+description: 'Keyboard, screen readers and focus, with both renderers.'
+---
+
+Markers work with the keyboard and screen readers out of the box, as long as you give interactive markers a `title`. Both renderers follow the same rules, so switching renderer does not change what users can do.
+
+## What you get
+
+| Marker              | Keyboard                                                                                                                                               | Screen readers                                                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| With `onClick`      | In the tab order. <kbd>Enter</kbd> and <kbd>Space</kbd> fire `onClick`.                                                                                | A button, named by `title`.                                                                  |
+| With `draggable`    | <kbd>Alt</kbd> + <kbd>Enter</kbd> grabs it, arrow keys move it (<kbd>Shift</kbd> for bigger steps), <kbd>Enter</kbd> drops it, <kbd>Esc</kbd> cancels. | A button with the drag instructions as its description. Grab, drop and cancel are announced. |
+| With a `title` only | Not focusable.                                                                                                                                         | A group named by `title`.                                                                    |
+| Neither             | Not focusable.                                                                                                                                         | Its content, as you wrote it.                                                                |
+
+The keyboard drag fires the same `onDragStart`, `onDrag` and `onDragEnd` as a mouse drag, so nothing changes in your code. Leaving the marker with <kbd>Tab</kbd> drops it where it is.
+
+With the advanced renderer this is Google's own behavior. With the overlay renderer the library adds it: a focus ring (white inside blue, visible on light and dark maps), the roles, the keys and the announcements.
+
+```tsx
+<Marker lat={lat} lng={lng} title="€140 a night in Rome" onClick={() => select('rome')}>
+	<PriceTag price={140} />
+</Marker>
+```
+
+**Start the title with the visible text.** The `title` replaces the content as the marker's name. A user of speech input who sees "€140" says "click €140", so the name must contain it, ideally at the start (WCAG 2.5.3, Label in Name). Mark purely decorative content, like initials in an avatar, with `aria-hidden`.
+
+In development, the library warns once when a clickable or draggable marker has no `title`.
+
+## Buttons inside a marker
+
+If the marker content has its own button or link, the overlay renderer leaves the focus to it and does not make the marker a button too: nested buttons confuse screen readers. The inner button's click still reaches `onClick`. Advanced markers always become buttons when clickable, so with them avoid interactive content and use `onClick`.
+
+## Many markers
+
+Every clickable marker is a tab stop. With hundreds of them, keyboard users have to tab through all of them to leave the map. For large sets:
+
+- Only make markers clickable when they do something.
+- Cluster them (see [Clustering](/docs/clustering)): a cluster is one tab stop.
+- Offer the same data as a list or table next to the map. Selecting an item there can pan the map with [`useMap()`](/docs/hooks).
+
+## Loading and errors
+
+While the API loads, the map container has `aria-busy="true"`, so screen readers wait for it. `errorContent` is rendered with `role="alert"` and announced as soon as it appears. Put text in it, not only an icon.
+
+## The map itself
+
+Panning, zooming, the controls and their keyboard shortcuts come from Google. Keep the default UI, or add your own buttons with [`<MapControl>`](/docs/controls) and give each one an accessible name. With `gestureHandling: 'cooperative'` the page keeps scrolling with one finger, which helps users who navigate by scrolling.
+
+## Motion
+
+Markers move only when your props change or the user drags them. If you animate marker content, respect `prefers-reduced-motion`. This site turns off its own transitions when it is set.
+
+## Known limits from Google
+
+An audit with axe-core (WCAG 2.2 AAA rules) of this site finds no issues in the library or its markers. What remains comes from Google's map and cannot be changed from outside:
+
+- Several maps on one page are all named "Map".
+- The "Terms" link in the map footer is smaller than 24 × 24 pixels.
+- The keyboard shortcuts tooltip has a 4.2:1 contrast.
+
+If several maps share a page, give each one a visible heading right before it.

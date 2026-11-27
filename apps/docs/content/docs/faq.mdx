@@ -1,0 +1,44 @@
+---
+title: 'FAQ and troubleshooting'
+description: 'Blank maps, API key errors, markers in the wrong place.'
+---
+
+## The map is blank
+
+The container has no height. Without a `className`, `<GoogleMap>` fills its parent: size the parent, pass `style={{ height: 480 }}`, or pass a class that sets the height.
+
+## "For development purposes only"
+
+Google shows this watermark when there is no API key, or billing is not enabled on the project.
+
+## The key is rejected
+
+`errorContent` is shown and the console says why. Usually the key's HTTP referrer restrictions do not include the current URL (remember `http://localhost:3000/*` for development), or the Maps JavaScript API is not enabled for the project.
+
+## My JSON styles are ignored
+
+A `mapId` turns on cloud-based styling, and Google ignores `options.styles`. Remove the `mapId`, or move the style to the cloud console. See [Map styling](/docs/styling).
+
+## Markers are offset from their coordinates
+
+Pick the right [`anchor`](/docs/markers#anchor): a pin with a tip needs `anchor="bottom"`.
+
+## Markers jump back after dragging
+
+Save the new position in `onDragEnd` and pass it back as `lat`/`lng`.
+
+## Can I use it without Next.js?
+
+Yes. It works with any React 19 setup: Vite, React Router, TanStack Start, Astro, Remix. See [Vite and other setups](/docs/vite).
+
+## The map stays on the error message
+
+After a failed load (no network, rejected key), the loader keeps the error: every map on the page shows `errorContent`. Fix the cause and reload the page.
+
+## I removed a key from `options` and nothing changed
+
+`options` are applied with `map.setOptions()`, which only sets the keys it receives. Set the option back to its default (for example `disableDefaultUI: false`) instead of deleting it.
+
+## Is the API loaded more than once?
+
+No. All maps on the page share one load, and `useMapsLibrary()` loads each library once. If the page already has a Maps `<script>` tag or another loader, the library waits for it and reuses it.
