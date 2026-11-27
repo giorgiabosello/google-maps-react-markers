@@ -28,8 +28,8 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
-      - name: Lint, typecheck and test before publishing
-        run: pnpm lint && pnpm typecheck && pnpm test
+      - name: Build, lint, typecheck and test before publishing
+        run: pnpm build && pnpm lint && pnpm typecheck && pnpm test
       - uses: changesets/action@v2
         with:
           version-script: pnpm version-packages
