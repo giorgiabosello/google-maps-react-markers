@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/giorgiabosello/google-maps-react-markers/master/.github/cover.png" alt="Google Maps React Markers" width="100%" />
+<img src="https://raw.githubusercontent.com/giorgiabosello/google-maps-react-markers/main/.github/cover.png" alt="Google Maps React Markers" width="100%" />
 </p>
 
 <p align="center">
@@ -7,7 +7,7 @@
 <a href="https://npm-stat.com/charts.html?package=google-maps-react-markers"><img src="https://img.shields.io/npm/dm/google-maps-react-markers.svg?style=flat-square&labelColor=000000" alt="npm downloads" /></a>
 <a href="https://bundlephobia.com/package/google-maps-react-markers"><img src="https://img.shields.io/bundlephobia/minzip/google-maps-react-markers?style=flat-square&labelColor=000000" alt="bundle size" /></a>
 <a href="https://github.com/giorgiabosello/google-maps-react-markers/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/giorgiabosello/google-maps-react-markers/ci.yml?style=flat-square&labelColor=000000&label=CI" alt="CI" /></a>
-<a href="https://github.com/giorgiabosello/google-maps-react-markers/blob/master/LICENCE.md"><img src="https://img.shields.io/github/license/giorgiabosello/google-maps-react-markers?style=flat-square&labelColor=000000" alt="MIT license" /></a>
+<a href="https://github.com/giorgiabosello/google-maps-react-markers/blob/main/LICENCE.md"><img src="https://img.shields.io/github/license/giorgiabosello/google-maps-react-markers?style=flat-square&labelColor=000000" alt="MIT license" /></a>
 </p>
 
 **Render any React component as a Google Maps marker.** React 19, Next.js 16, advanced markers or custom overlays, drag and drop, clustering-ready, SSR safe, fully typed.
@@ -79,7 +79,7 @@ v3 is a breaking release: markers go inside `<Marker>`, the import is named, and
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/giorgiabosello/google-maps-react-markers/blob/master/CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/giorgiabosello/google-maps-react-markers/blob/main/CONTRIBUTING.md).
 
 ## Support
 

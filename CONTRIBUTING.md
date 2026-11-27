@@ -71,4 +71,4 @@ Use `.test` rather than `.local`: on macOS `.local` goes through Bonjour and res
 
 ## Releases
 
-Merging changesets into `master` opens a "Version Packages" pull request. Merging that publishes to npm from GitHub Actions, with provenance.
+Merging changesets into `main` opens a "Version Packages" pull request. Merging that publishes to npm from GitHub Actions, with provenance.

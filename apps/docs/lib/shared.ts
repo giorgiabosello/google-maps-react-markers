@@ -5,7 +5,7 @@ export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 export const gitConfig = {
 	user: 'giorgiabosello',
 	repo: 'google-maps-react-markers',
-	branch: 'master',
+	branch: 'main',
 }
 
 export const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`
