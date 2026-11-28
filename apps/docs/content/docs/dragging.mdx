@@ -1,0 +1,31 @@
+---
+title: 'Dragging'
+description: 'Let users move markers with mouse, touch or keyboard.'
+---
+
+Set `draggable` and listen to the drag callbacks. Each one receives the DOM event and `{ latLng }`.
+
+<DraggableDemo />
+
+```tsx
+const [position, setPosition] = useState({ lat: 45.4642, lng: 9.19 })
+
+<Marker
+  lat={position.lat}
+  lng={position.lng}
+  anchor="bottom"
+  draggable
+  onDragStart={(event, { latLng }) => {}}
+  onDrag={(event, { latLng }) => {}}
+  onDragEnd={(event, { latLng }) => setPosition(latLng)}
+>
+  <Pin />
+</Marker>
+```
+
+- **Save the position in `onDragEnd`.** If you do not update `lat`/`lng`, the marker stays where it was dropped until the props change.
+- A press that moves less than 3 pixels is a click, not a drag. A click that ends a drag does not fire `onClick`.
+- While dragging, the map does not pan, and touch dragging does not scroll the page.
+- **Keyboard:** focus the marker, press <kbd>Alt</kbd> + <kbd>Enter</kbd> to grab it, move it with the arrow keys (<kbd>Shift</kbd> for bigger steps), <kbd>Enter</kbd> to drop, <kbd>Esc</kbd> to cancel. The same callbacks fire. Give the marker a `title`: it is the name screen readers announce. See [Accessibility](/docs/accessibility).
+
+With the advanced renderer Google handles dragging natively (`gmpDraggable`). With the overlay renderer the library uses pointer events with pointer capture. The callbacks are the same.

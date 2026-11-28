@@ -1,0 +1,25 @@
+{
+	"title": "Docs",
+	"pages": [
+		"index",
+		"getting-started",
+		"nextjs",
+		"vite",
+		"---Guides---",
+		"markers",
+		"renderers",
+		"dragging",
+		"events",
+		"hooks",
+		"controls",
+		"clustering",
+		"styling",
+		"accessibility",
+		"---Reference---",
+		"api",
+		"migration",
+		"faq",
+		"---Examples---",
+		"...examples"
+	]
+}

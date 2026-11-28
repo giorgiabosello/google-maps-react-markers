@@ -1,34 +1,36 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+node_modules/
 
-# JetBrains IDE files
-.idea/
+# build output
+dist/
+.next/
+out/
+.source/
+next-env.d.ts
+*.tsbuildinfo
 
 # testing
-/coverage
+coverage/
+test-results/
+playwright-report/
 
-# production
-# /dist
+# env
+.env
+.env*.local
 
 # misc
+.claude/
 .DS_Store
 *.pem
-tsconfig.tsbuildinfo
-
-# debug
+.idea/
+.vercel
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+pnpm-debug.log*
 
-#docs
-/docs/node_modules
-/docs/build
+# copied from the repository root at pack time
+packages/google-maps-react-markers/README.md
+packages/google-maps-react-markers/LICENCE.md
 
-#docs nextjs
-/docs/nextjs/node_modules
-/docs/nextjs/.next
-/docs/nextjs/next-env.d.ts
+# Lighthouse CI reports
+lighthouse-report/
+.lighthouseci/

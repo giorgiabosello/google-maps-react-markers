@@ -1,0 +1,16 @@
+---
+title: 'A few markers'
+description: 'Ten hand-made React markers: price tags, a selected state and a draggable avatar.'
+---
+
+<FewMarkersDemo />
+
+Each price tag is a React component anchored at its tip. Click one and it turns into a card, with a higher `zIndex`. The glowing dots and the draggable avatar are markers too. Clicking the map clears the selection: marker clicks never reach it.
+
+The map has no `mapId`, so it uses a navy JSON style and the overlay renderer.
+
+## Source
+
+<include lang="tsx" meta='title="components/demos/few-markers.tsx"'>
+	../../../components/demos/few-markers.tsx
+</include>

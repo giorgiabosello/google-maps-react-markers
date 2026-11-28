@@ -1,0 +1,37 @@
+---
+title: 'Vite and other setups'
+description: 'React with Vite, React Router, TanStack Start, Astro or any bundler.'
+---
+
+Nothing special is needed: install the package and render `<GoogleMap>`.
+
+```tsx title="src/App.tsx"
+import { GoogleMap, Marker } from 'google-maps-react-markers'
+
+export function App() {
+	return (
+		<GoogleMap
+			apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+			defaultCenter={{ lat: 41.9, lng: 12.5 }}
+			defaultZoom={6}
+			style={{ height: '100dvh' }}
+		>
+			<Marker lat={41.9028} lng={12.4964}>
+				<strong>Rome</strong>
+			</Marker>
+		</GoogleMap>
+	)
+}
+```
+
+## Server rendering
+
+The components never touch `window`, `document` or `google` while rendering, so they work with Vite SSR, React Router, TanStack Start and Astro islands. On the server you get the container and `loadingContent`.
+
+## Loading the API yourself
+
+If the page already loads the Maps JavaScript API (a `<script>` tag or another loader), the library detects `google.maps.importLibrary` and reuses it. In that case `apiKey`, `language` and the other loader props are ignored.
+
+## Testing
+
+In unit tests (jsdom), mock `google.maps` or assert on what you render before the map loads: `loadingContent`. In end-to-end tests, use a key restricted to your test domain.

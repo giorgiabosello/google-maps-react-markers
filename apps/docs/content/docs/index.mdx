@@ -1,0 +1,34 @@
+---
+title: 'Introduction'
+description: 'Render any React component as a Google Maps marker.'
+---
+
+`google-maps-react-markers` puts React components on a Google Map. A marker is a `<Marker lat lng>` with any children: a price tag, an avatar, a live badge, a whole card. The library loads the Maps JavaScript API, creates the map, and keeps every marker in sync with your props.
+
+<FewMarkersDemo />
+
+## Why this library
+
+- **Markers are React.** They keep state, use hooks and context, and are styled however you like.
+- **Two renderers, one API.** With a `mapId` markers use Google's `AdvancedMarkerElement`. Without one they use a custom overlay, so JSON `styles` keep working. See [Renderers](/docs/renderers).
+- **Drag and drop** with mouse and touch, on both renderers.
+- **Fast.** Markers are created once and updated in place. The [stress test](/docs/examples/many-markers) goes up to 5,000 markers without clustering.
+- **SSR safe.** Every component renders on the server and in React Server Components, and hydrates without mismatches.
+- **Small and typed.** About 6 kB brotli with the official `@googlemaps/js-api-loader` included, ESM only.
+
+## Requirements
+
+- React 19 and React DOM 19.
+- A Google Maps Platform API key. Without one, Google shows the map in development mode.
+- Node.js 22.12 or newer for server rendering and builds.
+
+<Cards>
+	<Card title="Getting started" href="/docs/getting-started" description="Install and render your first map." />
+	<Card title="Next.js" href="/docs/nextjs" description="App Router, Server Components and static export." />
+	<Card
+		title="Migrating from v2"
+		href="/docs/migration/v3"
+		description="Every breaking change, with before and after."
+	/>
+	<Card title="Examples" href="/docs/examples" description="Live demos, from ten markers to five thousand." />
+</Cards>

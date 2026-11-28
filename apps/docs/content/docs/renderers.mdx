@@ -1,0 +1,35 @@
+---
+title: 'Renderers'
+description: 'Advanced markers with a mapId, custom overlays without one.'
+---
+
+`<Marker>` has two ways to draw itself. You pick one with `mapId`, and you can force it with `markerRenderer`.
+
+| Renderer                   | Advanced                                   | Overlay                            |
+| -------------------------- | ------------------------------------------ | ---------------------------------- |
+| Built on                   | `google.maps.marker.AdvancedMarkerElement` | a custom `google.maps.OverlayView` |
+| Needs a `mapId`            | yes                                        | no                                 |
+| JSON `styles` option       | no, use cloud styling                      | yes                                |
+| Dragging                   | native                                     | pointer events, mouse and touch    |
+| Keyboard focus and `title` | yes                                        | `title` only                       |
+| Collision behavior         | yes                                        | no                                 |
+
+## How the renderer is chosen
+
+```tsx
+<GoogleMap mapId="abc123">          {/* advanced */}
+<GoogleMap>                          {/* overlay */}
+<GoogleMap mapId="abc123" markerRenderer="overlay">  {/* overlay, forced */}
+```
+
+`markerRenderer` accepts `'auto'` (default), `'advanced'` and `'overlay'`. `'advanced'` without a `mapId` falls back to the overlay renderer, with a warning in development.
+
+## Which one to use
+
+- **New projects:** create a map ID and use the advanced renderer. It is what Google recommends, it handles collisions and accessibility, and you style the map in the cloud console.
+- **JSON `styles`:** if your app relies on `options.styles`, keep the overlay renderer: a `mapId` makes Google ignore `styles`.
+- **Lots of markers:** both renderers are fast. Measure your own markers in the [stress test](/docs/examples/many-markers), which lets you switch at runtime.
+
+## Overlay details
+
+Overlay markers live in the `overlayMouseTarget` pane, above the map tiles and below info windows. Positions are rounded to whole pixels, so text stays sharp.

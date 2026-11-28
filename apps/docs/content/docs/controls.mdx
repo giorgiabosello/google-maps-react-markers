@@ -1,0 +1,29 @@
+---
+title: 'Custom controls'
+description: 'Render React components as native map controls.'
+---
+
+`<MapControl>` renders its children into one of the map's control slots. They move with the map's own controls and stay clickable.
+
+```tsx
+import { GoogleMap, MapControl, useMap } from 'google-maps-react-markers'
+
+function RecenterButton() {
+	const map = useMap()
+	return (
+		<button type="button" onClick={() => map?.panTo({ lat: 45.44, lng: 12.32 })}>
+			Back to Venice
+		</button>
+	)
+}
+
+;<GoogleMap defaultCenter={{ lat: 45.44, lng: 12.32 }} defaultZoom={8}>
+	<MapControl position="TOP_RIGHT">
+		<RecenterButton />
+	</MapControl>
+</GoogleMap>
+```
+
+`position` is a `google.maps.ControlPosition` key, such as `'TOP_LEFT'`, `'TOP_CENTER'`, `'RIGHT_BOTTOM'` or the logical `'BLOCK_START_INLINE_END'`, or the enum value itself.
+
+The [controlled camera example](/docs/events#controlled-center-and-zoom) uses a `MapControl` for its zoom buttons. Disable Google's defaults with `options={{ disableDefaultUI: true }}` if you replace them.

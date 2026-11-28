@@ -1,82 +1,39 @@
-export default [
+import js from '@eslint/js'
+import prettier from 'eslint-config-prettier'
+import reactHooks from 'eslint-plugin-react-hooks'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+
+export default tseslint.config(
 	{
-		root: true,
-		env: {
-			browser: true,
-			es2021: true,
-			es6: true,
-			node: true,
-		},
-		extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
-		parser: '@typescript-eslint/parser',
-		parserOptions: {
-			ecmaFeatures: {
-				jsx: true,
-			},
+		ignores: ['**/dist/**', '**/out/**', '**/.next/**', '**/.source/**', '**/coverage/**', '**/next-env.d.ts'],
+	},
+	js.configs.recommended,
+	...tseslint.configs.strict,
+	...tseslint.configs.stylistic,
+	reactHooks.configs.flat.recommended,
+	{
+		languageOptions: {
 			ecmaVersion: 'latest',
 			sourceType: 'module',
+			globals: { ...globals.browser, google: 'readonly' },
 		},
-		plugins: [
-			'react',
-			'@typescript-eslint',
-			'typescript-sort-keys',
-			'unused-imports',
-			'prettier',
-			'prefer-arrow',
-			'sort-class-members',
-		],
 		rules: {
-			'@typescript-eslint/no-unused-vars': 'error',
-			'import/extensions': 'off',
-			'import/no-extraneous-dependencies': 'off',
-			'import/no-unresolved': 'off',
-			'import/prefer-default-export': 'off',
-			'no-nested-ternary': 'off',
-			'no-plusplus': 'off',
-			'no-unused-vars': 'off',
-			'no-use-before-define': 'off',
-			'prettier/prettier': [
-				'error',
-				{
-					endOfLine: 'auto',
-				},
-			],
-			'react/destructuring-assignment': 'off',
-			'react/function-component-definition': 'off',
-			'react/jsx-filename-extension': 'off',
-			'react/jsx-props-no-spreading': 'off',
-			'react/react-in-jsx-scope': 'off',
-			'react/require-default-props': 'off',
-			'typescript-sort-keys/interface': 'error',
-			'typescript-sort-keys/string-enum': 'error',
-			'unused-imports/no-unused-imports': 'error',
-			'prefer-arrow/prefer-arrow-functions': [
-				'error',
-				{
-					disallowPrototype: true,
-					singleReturnOnly: true,
-					classPropertiesAllowed: false,
-				},
-			],
-			'sort-class-members/sort-class-members': [
-				'error',
-				{
-					order: [
-						'[static-properties]',
-						'[properties]',
-						'[conventional-private-properties]',
-						'constructor',
-						'[static-methods]',
-						'[methods]',
-						'[conventional-private-methods]',
-					],
-					accessorPairPositioning: 'getThenSet',
-				},
-			],
-		},
-		globals: {
-			globalThis: 'readonly',
-			google: 'readonly',
+			'@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
+			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
 		},
 	},
-]
+	{
+		files: ['**/test/**'],
+		rules: {
+			'@typescript-eslint/no-empty-function': 'off',
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-non-null-assertion': 'off',
+		},
+	},
+	{
+		files: ['**/*.config.{js,ts,mjs}', '**/scripts/**'],
+		languageOptions: { globals: globals.node },
+	},
+	prettier,
+)

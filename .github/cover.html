@@ -1,0 +1,433 @@
+<!doctype html>
+<!--
+	Source of .github/cover.png (2560x1280). Regenerate with:
+	"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --hide-scrollbars \
+		--window-size=2000,1000 --force-device-scale-factor=1.28 --virtual-time-budget=5000 \
+		--screenshot=.github/cover.png .github/cover.html
+-->
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Google Maps React Markers cover</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@400..600&display=block"
+			rel="stylesheet"
+		/>
+		<style>
+			:root {
+				--navy: #0a0e14;
+				--ink: #0b1220;
+				--cyan: #5ad3f5;
+				--blue: #3b82f6;
+				--green: #22c55e;
+				--magenta: #d946ef;
+				--violet: #8b5cf6;
+				--amber: #fbbf24;
+				--muted: #8d9aab;
+				--line: rgb(148 163 184 / 0.13);
+			}
+			* {
+				box-sizing: border-box;
+				margin: 0;
+			}
+			html,
+			body {
+				width: 2000px;
+				height: 1000px;
+				overflow: hidden;
+				background: var(--navy);
+			}
+			body {
+				position: relative;
+				font-family: 'Geist', system-ui, sans-serif;
+				color: #f1f5f9;
+				-webkit-font-smoothing: antialiased;
+			}
+			.mono {
+				font-family: 'Geist Mono', ui-monospace, monospace;
+			}
+
+			/* Map: grid, blocks, roads, river, fading towards the text. */
+			.map {
+				position: absolute;
+				inset: 0;
+				mask-image: linear-gradient(to right, transparent 32%, black 58%);
+			}
+			.grid {
+				position: absolute;
+				inset: 0;
+				background-image:
+					linear-gradient(to right, var(--line) 2px, transparent 2px),
+					linear-gradient(to bottom, var(--line) 2px, transparent 2px);
+				background-size: 86px 86px;
+				background-position: 40px 10px;
+			}
+			.block {
+				position: absolute;
+				border-radius: 18px;
+				background: rgb(34 197 94 / 0.07);
+			}
+			svg.roads {
+				position: absolute;
+				inset: 0;
+			}
+
+			/* Left column. */
+			.copy {
+				position: absolute;
+				left: 113px;
+				top: 136px;
+				width: 900px;
+			}
+			.eyebrow {
+				display: flex;
+				align-items: center;
+				gap: 18px;
+				font-size: 30px;
+				color: var(--muted);
+				letter-spacing: 0.01em;
+			}
+			h1 {
+				margin-top: 46px;
+				font-size: 132px;
+				line-height: 0.92;
+				white-space: nowrap;
+				font-weight: 800;
+				letter-spacing: -0.045em;
+			}
+			.gradient {
+				background-image: linear-gradient(100deg, var(--cyan) 10%, #60a5fa 70%, var(--blue) 100%);
+				-webkit-background-clip: text;
+				background-clip: text;
+				color: transparent;
+				padding-bottom: 12px;
+			}
+			.lead {
+				margin-top: 44px;
+				font-size: 40px;
+				line-height: 1.38;
+				color: #c4cedb;
+				letter-spacing: -0.01em;
+			}
+			.chips {
+				display: flex;
+				gap: 16px;
+				margin-top: 52px;
+			}
+			.chip {
+				white-space: nowrap;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				padding: 13px 22px;
+				border: 2px solid rgb(148 163 184 / 0.2);
+				border-radius: 999px;
+				background: rgb(14 20 28 / 0.8);
+				font-size: 25px;
+				font-weight: 650;
+			}
+			.chip::before {
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background: var(--cyan);
+			}
+			.npm {
+				display: inline-flex;
+				gap: 22px;
+				margin-top: 44px;
+				padding: 20px 30px;
+				white-space: nowrap;
+				border: 2px solid rgb(148 163 184 / 0.2);
+				border-radius: 16px;
+				background: rgb(14 20 28 / 0.85);
+				font-size: 31px;
+			}
+			.npm span:first-child {
+				color: var(--cyan);
+			}
+
+			/* Markers. */
+			.abs {
+				position: absolute;
+			}
+			.dot {
+				position: absolute;
+				width: 30px;
+				height: 30px;
+				margin: -15px 0 0 -15px;
+				border-radius: 50%;
+				background: currentColor;
+				box-shadow:
+					0 0 0 10px color-mix(in srgb, currentColor 22%, transparent),
+					0 0 36px 8px color-mix(in srgb, currentColor 40%, transparent);
+			}
+			.tag {
+				left: 1297px;
+				top: 188px;
+				padding: 10px 18px;
+				border: 2px solid rgb(90 211 245 / 0.45);
+				border-radius: 10px;
+				background: rgb(10 14 20 / 0.92);
+				font-size: 25px;
+				white-space: nowrap;
+			}
+			.tag .t {
+				color: var(--cyan);
+			}
+			.tag .a {
+				color: #93c5fd;
+			}
+			.tag .v {
+				color: var(--amber);
+			}
+			.card {
+				left: 1322px;
+				top: 256px;
+				width: 452px;
+				display: flex;
+				align-items: center;
+				gap: 20px;
+				padding: 14px;
+				border-radius: 18px;
+				background: #fff;
+				color: var(--ink);
+				box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+			}
+			.card::after,
+			.pill::after {
+				content: '';
+				position: absolute;
+				left: 50%;
+				bottom: -9px;
+				width: 22px;
+				height: 22px;
+				background: inherit;
+				transform: translateX(-50%) rotate(45deg);
+				border-radius: 3px;
+			}
+			.thumb {
+				position: relative;
+				flex: none;
+				width: 90px;
+				height: 90px;
+				overflow: hidden;
+				border-radius: 12px;
+				background: linear-gradient(to bottom, #fbbf24, #f97316);
+			}
+			.thumb::before {
+				content: '';
+				position: absolute;
+				top: 14px;
+				right: 14px;
+				width: 22px;
+				height: 22px;
+				border-radius: 50%;
+				background: #fef3c7;
+			}
+			.thumb::after {
+				content: '';
+				position: absolute;
+				left: -20px;
+				bottom: -26px;
+				width: 140px;
+				height: 62px;
+				border-radius: 50%;
+				background: #16a34a;
+			}
+			.card b {
+				display: block;
+				font-size: 27px;
+				font-weight: 700;
+				letter-spacing: -0.01em;
+			}
+			.card small {
+				display: block;
+				margin-top: 6px;
+				font-size: 22px;
+				color: #64748b;
+			}
+			.card small i {
+				font-style: normal;
+				color: var(--amber);
+				letter-spacing: 0.04em;
+			}
+			.pill {
+				padding: 14px 26px;
+				border-radius: 999px;
+				font-size: 30px;
+				font-weight: 700;
+				letter-spacing: -0.01em;
+			}
+			.pill.light {
+				left: 1822px;
+				top: 343px;
+				background: #fff;
+				color: var(--ink);
+				box-shadow: 0 16px 40px rgb(0 0 0 / 0.4);
+			}
+			.pill.dark {
+				left: 1502px;
+				top: 796px;
+				background: var(--ink);
+				color: #fff;
+				box-shadow:
+					0 0 0 4px var(--cyan),
+					0 16px 40px rgb(0 0 0 / 0.5);
+			}
+			.pill.dark::after {
+				background: var(--cyan);
+				bottom: -12px;
+				width: 18px;
+				height: 18px;
+			}
+			.cluster {
+				left: 1250px;
+				top: 468px;
+				width: 80px;
+				height: 80px;
+				margin: -40px 0 0 -40px;
+				display: grid;
+				place-items: center;
+				border-radius: 50%;
+				background: var(--blue);
+				box-shadow: 0 0 0 20px rgb(59 130 246 / 0.28);
+				font-size: 34px;
+				font-weight: 800;
+			}
+			.avatar {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+			.avatar .face {
+				display: grid;
+				place-items: center;
+				width: 92px;
+				height: 92px;
+				border-radius: 50%;
+				background: linear-gradient(135deg, var(--magenta), var(--violet));
+				box-shadow:
+					0 0 0 6px #fff,
+					0 16px 40px rgb(0 0 0 / 0.45);
+				font-size: 32px;
+				font-weight: 800;
+				color: #fff;
+			}
+			.avatar .stem {
+				width: 5px;
+				height: 30px;
+				margin-top: 6px;
+				border-radius: 3px;
+				background: #fff;
+			}
+			.avatar.main {
+				left: 1641px;
+				top: 537px;
+			}
+			.avatar.ghost {
+				left: 1766px;
+				top: 662px;
+				opacity: 0.35;
+			}
+			.avatar.ghost .face {
+				box-shadow: 0 0 0 6px #94a3b8;
+			}
+			.avatar.ghost .stem {
+				background: #94a3b8;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="map" aria-hidden="true">
+			<div class="grid"></div>
+			<div class="block" style="left: 1095px; top: 63px; width: 233px; height: 172px"></div>
+			<div class="block" style="left: 1688px; top: 672px; width: 264px; height: 216px"></div>
+			<div class="block" style="left: 870px; top: 735px; width: 190px; height: 185px"></div>
+			<svg class="roads" viewBox="0 0 2000 1000" width="2000" height="1000">
+				<!-- River -->
+				<path
+					d="M 760 1010 C 1000 820, 1250 690, 1500 610 S 1850 470, 2010 410"
+					fill="none"
+					stroke="rgb(59 130 246 / 0.16)"
+					stroke-width="64"
+					stroke-linecap="round"
+				/>
+				<!-- Roads -->
+				<path d="M 740 -10 L 2010 790" stroke="rgb(148 163 184 / 0.22)" stroke-width="7" fill="none" />
+				<path
+					d="M 1010 1010 C 1250 640, 1600 330, 2010 200"
+					stroke="rgb(148 163 184 / 0.22)"
+					stroke-width="7"
+					fill="none"
+				/>
+				<path d="M 1438 -10 L 1438 1010" stroke="rgb(148 163 184 / 0.18)" stroke-width="5" fill="none" />
+				<!-- Drag path -->
+				<path
+					d="M 1687 662 C 1690 720, 1740 745, 1785 742"
+					stroke="var(--cyan)"
+					stroke-width="4"
+					stroke-dasharray="8 10"
+					fill="none"
+					opacity="0.8"
+				/>
+			</svg>
+		</div>
+
+		<span class="dot" style="left: 1718px; top: 125px; color: var(--cyan)"></span>
+		<span class="dot" style="left: 1922px; top: 93px; color: var(--green)"></span>
+		<span class="dot" style="left: 1860px; top: 594px; color: var(--green)"></span>
+		<span class="dot" style="left: 1094px; top: 875px; color: var(--cyan)"></span>
+
+		<div class="abs tag mono">
+			<span class="t">&lt;Marker</span> <span class="a">lat=</span><span class="v">{45.46}</span>
+			<span class="a">lng=</span><span class="v">{9.19}</span> <span class="t">/&gt;</span>
+		</div>
+
+		<div class="abs card">
+			<div class="thumb"></div>
+			<div>
+				<b>Any React component</b>
+				<small><i>★★★★★</i> as a marker</small>
+			</div>
+		</div>
+
+		<div class="abs pill light">€ 89</div>
+		<div class="abs cluster">24</div>
+		<div class="abs avatar ghost">
+			<div class="face">GB</div>
+			<div class="stem"></div>
+		</div>
+		<div class="abs avatar main">
+			<div class="face">GB</div>
+			<div class="stem"></div>
+		</div>
+		<div class="abs pill dark">€ 120</div>
+
+		<div class="copy">
+			<p class="eyebrow mono">
+				<svg width="44" height="44" viewBox="-11.5 -10.23 23 20.46" aria-hidden="true">
+					<circle r="2.05" fill="#5ad3f5" />
+					<g stroke="#5ad3f5" stroke-width="1" fill="none">
+						<ellipse rx="11" ry="4.2" />
+						<ellipse rx="11" ry="4.2" transform="rotate(60)" />
+						<ellipse rx="11" ry="4.2" transform="rotate(120)" />
+					</g>
+				</svg>
+				React 19 · Next.js 16 · TypeScript
+			</p>
+			<h1>Google Maps<br /><span class="gradient">React Markers</span></h1>
+			<p class="lead">Use any React component as a Google Maps marker. Advanced markers or custom overlays.</p>
+			<div class="chips">
+				<span class="chip">Custom markers</span>
+				<span class="chip">Draggable</span>
+				<span class="chip">Clustering</span>
+				<span class="chip">SSR ready</span>
+			</div>
+			<p class="npm mono"><span>$</span><span>npm i google-maps-react-markers</span></p>
+		</div>
+	</body>
+</html>

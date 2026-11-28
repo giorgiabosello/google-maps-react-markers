@@ -1,0 +1,76 @@
+---
+title: 'Getting started'
+description: 'Install the package, get an API key and render your first markers.'
+---
+
+## Install
+
+```bash tab="npm"
+npm i google-maps-react-markers
+```
+
+```bash tab="pnpm"
+pnpm add google-maps-react-markers
+```
+
+```bash tab="yarn"
+yarn add google-maps-react-markers
+```
+
+```bash tab="bun"
+bun add google-maps-react-markers
+```
+
+The package ships TypeScript types and depends on `@types/google.maps`, so `google.maps.*` types work out of the box.
+
+## Get an API key
+
+1. Create a key in the [Google Cloud console](https://console.cloud.google.com/google/maps-apis/credentials) and enable the **Maps JavaScript API**.
+2. Restrict it to your sites with **HTTP referrers** (for example `https://example.com/*`). A browser key is always visible in the page: the restriction is what protects it.
+3. For advanced markers, create a **map ID** in [Map management](https://console.cloud.google.com/google/maps-apis/studio/maps). While you try things out, `DEMO_MAP_ID` works.
+
+## Your first map
+
+```tsx title="store-map.tsx"
+import { GoogleMap, Marker } from 'google-maps-react-markers'
+
+const stores = [
+	{ id: 'venice', name: 'Venice', lat: 45.4408, lng: 12.3155 },
+	{ id: 'milan', name: 'Milan', lat: 45.4642, lng: 9.19 },
+]
+
+export function StoreMap() {
+	return (
+		<GoogleMap
+			apiKey="YOUR_API_KEY"
+			mapId="DEMO_MAP_ID"
+			defaultCenter={{ lat: 45.4, lng: 11 }}
+			defaultZoom={7}
+			style={{ height: 480 }}
+		>
+			{stores.map((store) => (
+				<Marker key={store.id} lat={store.lat} lng={store.lng} anchor="bottom">
+					<div className="price-tag">{store.name}</div>
+				</Marker>
+			))}
+		</GoogleMap>
+	)
+}
+```
+
+<Callout title="Give the map a height">
+  Without a `className`, `<GoogleMap>` fills its parent (`width: 100%`, `height: 100%`): if the parent has no height, neither does the map. With a `className`, the class sets the size. `style` works in both cases.
+</Callout>
+
+## What happens
+
+1. On the server, and until the API is ready, `<GoogleMap>` renders its container and `loadingContent`. Markers render nothing yet.
+2. In the browser it loads the Maps JavaScript API once, with your `apiKey`, `language`, `region` and `libraries`.
+3. It creates the map with `defaultCenter`, `defaultZoom`, `mapId` and `options`, then calls `onLoad`.
+4. Each `<Marker>` creates its marker once and renders its children into it with a React portal.
+
+## Next steps
+
+- [Markers](/docs/markers): anchor, stacking, clicks.
+- [Events and camera](/docs/events): `onChange`, map events, controlled `center` and `zoom`.
+- [Next.js](/docs/nextjs): Server Components and static export.

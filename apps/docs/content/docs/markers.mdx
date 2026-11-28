@@ -1,0 +1,67 @@
+---
+title: 'Markers'
+description: 'Put any React content on the map, anchor it, stack it, make it clickable.'
+---
+
+A `<Marker>` places its children at `lat`/`lng`. It must be inside `<GoogleMap>`.
+
+```tsx
+<Marker lat={45.4408} lng={12.3155} anchor="bottom" zIndex={2} title="Venice" onClick={() => select('venice')}>
+	<PriceTag price={180} />
+</Marker>
+```
+
+Children are rendered with a React portal: they keep React context, state and event handlers like any other component.
+
+## Anchor
+
+`anchor` says which point of the marker sits on the coordinates. The default is `center`.
+
+| Value                                                                                        | Use it for                                 |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `'center'`                                                                                   | dots, avatars, clusters                    |
+| `'bottom'`                                                                                   | pins and tags with a tip                   |
+| `'top'`, `'left'`, `'right'`, `'top-left'`, `'top-right'`, `'bottom-left'`, `'bottom-right'` | labels next to a point                     |
+| `{ x: 0.5, y: 0.8 }`                                                                         | any point, as fractions of the marker size |
+
+The anchor is computed from the marker's own size with a CSS transform, so it stays right when the content changes size, and it does not measure the DOM.
+
+## Stacking
+
+Markers with a higher `zIndex` are drawn on top. Raise it for the selected or hovered marker:
+
+```tsx
+<Marker lat={lat} lng={lng} zIndex={id === selectedId ? 10 : 1}>
+```
+
+With the advanced renderer, Google also uses `zIndex` to decide which markers win collisions. Set it on every marker, or on none.
+
+## Clicks
+
+Pass `onClick` to the marker, or put handlers on your own elements. Clicks on a marker never trigger the map's `onClick`.
+
+With both renderers, `onClick` also makes the marker a focusable button that fires on <kbd>Enter</kbd> and <kbd>Space</kbd>. Give it a `title`: it is the name screen readers announce. See [Accessibility](/docs/accessibility).
+
+## Styling
+
+`className` goes on the marker container. Everything else is your component: Tailwind, CSS modules, styled-components, inline styles.
+
+```tsx
+<Marker lat={lat} lng={lng} className="marker">
+	<div className="rounded-full bg-white px-2 py-1 shadow">€ 120</div>
+</Marker>
+```
+
+## Updating markers
+
+Change `lat`, `lng`, `zIndex`, `anchor`, `draggable` or `title` and the marker is updated in place. It is created once when it mounts and removed when it unmounts, so use stable `key`s from your data, not array indexes.
+
+## Collision behavior
+
+With the advanced renderer you can let Google hide markers that overlap each other or map labels:
+
+```tsx
+<Marker lat={lat} lng={lng} collisionBehavior="OPTIONAL_AND_HIDES_LOWER_PRIORITY" zIndex={priority}>
+```
+
+The overlay renderer ignores this prop.

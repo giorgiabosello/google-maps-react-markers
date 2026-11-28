@@ -1,0 +1,19 @@
+---
+title: 'Many markers'
+description: 'Hundreds to thousands of React markers, without clustering. Pan, zoom and read the FPS.'
+---
+
+<ManyMarkersDemo />
+
+- **Markers**: how many markers to render. Points are generated with a fixed seed, so every load uses the same ones.
+- **Renderer**: `advanced` uses `AdvancedMarkerElement`, `overlay` uses the custom `OverlayView`. Same map, same points.
+- **FPS** is measured with `requestAnimationFrame`. **Lowest** resets when you change a setting: pan and zoom around, then read it.
+- **On the map in** is the time from your click until every marker's React content is mounted.
+
+Numbers depend on your device and on the marker content. Each marker here is a single `div`: heavier components cost more.
+
+## Source
+
+<include lang="tsx" meta='title="components/demos/many-markers.tsx"'>
+	../../../components/demos/many-markers.tsx
+</include>

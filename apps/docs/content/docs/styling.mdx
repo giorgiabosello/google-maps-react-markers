@@ -1,0 +1,36 @@
+---
+title: 'Map styling'
+description: 'Cloud styling with a map ID, or JSON styles without one.'
+---
+
+Google offers two ways to style the base map. They do not mix.
+
+## Cloud-based styling (map ID)
+
+Create a style in the Google Cloud console, attach it to a map ID, pass the `mapId`. You get advanced markers, vector maps and a light/dark `colorScheme`:
+
+```tsx
+<GoogleMap mapId="abc123" options={{ colorScheme: 'DARK' }} />
+```
+
+`colorScheme` is read when the map is created. To follow a theme toggle, remount the map with a `key`:
+
+```tsx
+<GoogleMap key={theme} mapId="abc123" options={{ colorScheme: theme === 'dark' ? 'DARK' : 'LIGHT' }} />
+```
+
+## JSON styles (no map ID)
+
+`options.styles` still works on maps without a `mapId`. Markers then use the [overlay renderer](/docs/renderers), automatically.
+
+<StyledMapDemo />
+
+```tsx
+<GoogleMap defaultCenter={center} defaultZoom={4} options={{ styles: navyStyles }}>
+	<Marker lat={45.44} lng={12.32}>
+		<Avatar initials="GB" />
+	</Marker>
+</GoogleMap>
+```
+
+Google ignores `styles` as soon as a `mapId` is set.

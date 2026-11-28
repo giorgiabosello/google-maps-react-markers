@@ -1,0 +1,175 @@
+---
+title: 'API reference'
+description: 'Every component, hook and type exported by the package.'
+---
+
+```ts
+import { GoogleMap, Marker, MapControl, useMap, useMapsLibrary, useGoogleMapsStatus } from 'google-maps-react-markers'
+```
+
+## `<GoogleMap>`
+
+### Loader
+
+The first `<GoogleMap>` on the page configures the Maps JavaScript API. Later maps reuse it, and their loader props are ignored (with a warning in development if the key differs).
+
+<TypeTable
+	type={{
+		apiKey: { type: 'string', description: 'Google Maps Platform API key.' },
+		version: {
+			type: 'string',
+			default: "'weekly'",
+			description: "API version: 'weekly', 'quarterly', 'beta' or a number.",
+		},
+		language: { type: 'string', description: "Language of labels and controls, for example 'it'." },
+		region: { type: 'string', description: "Region bias, for example 'IT'." },
+		libraries: { type: 'string[]', description: "Libraries to load with the map, for example ['places']." },
+		mapIds: { type: 'string[]', description: 'Map IDs to preload.' },
+		authReferrerPolicy: { type: 'string', description: 'auth_referrer_policy parameter.' },
+		channel: { type: 'string', description: 'Usage report channel.' },
+	}}
+/>
+
+### Map
+
+<TypeTable
+	type={{
+		defaultCenter: { type: 'LatLngLiteral', description: 'Initial center, when center is not set.' },
+		defaultZoom: { type: 'number', description: 'Initial zoom, when zoom is not set.' },
+		center: { type: 'LatLngLiteral', description: 'Controlled center. The map moves when it changes.' },
+		zoom: { type: 'number', description: 'Controlled zoom.' },
+		mapId: { type: 'string', description: 'Cloud map ID. Enables advanced markers. Changing it creates a new map.' },
+		markerRenderer: {
+			type: "'auto' | 'advanced' | 'overlay'",
+			default: "'auto'",
+			description: 'How markers are drawn. See Renderers.',
+		},
+		options: {
+			type: 'google.maps.MapOptions',
+			description:
+				'Any map option except center, zoom and mapId. Changes are applied with map.setOptions(). A key you remove keeps its last value: set it to its default instead.',
+		},
+		onLoad: {
+			type: '({ map, maps }) => void',
+			description: 'Fired when the map is created, and again if mapId changes (the map is recreated).',
+		},
+		onChange: {
+			type: '({ map, center, zoom, bounds, bbox }) => void',
+			description: 'Fired when the map settles with a new camera.',
+		},
+		loadingContent: {
+			type: 'ReactNode',
+			default: 'null',
+			description: 'Rendered on the server and while the API loads.',
+		},
+		errorContent: {
+			type: 'ReactNode',
+			default: 'null',
+			description: 'Rendered when the API fails to load or the key is rejected.',
+		},
+		children: { type: 'ReactNode', description: 'Markers, controls and components using useMap().' },
+	}}
+/>
+
+### Container
+
+<TypeTable
+	type={{
+		ref: { type: 'Ref<HTMLDivElement>', description: 'Ref to the outer container.' },
+		className: {
+			type: 'string',
+			description:
+				'Class of the outer container. Without one the map fills its parent; with one, the class sets the size.',
+		},
+		style: {
+			type: 'CSSProperties',
+			description: "Merged over { position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }.",
+		},
+		id: { type: 'string', description: 'id of the outer container.' },
+	}}
+/>
+
+### Events
+
+Mouse events receive `(event: google.maps.MapMouseEvent, map)`, the others `(map)`. See [Events and camera](/docs/events).
+
+<TypeTable
+	type={{
+		onClick: { type: '(event, map) => void' },
+		onDoubleClick: { type: '(event, map) => void' },
+		onContextMenu: { type: '(event, map) => void' },
+		onMouseMove: { type: '(event, map) => void' },
+		onMouseOver: { type: '(event, map) => void' },
+		onMouseOut: { type: '(event, map) => void' },
+		onDragStart: { type: '(map) => void' },
+		onDrag: { type: '(map) => void' },
+		onDragEnd: { type: '(map) => void' },
+		onIdle: { type: '(map) => void' },
+		onBoundsChanged: { type: '(map) => void' },
+		onCenterChanged: { type: '(map) => void' },
+		onZoomChanged: { type: '(map) => void' },
+		onHeadingChanged: { type: '(map) => void' },
+		onTiltChanged: { type: '(map) => void' },
+		onMapTypeIdChanged: { type: '(map) => void' },
+		onTilesLoaded: { type: '(map) => void' },
+	}}
+/>
+
+## `<Marker>`
+
+<TypeTable
+	type={{
+		lat: { type: 'number', required: true, description: 'Latitude.' },
+		lng: { type: 'number', required: true, description: 'Longitude.' },
+		children: { type: 'ReactNode', description: 'Your marker.' },
+		anchor: {
+			type: "'center' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | { x, y }",
+			default: "'center'",
+			description: 'Which point of the marker sits on the coordinates.',
+		},
+		zIndex: { type: 'number', description: 'Stacking order. Higher is on top.' },
+		draggable: {
+			type: 'boolean',
+			default: 'false',
+			description: 'Drag with mouse, touch or keyboard (Alt + Enter, arrows, Enter).',
+		},
+		onDragStart: { type: '(event, { latLng }) => void' },
+		onDrag: { type: '(event, { latLng }) => void' },
+		onDragEnd: { type: '(event, { latLng }) => void', description: 'Save the new position here.' },
+		onClick: { type: '(event) => void', description: 'Click, Enter or Space. Makes the marker a focusable button.' },
+		title: {
+			type: 'string',
+			description: 'Accessible name and tooltip. Required in practice for clickable or draggable markers.',
+		},
+		className: { type: 'string', description: 'Class of the marker container.' },
+		collisionBehavior: {
+			type: 'google.maps.CollisionBehaviorString',
+			description: 'Advanced renderer only.',
+		},
+	}}
+/>
+
+## `<MapControl>`
+
+<TypeTable
+	type={{
+		position: {
+			type: 'keyof typeof google.maps.ControlPosition | google.maps.ControlPosition',
+			required: true,
+			description: "For example 'TOP_RIGHT'.",
+		},
+		children: { type: 'ReactNode' },
+	}}
+/>
+
+## Hooks
+
+| Hook                    | Returns                                                  |
+| ----------------------- | -------------------------------------------------------- |
+| `useMap()`              | `google.maps.Map \| null`. Throws outside `<GoogleMap>`. |
+| `useMapsLibrary(name)`  | the library, or `null` until loaded.                     |
+| `useGoogleMapsStatus()` | `'loading' \| 'ready' \| 'error'`.                       |
+
+## Types
+
+All prop and event types are exported: `GoogleMapProps`, `MarkerProps`, `MapControlProps`, `MapChangeEvent`, `MapLoadEvent`, `MapEventProps`, `MarkerAnchor`, `MarkerAnchorPreset`, `MarkerDragHandler`, `MarkerRenderer`, `GoogleMapsLoaderOptions`, `GoogleMapsStatus`, `LatLngLiteral`, `BBox`.

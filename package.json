@@ -1,113 +1,47 @@
 {
-	"name": "google-maps-react-markers",
-	"version": "2.0.15",
-	"description": "Google Maps library that accepts markers as react components, works with React 18+ and it is fully typed.",
-	"author": "Giorgia Bosello",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/giorgiabosello/google-maps-react-markers.git"
-	},
-	"homepage": "https://giorgiabosello.github.io/google-maps-react-markers/",
-	"keywords": [
-		"react",
-		"google-maps",
-		"markers",
-		"map",
-		"google",
-		"maps",
-		"google-maps-react",
-		"google-maps-react-markers",
-		"react-component"
-	],
-	"main": "dist/index.cjs",
-	"module": "dist/index.js",
-	"exports": {
-		".": {
-			"import": "./dist/index.js",
-			"require": "./dist/index.cjs"
-		}
-	},
-	"types": "dist/index.d.ts",
+	"name": "google-maps-react-markers-monorepo",
+	"private": true,
 	"type": "module",
-	"scripts": {
-		"dev": "concurrently \"yarn build --watch\"",
-		"build": "tsup --onSuccess \"yarn link:self\"",
-		"type-check": "tsc",
-		"lint": "eslint --ignore-pattern .gitignore \"{src,docs/src}/**/*.+(ts|js|tsx)\"",
-		"lint:fix": "yarn lint --fix && prettier --write .",
-		"prepare": "husky || true",
-		"commit": "cz",
-		"link:self": "yarn yalc publish && yarn link",
-		"final:publish": "yarn build && npm publish"
-	},
-	"files": [
-		"dist"
-	],
-	"lint-staged": {
-		"./{src,tests}/**/*.{ts,js,jsx,tsx}": [
-			"eslint --ignore-pattern .gitignore --fix"
-		],
-		"*": "prettier --write"
-	},
-	"config": {
-		"commitizen": {
-			"path": "./node_modules/@ryansonshine/cz-conventional-changelog"
-		}
-	},
+	"packageManager": "pnpm@12.23.0",
 	"engines": {
-		"node": ">=16"
+		"node": ">=22.12"
+	},
+	"scripts": {
+		"build": "pnpm --filter google-maps-react-markers build",
+		"dev": "pnpm --filter google-maps-react-markers dev",
+		"docs:dev": "pnpm build && pnpm --parallel --filter google-maps-react-markers --filter docs dev",
+		"docs:build": "pnpm build && pnpm --filter docs build",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix && prettier --write .",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"typecheck": "pnpm -r typecheck",
+		"test": "pnpm --filter google-maps-react-markers test",
+		"check:package": "pnpm --filter google-maps-react-markers check:package",
+		"size": "pnpm --filter google-maps-react-markers size",
+		"changeset": "changeset",
+		"version-packages": "changeset version",
+		"release": "pnpm build && changeset publish",
+		"prepare": "husky || true"
+	},
+	"lint-staged": {
+		"*.{ts,tsx,js,mjs}": "eslint --fix",
+		"*": "prettier --write --ignore-unknown"
 	},
 	"devDependencies": {
-		"@babel/core": "7.26.8",
-		"@babel/preset-env": "7.26.9",
-		"@babel/preset-react": "7.26.3",
-		"@babel/preset-typescript": "7.26.0",
-		"@commitlint/cli": "19.7.1",
-		"@commitlint/config-conventional": "19.7.1",
-		"@ryansonshine/commitizen": "4.2.8",
-		"@ryansonshine/cz-conventional-changelog": "3.3.4",
-		"@types/google.maps": "^3.58.1",
-		"@types/node": "^22.13.1",
-		"@types/react": "^19.0.8",
-		"@types/react-dom": "^19.0.3",
-		"@typescript-eslint/eslint-plugin": "8.27.0",
-		"@typescript-eslint/parser": "8.23.0",
-		"babel-loader": "9.2.1",
-		"concurrently": "9.1.2",
-		"eslint": "9.22.0",
-		"eslint-config-airbnb": "19.0.4",
-		"eslint-config-prettier": "10.0.1",
-		"eslint-plugin-import": "2.31.0",
-		"eslint-plugin-jsx-a11y": "6.10.2",
-		"eslint-plugin-prefer-arrow": "1.2.3",
-		"eslint-plugin-prettier": "5.5.4",
-		"eslint-plugin-react": "7.37.4",
-		"eslint-plugin-react-hooks": "5.2.0",
-		"eslint-plugin-sort-class-members": "^1.21.0",
-		"eslint-plugin-typescript-sort-keys": "3.3.0",
-		"eslint-plugin-unused-imports": "4.2.0",
-		"gh-pages": "^6.3.0",
-		"husky": "9.1.7",
-		"lint-staged": "15.4.3",
-		"prettier": "^3.5.0",
-		"prop-types": "15.8.1",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"tsup": "8.4.0",
-		"typescript": "^5.7.3",
-		"yalc": "1.0.0-pre.53"
-	},
-	"peerDependencies": {
-		"react": ">=18",
-		"react-dom": ">=18"
-	},
-	"resolutions": {
-		"glob-parent": ">=5.1.2",
-		"parse-url": ">=8.1.0",
-		"semver": ">=7.5.2",
-		"trim": ">=0.0.3",
-		"trim-newlines": ">=3.0.1",
-		"yaml": ">=2.2.2"
+		"@changesets/changelog-github": "^1.0.1",
+		"@changesets/cli": "^3.0.3",
+		"@commitlint/cli": "^21.2.4",
+		"@commitlint/config-conventional": "^21.2.4",
+		"@eslint/js": "^10.0.1",
+		"eslint": "^10.15.0",
+		"eslint-config-prettier": "~10.1.8",
+		"eslint-plugin-react-hooks": "^7.1.1",
+		"globals": "^17.14.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^17.6.2",
+		"prettier": "^3.10.1",
+		"typescript": "~6.0.3",
+		"typescript-eslint": "^8.74.0"
 	}
 }

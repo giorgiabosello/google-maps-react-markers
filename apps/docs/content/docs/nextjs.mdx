@@ -1,0 +1,67 @@
+---
+title: 'Next.js'
+description: 'Use the library with the App Router, Server Components and static export.'
+---
+
+The package marks itself with `'use client'`, so you can import `<GoogleMap>` and `<Marker>` straight from a Server Component. They render on the server (container and `loadingContent`), hydrate without mismatches, and load the Maps JavaScript API in the browser.
+
+```tsx title="app/stores/page.tsx"
+import { GoogleMap, Marker } from 'google-maps-react-markers'
+import { getStores } from '@/lib/stores'
+
+export default async function StoresPage() {
+	const stores = await getStores() // runs on the server
+
+	return (
+		<GoogleMap
+			apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+			mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID}
+			defaultCenter={{ lat: 45.4, lng: 11 }}
+			defaultZoom={6}
+			style={{ height: 480 }}
+		>
+			{stores.map((store) => (
+				<Marker key={store.id} lat={store.lat} lng={store.lng} anchor="bottom">
+					<span className="tag">{store.name}</span>
+				</Marker>
+			))}
+		</GoogleMap>
+	)
+}
+```
+
+Marker children can be Server Components too: they are serialized like any other children.
+
+## When you need a Client Component
+
+Functions cannot cross the server/client boundary. As soon as you pass `onChange`, `onClick`, `onDragEnd` or keep state, move the map into a file that starts with `'use client'`:
+
+```tsx title="app/stores/store-map.tsx"
+'use client'
+
+import { GoogleMap, Marker } from 'google-maps-react-markers'
+import { useState } from 'react'
+
+export function StoreMap({ stores }: { stores: Store[] }) {
+	const [selected, setSelected] = useState<string | null>(null)
+	return (
+		<GoogleMap apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} defaultCenter={stores[0]} defaultZoom={6}>
+			{stores.map((store) => (
+				<Marker key={store.id} lat={store.lat} lng={store.lng} title={store.name} onClick={() => setSelected(store.id)}>
+					<Tag active={store.id === selected}>{store.name}</Tag>
+				</Marker>
+			))}
+		</GoogleMap>
+	)
+}
+```
+
+You do not need `dynamic(() => import(...), { ssr: false })`.
+
+## Static export
+
+`output: 'export'` works: the prerendered HTML contains the container and `loadingContent`, and the map appears once the API loads. This site is built that way and deployed on GitHub Pages.
+
+## Environment variables
+
+Browser keys must be public, so prefix them with `NEXT_PUBLIC_`. Protect them with HTTP referrer restrictions in the Google Cloud console.

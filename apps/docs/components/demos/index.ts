@@ -1,0 +1,8 @@
+export { ClusteringDemo } from './clustering'
+export { ControlledDemo } from './controlled'
+export { DraggableDemo } from './draggable'
+export { FewMarkersDemo } from './few-markers'
+export { ManyMarkersDemo } from './many-markers'
+export { MultipleMapsDemo } from './multiple-maps'
+export { RtlDemo } from './rtl'
+export { StyledMapDemo } from './styled-map'
