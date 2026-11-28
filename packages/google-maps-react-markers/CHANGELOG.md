@@ -1,5 +1,11 @@
 # google-maps-react-markers
 
+## 3.0.1
+
+### 🐛 Bug Fixes
+
+- [#404](https://github.com/giorgiabosello/google-maps-react-markers/pull/404) [`da276d6`](https://github.com/giorgiabosello/google-maps-react-markers/commit/da276d69839930df0d91ecf250a1da28215b1d43) Thanks [@giorgiabosello](https://github.com/giorgiabosello)! - Clicks on buttons, links and other elements inside a draggable overlay marker reach them again. The overlay drag no longer uses pointer capture, which sent the click to the marker container; it follows the pointer on `window`, and the click that ends a drag is still swallowed, on the marker and on the map.
+
 ## 3.0.0
 
 ### 💥 BREAKING CHANGES

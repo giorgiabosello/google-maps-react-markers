@@ -1,6 +1,6 @@
 {
 	"name": "google-maps-react-markers",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Google Maps for React 19: render any React component as a marker. Advanced markers or custom overlays, drag and drop, clustering-ready, SSR safe and fully typed.",
 	"author": "Giorgia Bosello",
 	"license": "MIT",
