@@ -28,33 +28,28 @@ export const toLatLngLiteral = (
 	return { lat: literal.lat, lng: literal.lng }
 }
 
-/**
- * Equality for map options: shallow, plus a structural check for nested values
- * (`styles`, `restriction`), so inline objects do not call setOptions on every render.
- */
-export const optionsEqual = (a: object | undefined, b: object | undefined): boolean => {
-	if (shallowEqual(a, b)) return true
-	if (!a || !b) return false
-	const keysA = Object.keys(a)
-	if (keysA.length !== Object.keys(b).length) return false
-	return keysA.every((key) => {
-		const valueA = (a as Record<string, unknown>)[key]
-		const valueB = (b as Record<string, unknown>)[key]
-		if (Object.is(valueA, valueB)) return true
-		if (typeof valueA !== 'object' || typeof valueB !== 'object' || !valueA || !valueB) return false
-		try {
-			return JSON.stringify(valueA) === JSON.stringify(valueB)
-		} catch {
-			return false
-		}
-	})
+/** Equality for one option value: identity, plus a structural check for nested values. */
+const optionValueEqual = (a: unknown, b: unknown): boolean => {
+	if (Object.is(a, b)) return true
+	if (typeof a !== 'object' || typeof b !== 'object' || !a || !b) return false
+	try {
+		return JSON.stringify(a) === JSON.stringify(b)
+	} catch {
+		return false
+	}
 }
 
-/** Shallow equality for plain option objects. */
-export const shallowEqual = (a: object | undefined, b: object | undefined): boolean => {
-	if (a === b) return true
-	if (!a || !b) return false
-	const keysA = Object.keys(a)
-	if (keysA.length !== Object.keys(b).length) return false
-	return keysA.every((key) => Object.is((a as Record<string, unknown>)[key], (b as Record<string, unknown>)[key]))
+/**
+ * The options of `next` that are new or different from `previous`. Nested values (`styles`,
+ * `restriction`) are compared by structure, so an inline object does not count as a change.
+ * Only these go to setOptions: re-applying the others would undo changes the user made on the map,
+ * for example the map type picked with Google's control.
+ */
+export const changedOptions = <T extends object>(previous: T | undefined, next: T | undefined): Partial<T> => {
+	const changed: Partial<T> = {}
+	if (!next) return changed
+	for (const key of Object.keys(next) as (keyof T)[]) {
+		if (!optionValueEqual(previous?.[key], next[key])) changed[key] = next[key]
+	}
+	return changed
 }

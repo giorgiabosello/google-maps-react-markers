@@ -79,6 +79,22 @@ describe('<GoogleMap>', () => {
 		expect(map.setOptions).toHaveBeenCalledWith({ minZoom: 4 })
 	})
 
+	it('applies only the options that changed, without undoing what the user did on the map', async () => {
+		const mock = installGoogleMapsMock()
+		const ui = (styles: google.maps.MapTypeStyle[]) => (
+			<GoogleMap defaultCenter={center} defaultZoom={5} options={{ mapTypeId: 'roadmap', styles }} />
+		)
+		const { rerender } = render(ui([{ stylers: [{ saturation: -100 }] }]))
+		await flush()
+		const map = mock.maps[0]!
+		// The user picks satellite with Google's map type control.
+		map.options.mapTypeId = 'satellite'
+		rerender(ui([{ stylers: [{ saturation: 50 }] }]))
+		expect(map.setOptions).toHaveBeenCalledTimes(1)
+		expect(map.setOptions).toHaveBeenCalledWith({ styles: [{ stylers: [{ saturation: 50 }] }] })
+		expect(map.options.mapTypeId).toBe('satellite')
+	})
+
 	it('calls the latest onChange with center, zoom, bounds and bbox, once per real change', async () => {
 		const mock = installGoogleMapsMock()
 		const first = vi.fn()

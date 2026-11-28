@@ -1,7 +1,7 @@
 import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
 import { GoogleMapContext, type GoogleMapContextValue } from './context'
 import { useGoogleMapsStatus } from './hooks'
-import { boundsToBbox, isArraysEqualEps, optionsEqual } from './internal/geometry'
+import { boundsToBbox, changedOptions, isArraysEqualEps } from './internal/geometry'
 import { MARKER_ATTRIBUTE } from './internal/marker-handle'
 import { MAP_EVENTS, MAP_EVENT_PROPS, MOUSE_EVENTS } from './internal/map-events'
 import { useLatest } from './internal/use-latest'
@@ -113,12 +113,14 @@ export const GoogleMap = (props: GoogleMapProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mapId])
 
-	// Options: apply only real changes, so an inline object does not call setOptions on every render.
+	// Options: apply only the keys that really changed. An inline object does not call setOptions on
+	// every render, and changing one option does not re-apply the others over what the user did on the map.
 	const appliedOptions = useRef(options)
 	useEffect(() => {
-		if (!map || optionsEqual(appliedOptions.current, options)) return
+		if (!map) return
+		const changed = changedOptions(appliedOptions.current, options)
 		appliedOptions.current = options
-		if (options) map.setOptions(options)
+		if (Object.keys(changed).length > 0) map.setOptions(changed)
 	}, [map, options])
 
 	// Controlled center and zoom.

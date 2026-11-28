@@ -126,7 +126,9 @@ export interface GoogleMapProps extends GoogleMapsLoaderOptions, MapEventProps {
 	/** Fired once, when the map has been created. */
 	onLoad?: (event: MapLoadEvent) => void
 	/**
-	 * Any `google.maps.MapOptions`. Changes are applied with `map.setOptions()`.
+	 * Any `google.maps.MapOptions`. Only the options that change are applied, with `map.setOptions()`:
+	 * the others stay as the user left them (for example the map type picked with Google's control).
+	 * Removing an option does not reset it: set it to its default value instead.
 	 * @see https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
 	 */
 	options?: Omit<google.maps.MapOptions, 'center' | 'zoom' | 'mapId'>
