@@ -236,6 +236,11 @@ export interface MapContextProps {
 
 export interface OverlayViewProps extends MapContextProps {
 	/**
+	 * Which point of the overlay sits on its position.
+	 * @default 'center'
+	 */
+	anchor?: MarkerAnchor
+	/**
 	 * The children to be rendered within the overlay.
 	 */
 	children?: React.ReactElement
@@ -253,11 +258,6 @@ export interface OverlayViewProps extends MapContextProps {
 	 * The geographical coordinates of the overlay.
 	 */
 	position: LatLng
-	/**
-	 * Which point of the overlay sits on its position.
-	 * @default 'center'
-	 */
-	anchor?: MarkerAnchor
 	/**
 	 * The z-index of the overlay.
 	 * @default 0

@@ -6,7 +6,7 @@ const getLatLng = (LatLng: google.maps.LatLng | null) => {
 	try {
 		const latLng = { lat: LatLng?.lat(), lng: LatLng?.lng() } as google.maps.LatLngLiteral
 		return latLng
-	} catch (e) {
+	} catch {
 		return LatLng
 	}
 }
