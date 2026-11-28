@@ -2,6 +2,9 @@
 'google-maps-react-markers': major
 ---
 
+pr: 395
+commit: 948c94c
+
 v3: rewrite for React 19 and Next.js 16.
 
 - New `<Marker lat lng>` component: put any React content inside. Children with `lat`/`lng` are no longer cloned.
