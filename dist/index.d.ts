@@ -1,3 +1,4 @@
+/// <reference types="google.maps" />
 import * as React from 'react';
 import React__default from 'react';
 
@@ -16,6 +17,95 @@ type LatLng = google.maps.LatLng;
 type LatLngLiteral = google.maps.LatLngLiteral;
 type LatLngBounds = google.maps.LatLngBounds;
 type LatLngBoundsLiteral = google.maps.LatLngBoundsLiteral;
+/** Map bounds as `[westLng, southLat, eastLng, northLat]`, ready for supercluster's `getClusters()`. */
+type BBox = [west: number, south: number, east: number, north: number];
+type MarkerAnchorPreset = 'center' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+/**
+ * Which point of the marker sits on its coordinates.
+ * A preset, or `{ x, y }` as fractions of the marker size (`{ x: 0.5, y: 1 }` is bottom center).
+ */
+type MarkerAnchor = MarkerAnchorPreset | {
+    x: number;
+    y: number;
+};
+/** Drag callback of a marker. The event is a `PointerEvent`. */
+type MarkerDragHandler = (event: MouseEvent, data: {
+    latLng: LatLngLiteral;
+}) => void;
+/**
+ * The props read from every child of `GoogleMap` that has `lat` and `lng`.
+ * Extend it in your own marker component, for example `const Pin = (props: MarkerProps) => ...`.
+ * Children without `lat` and `lng` are rendered as they are, so they can use `useMap()`.
+ */
+interface MarkerProps {
+    /**
+     * Which point of the marker sits on `lat`/`lng`.
+     * @default 'center'
+     */
+    anchor?: MarkerAnchor;
+    /**
+     * Whether the marker can be dragged.
+     * @default false
+     */
+    draggable?: boolean;
+    lat: number;
+    lng: number;
+    /** Fired repeatedly while the marker is dragged. */
+    onDrag?: MarkerDragHandler;
+    /** Fired when the drag ends. Update your `lat`/`lng` state here. */
+    onDragEnd?: MarkerDragHandler;
+    /** Fired when the drag starts. */
+    onDragStart?: MarkerDragHandler;
+    /** Stacking order. Higher values are drawn on top. */
+    zIndex?: number;
+}
+/** The libraries `useMapsLibrary()` can load, by name. */
+interface MapsLibraryMap {
+    core: google.maps.CoreLibrary;
+    drawing: google.maps.DrawingLibrary;
+    elevation: google.maps.ElevationLibrary;
+    geocoding: google.maps.GeocodingLibrary;
+    geometry: google.maps.GeometryLibrary;
+    journeySharing: google.maps.JourneySharingLibrary;
+    maps: google.maps.MapsLibrary;
+    maps3d: google.maps.Maps3DLibrary;
+    marker: google.maps.MarkerLibrary;
+    places: google.maps.PlacesLibrary;
+    routes: google.maps.RoutesLibrary;
+    streetView: google.maps.StreetViewLibrary;
+    visualization: google.maps.VisualizationLibrary;
+}
+interface MapControlProps {
+    children?: React__default.ReactNode;
+    /** Where to place the control, for example `'TOP_RIGHT'`. */
+    position: keyof typeof google.maps.ControlPosition | google.maps.ControlPosition;
+}
+type MapMouseHandler = (event: google.maps.MapMouseEvent, map: google.maps.Map) => void;
+type MapHandler = (map: google.maps.Map) => void;
+/**
+ * Google Maps events, as props. Handlers always see your latest props and state.
+ * Mouse events (click, double click, context menu, mouse move/over/out) are not fired
+ * when they happen on a marker.
+ */
+interface MapEventProps {
+    onBoundsChanged?: MapHandler;
+    onCenterChanged?: MapHandler;
+    onClick?: MapMouseHandler;
+    onContextMenu?: MapMouseHandler;
+    onDoubleClick?: MapMouseHandler;
+    onDrag?: MapHandler;
+    onDragEnd?: MapHandler;
+    onDragStart?: MapHandler;
+    onHeadingChanged?: MapHandler;
+    onIdle?: MapHandler;
+    onMapTypeIdChanged?: MapHandler;
+    onMouseMove?: MapMouseHandler;
+    onMouseOut?: MapMouseHandler;
+    onMouseOver?: MapMouseHandler;
+    onTilesLoaded?: MapHandler;
+    onTiltChanged?: MapHandler;
+    onZoomChanged?: MapHandler;
+}
 /**
  * The drag configuration of the overlay.
  */
@@ -148,12 +238,22 @@ interface OverlayViewProps extends MapContextProps {
      */
     position: LatLng;
     /**
+     * Which point of the overlay sits on its position.
+     * @default 'center'
+     */
+    anchor?: MarkerAnchor;
+    /**
      * The z-index of the overlay.
      * @default 0
      */
     zIndex?: number | 0;
 }
 interface createOverlayProps {
+    /**
+     * Which point of the overlay sits on its position.
+     * @default 'center'
+     */
+    anchor?: MarkerAnchor;
     /**
      * The HTML container element in which to render the overlay.
      */
@@ -203,19 +303,25 @@ interface MapMarkersProps extends MapContextProps {
      */
     children: React__default.ReactNode;
 }
-interface MapProps {
+interface MapProps extends MapEventProps {
     /**
-     * The Markers to be rendered on the map
+     * Controlled center. When it changes, the map moves there. Users can still pan:
+     * keep your state in sync with `onChange`.
+     */
+    center?: LatLngLiteral;
+    /**
+     * The Markers to be rendered on the map: every child with `lat` and `lng`.
+     * Other children (for example `MapControl`, or components that use `useMap()`) are rendered as they are.
      */
     children?: React__default.ReactNode;
     /**
-     * The default center of the map.
+     * The default center of the map. Pass it, or `center`.
      */
-    defaultCenter: LatLngLiteral;
+    defaultCenter?: LatLngLiteral;
     /**
-     * The default zoom of the map.
+     * The default zoom of the map. Pass it, or `zoom`.
      */
-    defaultZoom: number;
+    defaultZoom?: number;
     /**
      * The events to pass to the Google Maps instance (`div`).
      * @type {Array}
@@ -232,7 +338,10 @@ interface MapProps {
      * The callback fired when the map changes (center, zoom, bounds).
      */
     onChange?: (options: {
+        /** Bounds as `[westLng, southLat, eastLng, northLat]`, ready for supercluster. */
+        bbox: BBox;
         bounds: LatLngBounds;
+        /** Center as `[lng, lat]`. */
         center: (number | undefined)[];
         zoom: number;
     }) => void;
@@ -241,7 +350,7 @@ interface MapProps {
      */
     onGoogleApiLoaded?: (props: onGoogleApiLoadedProps) => void;
     /**
-     * The options to pass to the Google Maps instance.
+     * The options to pass to the Google Maps instance. Changes are applied with `map.setOptions()`.
      * @reference https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
      */
     options?: MapOptions;
@@ -258,6 +367,10 @@ interface MapProps {
      * }
      */
     style?: React__default.CSSProperties;
+    /**
+     * Controlled zoom. Pair it with `onChange`.
+     */
+    zoom?: number;
 }
 interface GoogleMapProps extends MapProps, IUseGoogleMaps {
     /**
@@ -292,4 +405,19 @@ interface GoogleMapProps extends MapProps, IUseGoogleMaps {
 
 declare const GoogleMap: React.ForwardRefExoticComponent<GoogleMapProps & React.RefAttributes<HTMLDivElement>>;
 
-export { type Drag, type EventProps, type GoogleMapProps, type IUseGoogleMaps, type LatLng, type LatLngBounds, type LatLngBoundsLiteral, type LatLngLiteral, type Map, type MapContextProps, type MapMarkersProps, type MapMouseEvent, type MapOptions, type MapPanes, type MapProps, type MapsLibrary, type OverlayViewProps, type Pane, type ScriptProps, type UseScriptOptions, type UseScriptStatus, type createOverlayProps, GoogleMap as default, type onGoogleApiLoadedProps };
+/**
+ * The `google.maps.Map` instance of the closest `GoogleMap`.
+ * Use it in any child of `GoogleMap`: children without `lat` and `lng` are not markers, so they can render anything.
+ * Throws when used outside `GoogleMap`: use its `onGoogleApiLoaded` prop there.
+ */
+declare const useMap: () => google.maps.Map;
+/**
+ * Loads a Maps JavaScript API library with `google.maps.importLibrary()`, for example `useMapsLibrary('places')`.
+ * Returns `null` until it is loaded. Use it inside `GoogleMap`, like `useMap()`.
+ */
+declare const useMapsLibrary: <K extends keyof MapsLibraryMap>(name: K) => MapsLibraryMap[K] | null;
+
+/** Renders React content as a native map control, for example `<MapControl position="TOP_RIGHT">`. */
+declare const MapControl: ({ position, children }: MapControlProps) => React.ReactPortal | null;
+
+export { type BBox, type Drag, type EventProps, type GoogleMapProps, type IUseGoogleMaps, type LatLng, type LatLngBounds, type LatLngBoundsLiteral, type LatLngLiteral, type Map, type MapContextProps, MapControl, type MapControlProps, type MapEventProps, type MapMarkersProps, type MapMouseEvent, type MapOptions, type MapPanes, type MapProps, type MapsLibrary, type MapsLibraryMap, type MarkerAnchor, type MarkerAnchorPreset, type MarkerDragHandler, type MarkerProps, type OverlayViewProps, type Pane, type ScriptProps, type UseScriptOptions, type UseScriptStatus, type createOverlayProps, GoogleMap as default, type onGoogleApiLoadedProps, useMap, useMapsLibrary };
