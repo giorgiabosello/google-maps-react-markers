@@ -46,7 +46,7 @@ Feedbacks are welcome in [this discussion](https://github.com/giorgiabosello/goo
 
 See it in action [here](https://giorgiabosello.github.io/google-maps-react-markers/) _(API KEY not provided)_.
 
-Demo source code is available [here](https://github.com/giorgiabosello/google-maps-react-markers/tree/master/docs/src).
+Demo source code is available [here](https://github.com/giorgiabosello/google-maps-react-markers/tree/v2/docs/src).
 
 ## 🛠 Install
 
