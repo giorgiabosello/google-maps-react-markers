@@ -5,6 +5,10 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Conventional Commits with the emoji after the type, like scripts/commit-emoji.mjs.
+    commit-message:
+      prefix: 'build(deps): ⬆️'
+      prefix-development: 'build(deps-dev): ⬆️'
     groups:
       dev-dependencies:
         dependency-type: development
@@ -20,6 +24,8 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    commit-message:
+      prefix: 'ci(deps): ⬆️'
     groups:
       actions:
         patterns: ['*']

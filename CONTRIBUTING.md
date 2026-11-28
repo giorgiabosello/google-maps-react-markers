@@ -64,7 +64,7 @@ Use `.test` rather than `.local`: on macOS `.local` goes through Bonjour and res
 
 - Add a test for bug fixes and new behavior (`packages/google-maps-react-markers/test`).
 - Add a changeset if the published package changes: `pnpm changeset`.
-- Use [Conventional Commits](https://www.conventionalcommits.org/) (`fix(marker): ...`, `feat: ...`): a commit hook checks it.
+- Use [Conventional Commits](https://www.conventionalcommits.org/) (`fix(marker): ...`, `feat: ...`): a commit hook checks it. Another hook adds the emoji for the type after the colon (`feat: ✨ ...`, `fix: 🐛 ...`, `feat!: 💥 ...`), so you don't type it. Pull request titles follow the same format, because they become the squash commit.
 - Update the docs in `apps/docs/content/docs` when you change the API.
 - Interactive markers and controls must work with the keyboard and have an accessible name.
 - CI must be green: **Ready to merge** sums up lint, types, tests on Node 22 and 24, package checks, bundle size, the axe audit and Lighthouse. The maintainer reviews and approves every pull request.

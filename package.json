@@ -20,7 +20,7 @@
 		"check:package": "pnpm --filter google-maps-react-markers check:package",
 		"size": "pnpm --filter google-maps-react-markers size",
 		"changeset": "changeset",
-		"version-packages": "changeset version",
+		"version-packages": "changeset version && node scripts/changelog-headings.mjs",
 		"release": "pnpm build && changeset publish",
 		"prepare": "husky || true"
 	},
