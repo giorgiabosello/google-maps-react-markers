@@ -93,6 +93,69 @@ describe('<Marker> with the overlay renderer (no mapId)', () => {
 		expect(onClick).toHaveBeenCalledTimes(1)
 	})
 
+	it('lets clicks reach elements inside a draggable marker', async () => {
+		installGoogleMapsMock()
+		const onButtonClick = vi.fn()
+		const onClick = vi.fn()
+		render(
+			<GoogleMap defaultCenter={center} defaultZoom={5}>
+				<Marker lat={10} lng={20} draggable onClick={onClick}>
+					<button type="button" onClick={onButtonClick}>
+						Open
+					</button>
+				</Marker>
+			</GoogleMap>,
+		)
+		await flush()
+		const button = screen.getByText('Open')
+		// Pointer capture would send the click to the marker container instead of the button.
+		const capture = vi.fn()
+		button.parentElement!.setPointerCapture = capture
+		pointer('pointerdown', button, { clientX: 0, clientY: 0 })
+		pointer('pointerup', button, { clientX: 1, clientY: 0 })
+		fireEvent.click(button)
+		expect(capture).not.toHaveBeenCalled()
+		expect(onButtonClick).toHaveBeenCalledTimes(1)
+		expect(onClick).toHaveBeenCalledTimes(1)
+	})
+
+	it('follows the pointer outside the marker and swallows the click that ends the drag', async () => {
+		installGoogleMapsMock()
+		const onDragEnd = vi.fn()
+		const onPageClick = vi.fn()
+		renderMarker({ draggable: true, onDragEnd })
+		await flush()
+		const container = screen.getByText('Pin').parentElement!
+		document.body.addEventListener('click', onPageClick)
+
+		pointer('pointerdown', container, { clientX: 0, clientY: 0 })
+		// Released away from the marker, for example over the map.
+		pointer('pointermove', document.body, { clientX: 30, clientY: 0 })
+		pointer('pointerup', document.body, { clientX: 30, clientY: 0 })
+		fireEvent.click(document.body)
+		expect(onDragEnd).toHaveBeenCalledWith(expect.anything(), { latLng: { lat: 10, lng: 23 } })
+		expect(onPageClick).not.toHaveBeenCalled()
+
+		// Later clicks are not swallowed, and the drag no longer follows the pointer.
+		await flush()
+		fireEvent.click(document.body)
+		expect(onPageClick).toHaveBeenCalledTimes(1)
+		pointer('pointermove', document.body, { clientX: 90, clientY: 0 })
+		expect(container.style.transform).toBe('translate(230px, -100px) translate(-50%, -50%)')
+		document.body.removeEventListener('click', onPageClick)
+	})
+
+	it('stops following the pointer when unmounted mid-drag', async () => {
+		installGoogleMapsMock()
+		const onDrag = vi.fn()
+		const { unmount } = renderMarker({ draggable: true, onDrag })
+		await flush()
+		pointer('pointerdown', screen.getByText('Pin').parentElement!, { clientX: 0, clientY: 0 })
+		unmount()
+		pointer('pointermove', document.body, { clientX: 50, clientY: 50 })
+		expect(onDrag).not.toHaveBeenCalled()
+	})
+
 	it('does not drag when draggable is false', async () => {
 		installGoogleMapsMock()
 		const onDrag = vi.fn()

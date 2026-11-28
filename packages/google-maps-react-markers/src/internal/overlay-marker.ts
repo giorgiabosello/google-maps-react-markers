@@ -47,7 +47,6 @@ const getOverlayMarkerClass = (): OverlayMarkerClass => {
 		private drag: DragState | null = null
 		/** Position before a keyboard drag, restored by Escape. */
 		private keyboardDrag: LatLngLiteral | null = null
-		private suppressClick = false
 		private clickable = false
 		private title: string | undefined
 		/** Watches the content of interactive markers for focusable elements of their own. */
@@ -65,11 +64,7 @@ const getOverlayMarkerClass = (): OverlayMarkerClass => {
 			google.maps.OverlayView.preventMapHitsFrom(container)
 
 			container.addEventListener('pointerdown', this.handlePointerDown)
-			container.addEventListener('pointermove', this.handlePointerMove)
-			container.addEventListener('pointerup', this.handlePointerUp)
-			container.addEventListener('pointercancel', this.handlePointerUp)
-			// Capture phase, so a click that ends a drag never reaches the marker content.
-			container.addEventListener('click', this.handleClick, true)
+			container.addEventListener('click', this.handleClick)
 			// The map starts panning on mousedown/touchstart: stop them while the marker is draggable.
 			container.addEventListener('mousedown', this.stopWhileDraggable)
 			container.addEventListener('touchstart', this.stopWhileDraggable, { passive: true })
@@ -175,10 +170,9 @@ const getOverlayMarkerClass = (): OverlayMarkerClass => {
 		destroy() {
 			const { container } = this
 			container.removeEventListener('pointerdown', this.handlePointerDown)
-			container.removeEventListener('pointermove', this.handlePointerMove)
-			container.removeEventListener('pointerup', this.handlePointerUp)
-			container.removeEventListener('pointercancel', this.handlePointerUp)
-			container.removeEventListener('click', this.handleClick, true)
+			container.removeEventListener('click', this.handleClick)
+			this.stopPointerDrag()
+			window.removeEventListener('click', this.swallowClick, true)
 			container.removeEventListener('mousedown', this.stopWhileDraggable)
 			container.removeEventListener('touchstart', this.stopWhileDraggable)
 			container.removeEventListener('keydown', this.handleKeyDown)
@@ -193,13 +187,18 @@ const getOverlayMarkerClass = (): OverlayMarkerClass => {
 			if (this.draggable) event.stopPropagation()
 		}
 
+		/**
+		 * The drag follows the pointer on window, not with pointer capture: with capture the browser
+		 * sends the click to the marker container, and buttons or links inside the content never get it.
+		 */
 		private readonly handlePointerDown = (event: PointerEvent) => {
-			this.suppressClick = false
-			if (!this.draggable || event.button !== 0) return
+			if (!this.draggable || event.button !== 0 || this.drag) return
 			const origin = this.getProjection()?.fromLatLngToDivPixel(this.position)
 			if (!origin) return
 			event.stopPropagation()
-			this.container.setPointerCapture?.(event.pointerId)
+			window.addEventListener('pointermove', this.handlePointerMove, true)
+			window.addEventListener('pointerup', this.handlePointerUp, true)
+			window.addEventListener('pointercancel', this.handlePointerUp, true)
 			this.drag = {
 				pointerId: event.pointerId,
 				startX: event.clientX,
@@ -234,16 +233,27 @@ const getOverlayMarkerClass = (): OverlayMarkerClass => {
 		private readonly handlePointerUp = (event: PointerEvent) => {
 			const { drag } = this
 			if (!drag || event.pointerId !== drag.pointerId) return
-			this.drag = null
-			if (this.container.hasPointerCapture?.(event.pointerId)) this.container.releasePointerCapture(event.pointerId)
+			this.stopPointerDrag()
 			if (!drag.moved) return
 			this.container.style.cursor = this.draggable ? 'grab' : ''
-			// The click that ends a mouse drag arrives in this same task; touch drags fire none.
-			this.suppressClick = true
-			setTimeout(() => {
-				this.suppressClick = false
-			}, 0)
+			// The click that ends a mouse drag arrives in this same task, on the marker or on the map
+			// where the pointer was released: swallow it. Touch drags fire none.
+			window.addEventListener('click', this.swallowClick, true)
+			setTimeout(() => window.removeEventListener('click', this.swallowClick, true), 0)
 			this.getHandlers().onDragEnd?.(event, { latLng: this.position })
+		}
+
+		private stopPointerDrag() {
+			this.drag = null
+			window.removeEventListener('pointermove', this.handlePointerMove, true)
+			window.removeEventListener('pointerup', this.handlePointerUp, true)
+			window.removeEventListener('pointercancel', this.handlePointerUp, true)
+		}
+
+		private readonly swallowClick = (event: MouseEvent) => {
+			window.removeEventListener('click', this.swallowClick, true)
+			event.preventDefault()
+			event.stopImmediatePropagation()
 		}
 
 		/** Keys only act on the marker itself: buttons or inputs inside the content keep their own. */
@@ -328,11 +338,6 @@ const getOverlayMarkerClass = (): OverlayMarkerClass => {
 		}
 
 		private readonly handleClick = (event: MouseEvent) => {
-			if (this.suppressClick) {
-				this.suppressClick = false
-				event.stopImmediatePropagation()
-				return
-			}
 			this.getHandlers().onClick?.(event)
 		}
 	}
