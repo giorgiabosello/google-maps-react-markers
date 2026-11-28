@@ -29,7 +29,7 @@
 		"@tailwindcss/postcss": "^4.3.5",
 		"@types/geojson": "^7946.0.16",
 		"@types/mdx": "^2.0.14",
-		"@types/node": "^24.19.4",
+		"@types/node": "^26.6.10",
 		"@types/react": "^19.3.3",
 		"@types/react-dom": "^19.3.0",
 		"axe-core": "4.14.1",
