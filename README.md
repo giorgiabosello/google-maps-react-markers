@@ -5,7 +5,7 @@
 <p align="center">
 <a href="https://www.npmjs.com/package/google-maps-react-markers"><img src="https://img.shields.io/npm/v/google-maps-react-markers.svg?style=flat-square&labelColor=000000" alt="npm version" /></a>
 <a href="https://npm-stat.com/charts.html?package=google-maps-react-markers"><img src="https://img.shields.io/npm/dm/google-maps-react-markers.svg?style=flat-square&labelColor=000000" alt="npm downloads" /></a>
-<a href="https://bundlephobia.com/package/google-maps-react-markers"><img src="https://img.shields.io/bundlephobia/minzip/google-maps-react-markers?style=flat-square&labelColor=000000" alt="bundle size" /></a>
+<a href="https://bundlejs.com/?q=google-maps-react-markers"><img src="https://img.shields.io/bundlejs/size/google-maps-react-markers?externals=react,react-dom,react/jsx-runtime&style=flat-square&labelColor=000000" alt="bundle size" /></a>
 <a href="https://github.com/giorgiabosello/google-maps-react-markers/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/giorgiabosello/google-maps-react-markers/ci.yml?style=flat-square&labelColor=000000&label=CI" alt="CI" /></a>
 <a href="https://github.com/giorgiabosello/google-maps-react-markers/blob/main/LICENCE.md"><img src="https://img.shields.io/github/license/giorgiabosello/google-maps-react-markers?style=flat-square&labelColor=000000" alt="MIT license" /></a>
 </p>
