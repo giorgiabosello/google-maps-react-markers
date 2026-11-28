@@ -14,6 +14,8 @@ jobs:
   release:
     name: Version pull request or publish to npm
     runs-on: ubuntu-latest
+    # Only main and v3 may deploy to this environment, and npm trusts only this environment.
+    environment: npm
     permissions:
       contents: write
       pull-requests: write
