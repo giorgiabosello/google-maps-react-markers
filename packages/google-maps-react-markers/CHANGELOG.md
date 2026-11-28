@@ -1,5 +1,11 @@
 # google-maps-react-markers
 
+## 3.0.2
+
+### 🐛 Bug Fixes
+
+- [#408](https://github.com/giorgiabosello/google-maps-react-markers/pull/408) [`3d47eea`](https://github.com/giorgiabosello/google-maps-react-markers/commit/3d47eea44560e382d2fad0c63b061b9ee3f49297) Thanks [@giorgiabosello](https://github.com/giorgiabosello)! - `options` changes apply only the keys that changed: changing one option (for example `styles`) no longer re-applies the others over what the user did on the map, such as the map type picked with Google's control. `<MapControl>` keeps its content mounted when `position` changes, so React state inside it survives, and it logs an error for an invalid position instead of rendering nothing silently.
+
 ## 3.0.1
 
 ### 🐛 Bug Fixes
