@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [main, v3]
+    branches: [main]
 
 permissions: {}
 
@@ -14,7 +14,7 @@ jobs:
   release:
     name: Version pull request or publish to npm
     runs-on: ubuntu-latest
-    # Only main and v3 may deploy to this environment, and npm trusts only this environment.
+    # Only main may deploy to this environment, and npm trusts only this environment.
     environment: npm
     permissions:
       contents: write
@@ -32,10 +32,21 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Build, lint, typecheck and test before publishing
         run: pnpm build && pnpm lint && pnpm typecheck && pnpm test
-      - uses: changesets/action@v2
+      - id: changesets
+        uses: changesets/action@v2
         with:
           version-script: pnpm version-packages
           publish-script: pnpm release
           commit-message: 'chore: version packages'
           pr-title: 'chore: version packages'
           create-github-releases: true
+      # Changesets names the release after the tag (name@version): keep only the version.
+      - name: Name the GitHub release after the version
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUBLISHED: ${{ steps.changesets.outputs['published-packages'] }}
+        run: |
+          echo "$PUBLISHED" | jq -r '.[] | "\(.name)@\(.version) \(.version)"' | while read -r tag version; do
+            gh release edit "$tag" --title "$version"
+          done
