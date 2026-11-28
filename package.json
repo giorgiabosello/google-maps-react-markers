@@ -34,7 +34,7 @@
 		"dev": "concurrently \"yarn build --watch\"",
 		"build": "tsup --onSuccess \"yarn link:self\"",
 		"type-check": "tsc",
-		"lint": "eslint --ignore-pattern .gitignore \"{src,docs/src}/**/*.+(ts|js|tsx)\"",
+		"lint": "eslint src",
 		"lint:fix": "yarn lint --fix && prettier --write .",
 		"prepare": "husky || true",
 		"commit": "cz",
@@ -50,7 +50,7 @@
 	},
 	"lint-staged": {
 		"./{src,tests}/**/*.{ts,js,jsx,tsx}": [
-			"eslint --ignore-pattern .gitignore --fix"
+			"eslint --fix"
 		],
 		"*": "prettier --write"
 	},

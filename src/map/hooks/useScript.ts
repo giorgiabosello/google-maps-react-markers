@@ -164,7 +164,9 @@ function useScript(
 			}
 		},
 
-		// Re-run useEffect if script changes
+		// Re-run useEffect if script changes. The options are read once, as in 2.0.x: adding them
+		// would reload the script when a caller passes a new object on every render.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[script, forcedStatus, status],
 	)
 
