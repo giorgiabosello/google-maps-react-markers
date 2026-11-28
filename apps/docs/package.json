@@ -34,7 +34,7 @@
 		"@types/react-dom": "^19.3.0",
 		"axe-core": "4.14.1",
 		"postcss": "~8.5.33",
-		"puppeteer-core": "24.43.1",
+		"puppeteer-core": "25.18.1",
 		"serve": "^14.2.5",
 		"tailwindcss": "^4.3.5",
 		"typescript": "~6.0.3"
