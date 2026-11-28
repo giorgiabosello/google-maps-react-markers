@@ -2,7 +2,7 @@
 
 ## 3.0.0
 
-### Major Changes
+### 💥 BREAKING CHANGES
 
 - [#395](https://github.com/giorgiabosello/google-maps-react-markers/pull/395) [`948c94c`](https://github.com/giorgiabosello/google-maps-react-markers/commit/948c94c) Thanks [@giorgiabosello](https://github.com/giorgiabosello)! - v3: rewrite for React 19 and Next.js 16.
 

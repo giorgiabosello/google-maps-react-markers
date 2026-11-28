@@ -1,0 +1,2 @@
+#!/bin/sh
+node scripts/commit-emoji.mjs "$1" "$2"
