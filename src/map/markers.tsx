@@ -10,7 +10,8 @@ const MapMarkers = ({ children, map, maps }: MapMarkersProps) => {
 
 		const props = (child.props ?? {}) as Partial<MarkerProps> & Record<string, unknown>
 		// Not a marker (for example MapControl, or a component that uses useMap()): render it as it is.
-		if (props.lat === undefined && props.lng === undefined) return child
+		// A child with `lat={undefined}` is still a marker, so it is not remounted when the coordinates arrive.
+		if (!('lat' in props) && !('lng' in props)) return child
 
 		const { lat, lng, anchor, zIndex, draggable = false, onDragStart = noop, onDrag = noop, onDragEnd = noop } = props
 
