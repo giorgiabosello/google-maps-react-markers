@@ -30,17 +30,32 @@ export const optionsEqual = (a: object | undefined, b: object | undefined): bool
 	if (!a || !b) return false
 	const keysA = Object.keys(a)
 	if (keysA.length !== Object.keys(b).length) return false
-	return keysA.every((key) => {
-		const valueA = (a as Record<string, unknown>)[key]
-		const valueB = (b as Record<string, unknown>)[key]
-		if (Object.is(valueA, valueB)) return true
-		if (typeof valueA !== 'object' || typeof valueB !== 'object' || !valueA || !valueB) return false
-		try {
-			return JSON.stringify(valueA) === JSON.stringify(valueB)
-		} catch {
-			return false
-		}
+	return keysA.every((key) =>
+		optionValueEqual((a as Record<string, unknown>)[key], (b as Record<string, unknown>)[key]),
+	)
+}
+
+/** Equality for one option value: identity, or the same JSON for nested values. */
+const optionValueEqual = (valueA: unknown, valueB: unknown): boolean => {
+	if (Object.is(valueA, valueB)) return true
+	if (typeof valueA !== 'object' || typeof valueB !== 'object' || !valueA || !valueB) return false
+	try {
+		return JSON.stringify(valueA) === JSON.stringify(valueB)
+	} catch {
+		return false
+	}
+}
+
+/**
+ * The options that are new or different in `next`. Only these are passed to setOptions,
+ * so a change to one option does not reset the others (for example a map type picked by the user).
+ */
+export const changedOptions = <T extends object>(previous: T | undefined, next: T): Partial<T> => {
+	const changes: Partial<T> = {}
+	;(Object.keys(next) as (keyof T)[]).forEach((key) => {
+		if (!previous || !(key in previous) || !optionValueEqual(previous[key], next[key])) changes[key] = next[key]
 	})
+	return changes
 }
 
 const ANCHORS = {

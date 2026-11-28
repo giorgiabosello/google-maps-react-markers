@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { BBox, EventProps, Map, MapContextProps, MapProps, MapsLibrary } from '../utils/types'
-import { isArraysEqualEps, isOnMarker, optionsEqual } from '../utils/utils'
+import { changedOptions, isArraysEqualEps, isOnMarker, optionsEqual } from '../utils/utils'
 import { GoogleMapContext } from './context'
 import { MAP_EVENTS, MAP_EVENT_PROPS, MOUSE_EVENTS } from './map-events'
 import MapMarkers from './markers'
+import { setDraggableAfterDrag } from './overlay'
 
 function MapComponent(props: MapProps) {
 	const {
@@ -58,11 +59,15 @@ function MapComponent(props: MapProps) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [map])
 
-	// Options: apply only real changes, so an inline object does not call setOptions on every render.
+	// Options: apply only the options that really changed, so an inline object does not call setOptions
+	// on every render, and a change to one option does not reset the others.
 	useEffect(() => {
 		if (!map || optionsEqual(appliedOptionsRef.current, options)) return
+		const changes = changedOptions(appliedOptionsRef.current, options)
 		appliedOptionsRef.current = options
-		map.setOptions(options)
+		// During a marker drag the map is locked: its new `draggable` is applied when the drag ends.
+		if ('draggable' in changes && setDraggableAfterDrag(map, changes.draggable)) delete changes.draggable
+		if (Object.keys(changes).length) map.setOptions(changes)
 	}, [map, options])
 
 	// Controlled center and zoom.

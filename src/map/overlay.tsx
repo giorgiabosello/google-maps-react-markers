@@ -24,6 +24,17 @@ const lockMap = (map: google.maps.Map) => {
 	map.set('draggable', false)
 }
 
+/**
+ * While a drag locks the map, a new `draggable` option is saved and applied when the last drag ends.
+ * Returns whether the map was locked.
+ */
+export const setDraggableAfterDrag = (map: google.maps.Map, draggable: unknown): boolean => {
+	const lock = mapLocks.get(map)
+	if (!lock) return false
+	lock.mapDraggable = draggable
+	return true
+}
+
 const unlockMap = (map: google.maps.Map) => {
 	const lock = mapLocks.get(map)
 	if (!lock) return
