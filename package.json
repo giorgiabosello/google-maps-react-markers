@@ -62,6 +62,9 @@
 	"engines": {
 		"node": ">=16"
 	},
+	"dependencies": {
+		"@types/google.maps": "^3.58.1"
+	},
 	"devDependencies": {
 		"@babel/core": "7.26.8",
 		"@babel/preset-env": "7.26.9",
@@ -71,7 +74,6 @@
 		"@commitlint/config-conventional": "19.7.1",
 		"@ryansonshine/commitizen": "4.2.8",
 		"@ryansonshine/cz-conventional-changelog": "3.3.4",
-		"@types/google.maps": "^3.58.1",
 		"@types/node": "^22.13.1",
 		"@types/react": "^19.0.8",
 		"@types/react-dom": "^19.0.3",
