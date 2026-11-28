@@ -16,7 +16,7 @@ Minor release with features backported from 3.x. Nothing is removed, React 18 is
 
 ### Features
 
-- `options` are reactive: changes after the first render are applied with `map.setOptions()`. Options are compared by value, so an inline object does not call `setOptions` on every render.
+- `options` are reactive: after the first render, the options that change are applied with `map.setOptions()`. Only those: an option you don't touch (for example a map type the user picked) is not reset. Options are compared by value, so an inline object does not call `setOptions` on every render. A `draggable` change during a marker drag is applied when the drag ends.
 - Controlled `center` and `zoom` props, next to `defaultCenter` and `defaultZoom`. When they change, the map moves there. Keep them in sync with `onChange`. `defaultCenter` and `defaultZoom` are now optional in the types, since you can pass `center` and `zoom` instead.
 - `onChange` also receives `bbox`, the bounds as `[westLng, southLat, eastLng, northLat]`, ready for supercluster. `center` is still `[lng, lat]`.
 - Google Maps events as typed props: `onBoundsChanged`, `onCenterChanged`, `onClick`, `onContextMenu`, `onDoubleClick`, `onDrag`, `onDragEnd`, `onDragStart`, `onHeadingChanged`, `onIdle`, `onMapTypeIdChanged`, `onMouseMove`, `onMouseOut`, `onMouseOver`, `onTilesLoaded`, `onTiltChanged`, `onZoomChanged`. Mouse events receive `(event, map)` and are not fired when they happen on a marker, the others receive `(map)`. Handlers always use the latest props and state. The `events` prop is still there.
@@ -32,9 +32,10 @@ Minor release with features backported from 3.x. Nothing is removed, React 18 is
 
 ### Behaviour changes
 
-- Children of `GoogleMap` without `lat` and `lng` are rendered as they are, behind the map. Before, they were wrapped in a marker and shown at a fixed point, the initial center of the map. This is what lets `MapControl` and components that use `useMap()` live inside the map. If you used a child without coordinates as an overlay, give it `lat` and `lng`.
-- `options` that really change after the first render are now applied. Before, they were ignored.
-- If your project has its own `@types/google.maps`, keep it on 3.58.1 or later, so npm installs a single copy.
+- Children of `GoogleMap` without the `lat` and `lng` props are rendered as they are, behind the map (a child with `lat={undefined}` is still a marker). Before, they were wrapped in a marker and shown at a fixed point, the initial center of the map. This is what lets `MapControl` and components that use `useMap()` live inside the map. If you used a child without coordinates as an overlay, give it `lat` and `lng`.
+- `options` that really change after the first render are applied, but an option removed from the object is not reset: set it to the value you want instead.
+- If your project has its own `@types/google.maps`, keep it on 3.58.1 or later, so npm installs a single copy. If you declared `google` yourself (for example `declare const google: any` in a `.ts` file), remove it: it now clashes with the `google.maps` types.
+- Types: `defaultCenter` and `defaultZoom` are optional, `onChange` receives `bbox` too, and `GoogleMapProps` has the new `center`, `zoom` and event props (`onClick`, `onDrag`...). A wrapper that extends `GoogleMapProps` with its own props of the same names, or that passes its own `onClick` or `onDrag` down to `GoogleMap`, needs a look: those props are now map events.
 
 ### Chores
 
