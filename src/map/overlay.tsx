@@ -1,4 +1,5 @@
 import { Drag, Pane, createOverlayProps } from '../utils/types'
+import { resolveAnchor } from '../utils/utils'
 
 // return lat, lng from LatLngLiteral
 const getLatLng = (LatLng: google.maps.LatLng | null) => {
@@ -23,6 +24,17 @@ const lockMap = (map: google.maps.Map) => {
 	map.set('draggable', false)
 }
 
+/**
+ * While a drag locks the map, a new `draggable` option is saved and applied when the last drag ends.
+ * Returns whether the map was locked.
+ */
+export const setDraggableAfterDrag = (map: google.maps.Map, draggable: unknown): boolean => {
+	const lock = mapLocks.get(map)
+	if (!lock) return false
+	lock.mapDraggable = draggable
+	return true
+}
+
 const unlockMap = (map: google.maps.Map) => {
 	const lock = mapLocks.get(map)
 	if (!lock) return
@@ -44,7 +56,7 @@ interface ActiveDrag {
 // even if something on the way stops the event from bubbling.
 const windowListenerOptions = { capture: true }
 
-const createOverlay = ({ container, pane, position, maps, drag }: createOverlayProps) => {
+const createOverlay = ({ container, pane, position, maps, drag, anchor }: createOverlayProps) => {
 	class Overlay extends google.maps.OverlayView {
 		/**
 		 * onAdd is called when the map's panes are ready and the overlay has been
@@ -69,10 +81,11 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 			// Computes the pixel coordinates of the given geographical location in the DOM element that holds the draggable map.
 			const point = overlayProjection?.fromLatLngToDivPixel(this.position) as google.maps.Point
 
-			// Manage offset for the overlay, since the overlay is centered on the point
-			// we need to offset the overlay by half of its width and height
-			// to make the overlay appear where the point is
-			const offset = { x: this.container.offsetWidth / 2, y: this.container.offsetHeight / 2 }
+			// Offset the overlay so that its anchor (the center by default) sits on the point.
+			const offset = {
+				x: this.container.offsetWidth * this.anchor.x,
+				y: this.container.offsetHeight * this.anchor.y,
+			}
 
 			// Hide the overlay if it is outside the map
 			if (!point) return
@@ -97,6 +110,12 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 		/** Moves the overlay to a new position, without recreating it. */
 		setPosition = (next: google.maps.LatLng) => {
 			this.position = next
+			this.draw()
+		}
+
+		/** Changes which point of the overlay sits on its position, as fractions of its size. */
+		setAnchor = (next: { x: number; y: number }) => {
+			this.anchor = next
 			this.draw()
 		}
 
@@ -180,6 +199,8 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 
 		public drag?: Drag
 
+		public anchor: { x: number; y: number }
+
 		public activeDrag: ActiveDrag | null = null
 
 		// eslint-disable-next-line no-shadow
@@ -190,6 +211,7 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 			this.container = container
 			this.pane = pane
 			this.position = position
+			this.anchor = resolveAnchor(anchor)
 			this.setDrag(drag)
 		}
 	}
