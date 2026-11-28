@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { EventProps, Map, MapProps, MapsLibrary } from '../utils/types'
 import { isArraysEqualEps } from '../utils/utils'
 import MapMarkers from './markers'
@@ -27,41 +27,12 @@ function MapComponent({
 	const [maps, setMaps] = useState<MapsLibrary>()
 	const [googleApiCalled, setGoogleApiCalled] = useState<boolean>(false)
 
-	const onIdle = useCallback(() => {
-		try {
-			if (!map) {
-				return
-			}
-
-			const zoom = map.getZoom() ?? defaultZoom
-			const bounds = map.getBounds()
-			const centerLatLng = [map.getCenter()?.lng(), map.getCenter()?.lat()]
-
-			const ne = bounds?.getNorthEast()
-			const sw = bounds?.getSouthWest()
-
-			if (!ne || !sw || !bounds) {
-				return
-			}
-
-			// east, north, south, west
-			const boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()]
-
-			if (!isArraysEqualEps(boundsArray, prevBoundsRef.current)) {
-				if (onChange) {
-					onChange({
-						zoom,
-						center: centerLatLng,
-						bounds,
-					})
-				}
-				prevBoundsRef.current = boundsArray
-			}
-		} catch (e) {
-			// eslint-disable-next-line no-console
-			console.error(e)
-		}
-	}, [map, onChange])
+	// The idle listener is registered once per map: it reads the latest onChange from here,
+	// so it never calls a callback with stale props or state.
+	const latestRef = useRef({ onChange, defaultZoom })
+	useEffect(() => {
+		latestRef.current = { onChange, defaultZoom }
+	})
 
 	useEffect(() => {
 		if (mapRef.current && !map) {
@@ -82,23 +53,52 @@ function MapComponent({
 				onGoogleApiLoaded({ map, maps, ref: mapRef.current })
 			}
 			setGoogleApiCalled(true)
-
-			if (google.maps.event.hasListeners(map, 'idle')) google.maps.event.clearListeners(map, 'idle')
-			// Idle event is fired when the map becomes idle after panning or zooming.
-			google.maps.event.addListener(map, 'idle', onIdle)
 		}
-	}, [googleApiCalled, map, onGoogleApiLoaded])
+	}, [googleApiCalled, map, maps, onGoogleApiLoaded])
 
-	useEffect(
-		() =>
-			// clear listeners on unmount
-			() => {
-				if (map) {
-					google.maps.event.clearListeners(map, 'idle')
+	useEffect(() => {
+		if (!map) return undefined
+
+		// Idle event is fired when the map becomes idle after panning or zooming.
+		const onIdle = () => {
+			try {
+				const { onChange: currentOnChange, defaultZoom: currentDefaultZoom } = latestRef.current
+				const zoom = map.getZoom() ?? currentDefaultZoom
+				const bounds = map.getBounds()
+				const centerLatLng = [map.getCenter()?.lng(), map.getCenter()?.lat()]
+
+				const ne = bounds?.getNorthEast()
+				const sw = bounds?.getSouthWest()
+
+				if (!ne || !sw || !bounds) {
+					return
 				}
-			},
-		[map],
-	)
+
+				// east, north, south, west
+				const boundsArray = [sw.lng(), sw.lat(), ne.lng(), ne.lat()]
+
+				if (!isArraysEqualEps(boundsArray, prevBoundsRef.current)) {
+					if (currentOnChange) {
+						currentOnChange({
+							zoom,
+							center: centerLatLng,
+							bounds,
+						})
+					}
+					prevBoundsRef.current = boundsArray
+				}
+			} catch (e) {
+				// eslint-disable-next-line no-console
+				console.error(e)
+			}
+		}
+
+		// Remove only this listener: idle listeners added by the user (for example in onGoogleApiLoaded) stay.
+		const listener = google.maps.event.addListener(map, 'idle', onIdle)
+		return () => {
+			google.maps.event.removeListener(listener)
+		}
+	}, [map])
 
 	return (
 		<>
@@ -113,7 +113,7 @@ function MapComponent({
 						return acc
 					},
 					{} as { [key: string]: any },
-				), {}}
+				)}
 			/>
 			{children && map && maps && (
 				<MapMarkers map={map} maps={maps}>

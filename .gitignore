@@ -16,6 +16,8 @@
 
 # misc
 .DS_Store
+.env*
+!.env.example
 *.pem
 tsconfig.tsbuildinfo
 

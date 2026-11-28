@@ -1,4 +1,4 @@
-import { Pane, createOverlayProps } from '../utils/types'
+import { Drag, Pane, createOverlayProps } from '../utils/types'
 
 // return lat, lng from LatLngLiteral
 const getLatLng = (LatLng: google.maps.LatLng | null) => {
@@ -10,6 +10,40 @@ const getLatLng = (LatLng: google.maps.LatLng | null) => {
 	}
 }
 
+/**
+ * While a marker is dragged the map must not pan. Several markers can be dragged at once (multi touch),
+ * so the map is locked by the first drag and gets back its own `draggable` option when the last one ends.
+ */
+const mapLocks = new WeakMap<google.maps.Map, { count: number; mapDraggable: unknown }>()
+
+const lockMap = (map: google.maps.Map) => {
+	const lock = mapLocks.get(map) ?? { count: 0, mapDraggable: map.get('draggable') }
+	lock.count++
+	mapLocks.set(map, lock)
+	map.set('draggable', false)
+}
+
+const unlockMap = (map: google.maps.Map) => {
+	const lock = mapLocks.get(map)
+	if (!lock) return
+	lock.count--
+	if (lock.count > 0) return
+	mapLocks.delete(map)
+	map.set('draggable', lock.mapDraggable !== false)
+}
+
+interface ActiveDrag {
+	/** The map being dragged on, kept so the drag can be undone even after the overlay is removed. */
+	map: google.maps.Map | null
+	pointerId: number
+	x: number
+	y: number
+}
+
+// Capture phase on window: the drag follows the pointer outside the marker and the map,
+// even if something on the way stops the event from bubbling.
+const windowListenerOptions = { capture: true }
+
 const createOverlay = ({ container, pane, position, maps, drag }: createOverlayProps) => {
 	class Overlay extends google.maps.OverlayView {
 		/**
@@ -17,52 +51,10 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 		 * added to the map.
 		 */
 		onAdd = () => {
-			const that = this
-			// manage draggable
-			if (drag?.draggable) {
-				this.get('map')
-					.getDiv()
-					.addEventListener('mouseleave', () => {
-						google.maps.event.trigger(this.container, 'mouseup')
-					})
+			// The listeners are removed in onRemove, so adding the overlay again never stacks them.
+			this.container.addEventListener('pointerdown', this.handlePointerDown)
+			this.container.addEventListener('dragstart', this.handleNativeDragStart)
 
-				this.container.addEventListener('mousedown', (e: MouseEvent) => {
-					this.container.style.cursor = 'grabbing'
-					that.map?.set('draggable', false)
-					that.set('origin', e)
-
-					drag.onDragStart(e, { latLng: getLatLng(this.position) })
-
-					that.moveHandler = this.get('map')
-						?.getDiv()
-						.addEventListener('mousemove', (evt: MouseEvent) => {
-							const origin = that.get('origin') as MouseEvent
-							if (!origin) return
-							const left = origin.clientX - evt.clientX
-							const top = origin.clientY - evt.clientY
-							const pos = that.getProjection()?.fromLatLngToDivPixel(that.position)
-							if (!pos) return
-							const latLng = that.getProjection()?.fromDivPixelToLatLng(new maps.Point(pos.x - left, pos.y - top))
-							that.set('position', latLng)
-							that.set('origin', evt)
-							that.draw()
-							drag.onDrag(evt, { latLng: getLatLng(latLng) })
-						})
-				})
-
-				this.container.addEventListener('mouseup', (e) => {
-					that.map?.set('draggable', true)
-					this.container.style.cursor = 'default'
-					if (that.moveHandler) {
-						google.maps.event.removeListener(that.moveHandler)
-						that.moveHandler = null
-					}
-					that.set('position', that.position) // set position to last valid position
-					that.set('origin', undefined) // unset origin so that the next mousedown starts fresh
-					that.draw()
-					drag.onDragEnd(e, { latLng: getLatLng(that.position) })
-				})
-			}
 			// Add the element to the pane.
 			const currentPane = this.getPanes()?.[this.pane] as HTMLElement
 			currentPane?.classList.add('google-map-markers-overlay')
@@ -70,7 +62,6 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 		}
 
 		draw = () => {
-			// if (!this.map) return
 			if (!this.container) return
 			// We use the south-west and north-east points of the overlay to peg it to the correct position and size.
 			// To do this, we need to retrieve the projection from the overlay.
@@ -95,11 +86,90 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 		 * we ever set the overlay's map property to 'null'.
 		 */
 		onRemove = () => {
+			this.cancelDrag()
+			this.container.removeEventListener('pointerdown', this.handlePointerDown)
+			this.container.removeEventListener('dragstart', this.handleNativeDragStart)
 			if (this.container.parentNode !== null) {
-				// remove DOM listeners
-				google.maps.event.clearInstanceListeners(this.container)
 				this.container.parentNode.removeChild(this.container)
 			}
+		}
+
+		/** Moves the overlay to a new position, without recreating it. */
+		setPosition = (next: google.maps.LatLng) => {
+			this.position = next
+			this.draw()
+		}
+
+		/** Updates the drag configuration, so the handlers always call the latest callbacks. */
+		setDrag = (next?: Drag) => {
+			this.drag = next
+			const draggable = !!next?.draggable
+			// Touch: stop the browser from scrolling or zooming the page while the marker is dragged.
+			this.container.style.touchAction = draggable ? 'none' : ''
+			this.container.style.userSelect = draggable ? 'none' : ''
+			if (!draggable) this.cancelDrag()
+		}
+
+		public handlePointerDown = (e: PointerEvent) => {
+			if (!this.drag?.draggable || this.activeDrag) return
+			// Only the main mouse button starts a drag, touch and pen always do.
+			if (e.pointerType === 'mouse' && e.button !== 0) return
+
+			const map = (this.getMap() as google.maps.Map | null) ?? null
+			this.activeDrag = { map, pointerId: e.pointerId, x: e.clientX, y: e.clientY }
+			// Listen on window instead of capturing the pointer: the drag ends on release anywhere,
+			// and a click on the marker's content still reaches its own element.
+			window.addEventListener('pointermove', this.handlePointerMove, windowListenerOptions)
+			window.addEventListener('pointerup', this.handlePointerUp, windowListenerOptions)
+			window.addEventListener('pointercancel', this.handlePointerUp, windowListenerOptions)
+			this.container.style.cursor = 'grabbing'
+			if (map) lockMap(map)
+
+			this.drag.onDragStart(e, { latLng: getLatLng(this.position) })
+		}
+
+		public handlePointerMove = (e: PointerEvent) => {
+			const active = this.activeDrag
+			if (!active || e.pointerId !== active.pointerId) return
+
+			const projection = this.getProjection()
+			const pos = projection?.fromLatLngToDivPixel(this.position)
+			if (!projection || !pos) return
+			const latLng = projection.fromDivPixelToLatLng(
+				new maps.Point(pos.x + e.clientX - active.x, pos.y + e.clientY - active.y),
+			)
+			if (!latLng) return
+
+			active.x = e.clientX
+			active.y = e.clientY
+			this.position = latLng
+			this.draw()
+			this.drag?.onDrag(e, { latLng: getLatLng(latLng) })
+		}
+
+		public handlePointerUp = (e: PointerEvent) => {
+			const active = this.activeDrag
+			if (!active || e.pointerId !== active.pointerId) return
+
+			this.cancelDrag()
+			this.drag?.onDragEnd(e, { latLng: getLatLng(this.position) })
+		}
+
+		// Stop the browser's native drag and drop (for example on an `img`), which would cancel the pointer events.
+		public handleNativeDragStart = (e: DragEvent) => {
+			if (this.drag?.draggable) e.preventDefault()
+		}
+
+		/** Ends the current drag, if any, without calling onDragEnd. */
+		public cancelDrag = () => {
+			const active = this.activeDrag
+			if (!active) return
+			this.activeDrag = null
+			window.removeEventListener('pointermove', this.handlePointerMove, windowListenerOptions)
+			window.removeEventListener('pointerup', this.handlePointerUp, windowListenerOptions)
+			window.removeEventListener('pointercancel', this.handlePointerUp, windowListenerOptions)
+			this.container.style.cursor = ''
+			if (active.map) unlockMap(active.map)
 		}
 
 		public container: HTMLDivElement
@@ -108,24 +178,23 @@ const createOverlay = ({ container, pane, position, maps, drag }: createOverlayP
 
 		public position: google.maps.LatLng
 
-		public map = this.getMap()
+		public drag?: Drag
 
-		public moveHandler: null
+		public activeDrag: ActiveDrag | null = null
 
 		// eslint-disable-next-line no-shadow
-		constructor(container: HTMLDivElement, pane: Pane, position: google.maps.LatLng) {
+		constructor(container: HTMLDivElement, pane: Pane, position: google.maps.LatLng, drag?: Drag) {
 			super()
 
 			// Initialize all properties.
 			this.container = container
 			this.pane = pane
 			this.position = position
-
-			this.moveHandler = null
+			this.setDrag(drag)
 		}
 	}
 
-	return new Overlay(container, pane, position)
+	return new Overlay(container, pane, position, drag)
 }
 
 export default createOverlay
