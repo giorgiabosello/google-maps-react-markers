@@ -1,48 +1,47 @@
-import { Children, cloneElement, isValidElement, useMemo } from 'react'
-import { MapMarkersProps } from '../utils/types'
+import { Children, cloneElement, isValidElement } from 'react'
+import { Drag, MapMarkersProps, MarkerProps } from '../utils/types'
 import OverlayView from './overlay-view'
 
 const noop = () => {}
 
 const MapMarkers = ({ children, map, maps }: MapMarkersProps) => {
-	const markers = useMemo(() => {
-		if (!map || !maps) return []
+	const markers = Children.map(children, (child) => {
+		if (!isValidElement(child)) return null
 
-		return Children.map(children, (child) => {
-			if (isValidElement(child)) {
-				const latLng = { lat: child.props.lat, lng: child.props.lng } as google.maps.LatLngLiteral
-				const { zIndex, draggable = false, onDragStart = noop, onDrag = noop, onDragEnd = noop } = child.props || {}
+		const props = (child.props ?? {}) as Partial<MarkerProps> & Record<string, unknown>
+		// Not a marker (for example MapControl, or a component that uses useMap()): render it as it is.
+		if (props.lat === undefined && props.lng === undefined) return child
 
-				// clone child without draggable props
-				// eslint-disable-next-line no-param-reassign
-				child = cloneElement(child, {
-					...child.props,
-					// draggable: undefined,
-					onDragStart: undefined,
-					onDrag: undefined,
-					onDragEnd: undefined,
-				})
+		const { lat, lng, anchor, zIndex, draggable = false, onDragStart = noop, onDrag = noop, onDragEnd = noop } = props
 
-				return (
-					<OverlayView
-						position={new maps.LatLng(latLng.lat, latLng.lng)}
-						map={map}
-						maps={maps}
-						zIndex={zIndex}
-						drag={{
-							draggable,
-							onDragStart,
-							onDrag,
-							onDragEnd,
-						}}
-					>
-						{child}
-					</OverlayView>
-				)
-			}
-			return null
-		})
-	}, [children, map, maps])
+		// clone child without draggable props
+		const marker = cloneElement(child, {
+			...props,
+			onDragStart: undefined,
+			onDrag: undefined,
+			onDragEnd: undefined,
+		} as Record<string, unknown>)
+
+		return (
+			<OverlayView
+				position={new maps.LatLng(lat as number, lng as number)}
+				map={map}
+				maps={maps}
+				zIndex={zIndex}
+				anchor={anchor}
+				drag={
+					{
+						draggable,
+						onDragStart,
+						onDrag,
+						onDragEnd,
+					} as Drag
+				}
+			>
+				{marker}
+			</OverlayView>
+		)
+	})
 
 	return <div>{markers}</div>
 }
