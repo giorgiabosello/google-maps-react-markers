@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { OverlayViewProps } from '../utils/types'
-import useMemoCompare from './hooks/useMemoCompare'
 import createOverlay from './overlay'
 
 const OverlayView = ({
@@ -19,31 +18,34 @@ const OverlayView = ({
 		return div as HTMLDivElement
 	}, [])
 
+	// One overlay for the whole life of the marker: position and drag only set its initial state,
+	// later changes go through setPosition and setDrag instead of creating a new overlay on every render.
 	const overlay = useMemo(
 		() => createOverlay({ container, pane, position, maps, drag }),
-		[container, drag, maps, pane, position],
-	)
-
-	// Because React does not do deep comparisons, a custom hook is used.
-	// This fixes the issue where the overlay is not updated when the position changes.
-	const childrenProps = useMemoCompare(
-		children?.props as any,
-		(prev: { lat: any; lng: any; draggable: boolean }, next: { lat: any; lng: any; draggable: boolean }) =>
-			prev && prev.lat === next.lat && prev.lng === next.lng && prev.draggable === next.draggable,
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[container, maps, pane],
 	)
 
 	useEffect(() => {
-		if (!overlay.map && map) {
-			overlay?.setMap(map)
-			return () => {
-				overlay?.setMap(null)
-			}
+		overlay.setMap(map)
+		return () => {
+			overlay.setMap(null)
 		}
-		return () => {}
-		// overlay depends on map, so we don't need to add it to the dependency array
-		// otherwise, it will re-render the overlay every time the map changes
-		// ? added childrenProps to the dependency array to re-render the overlay when the children props change.
-	}, [map, childrenProps])
+	}, [overlay, map])
+
+	// Move the overlay only when the coordinates really change, since `position` is a new object on every render.
+	// Layout effect: a marker controlled from onDrag is moved before the next pointer event, so it never lags behind.
+	const lat = position.lat()
+	const lng = position.lng()
+	useLayoutEffect(() => {
+		overlay.setPosition(position)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [overlay, lat, lng])
+
+	// Keep the latest drag callbacks, so they never read stale props or state.
+	useLayoutEffect(() => {
+		overlay.setDrag(drag)
+	})
 
 	// to move the container to the foreground and background
 	useEffect(() => {
